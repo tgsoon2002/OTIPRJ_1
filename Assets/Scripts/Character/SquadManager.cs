@@ -70,7 +70,7 @@ public class SquadManager : MonoBehaviour {
 
 	void SpawnUnit(){
 		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) {
-			Debug.Log("You got max unit");
+			
 			return;
 		}
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;

@@ -5,7 +5,7 @@ public class MenuManager : MonoBehaviour {
 
 	#region Data Members
 	public Transform characterModel;
-	private Transform menu;
+	public GameObject menu;
 	public CharacterBlock charModelManager;
 	#endregion
 
@@ -16,19 +16,19 @@ public class MenuManager : MonoBehaviour {
 	#region Built-in Unity Methods
 	// Use this for initialization
 	void Start () {
-		menu = transform.FindChild("Menu");
-		menu.gameObject.SetActive (false) ;
+		//menu = transform.FindChild("Menu");
+		menu.SetActive (false) ;
 		characterModel.gameObject.SetActive (false) ;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyUp(KeyCode.Escape)) {
-			if (Time.timeScale == 0) {
-				Time.timeScale =1.0f;
+			if (menu.activeSelf) {
+				
 				MenuVisibility (false);
 			} else {
-				Time.timeScale =0.0f;
+				
 				MenuVisibility (true);
 			}
 		}
@@ -47,9 +47,10 @@ public class MenuManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="visible">If set to <c>true</c> visible.</param>
 	public void MenuVisibility (bool visible){
+		menu.SetActive (visible) ;
 		characterModel.gameObject.SetActive (visible) ;
 		charModelManager.UpdateChar();
-		menu.gameObject.SetActive (visible) ;
+
 
 	}
 	#endregion

@@ -12,9 +12,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private ItemInfo itemInfo;
     private Image spriteGUI;
 	private GameObject highlighter;
-    private Transform originalParent;
+	public Transform originalParent;
+
     private Vector2 offset;
 	private int quantity;
+
 
     #endregion
 
@@ -48,6 +50,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
 		highlighter = transform.GetChild(1).gameObject;
         spriteGUI = gameObject.GetComponent<Image>();
+
+	}
+	void Start(){
+		originalParent = transform.parent;
 	}
 
     #endregion
@@ -66,6 +72,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	public void Selecting(){
 		transform.parent.GetComponent<Inventory>().UpdateSelectingItem(gameObject);
 		highlighter.SetActive(true);
+		transform.parent.GetComponent<Inventory>().itemOptionPanel.gameObject.SetActive(false);
 	}
 
 	/// <summary>
@@ -97,8 +104,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
         offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
-        originalParent = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
+       // originalParent = this.transform.parent;
+		this.transform.SetParent(this.transform.parent.parent.parent.parent);
         this.transform.position = eventData.position;
     }
 
@@ -110,8 +117,14 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.transform.SetParent(originalParent);
-        gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		if (eventData.pointerEnter == null) {
+			originalParent.GetComponent<Inventory>().rightClickItem =this;
+			originalParent.GetComponent<Inventory>().ammountOptionPanel.gameObject.SetActive(true);
+			originalParent.GetComponent<Inventory>().ammountOptionPanel._CalledToDrop(true);
+
+		} 
+		this.transform.SetParent(originalParent);
+		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     #endregion

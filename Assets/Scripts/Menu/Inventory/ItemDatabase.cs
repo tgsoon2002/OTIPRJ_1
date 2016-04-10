@@ -87,7 +87,7 @@ public class ItemDatabase : MonoBehaviour {
 	#region Private Methods
 	void  ConstructItemDatabase(){
 		//Construct data for equipment item
-		equipmentData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/EquipmentItem.json"));
+		equipmentData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/EquipmentItem.json"));
 
 		for (int i = 0; i < equipmentData.Count; i++) {
 			equipmentDB.Add(
@@ -108,7 +108,7 @@ public class ItemDatabase : MonoBehaviour {
 			}
 
 		// construct data for Consumable item
-		consumableData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/ConsumableItem.json"));
+		consumableData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/ConsumableItem.json"));
 		//ItemType _type, float range, bool craft, int id, string name, string description, int price, BaseItemType type, bool isStack
 		for (int i = 0; i < consumableData.Count; i++) {
 			consumableDB.Add(
@@ -128,8 +128,8 @@ public class ItemDatabase : MonoBehaviour {
 
 
 		// construct data for NonConsumable item
-		nonUsableData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/NonconsumItem.json"));
-		//				//bool craft, int id, string name, string description, int price, BaseItemType type, bool isStack
+		nonUsableData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/NonconsumItem.json"));
+		//bool craft, int id, string name, string description, int price, BaseItemType type, bool isStack
 		for (int i = 0; i < nonUsableData.Count; i++) {
 			nonConsumDB.Add(
 				new NonUseableItem(  (bool)nonUsableData[i]["craftable"],
@@ -150,7 +150,7 @@ public class ItemDatabase : MonoBehaviour {
 	}
 
 	private void ConstructEquipmentStats (){
-		equiStatJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/EquipmentStats.json"));
+		equiStatJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/EquipmentStats.json"));
 		// loop through each item in equipmentData and generate info and add to list
 		for (int i = 0; i < equiStatJson.Count; i++) {
 			equipStatDB.Add(new EquipmentStat( (int)equiStatJson[i]["equipIndex"]));

@@ -41,8 +41,8 @@ public class UnitDataBase : MonoBehaviour {
 		classTypeIndex.Add("Magician");
 		classTypeIndex.Add("Rouge");
 		classTypeIndex.Add("Archer");
-		unitDatabase = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/CharacterDB.json"));
-		modifierDatabase = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/Modifier.json"));
+
+
 		ConstructCharacterDatabase();
 	}
 
@@ -56,6 +56,8 @@ public class UnitDataBase : MonoBehaviour {
 	/// After got temp Character type, add to the charList.
 	/// </summary>
 	void ConstructCharacterDatabase(){
+		unitDatabase = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/CharacterDB.json"));
+		modifierDatabase = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/Modifier.json"));
 		for (int i = 0; i < unitDatabase.Count; i++) {
 			List<CharStat> tempCharStat = new List<CharStat>();
 			List<CharAttribute> tempCharAttri = new List<CharAttribute>();

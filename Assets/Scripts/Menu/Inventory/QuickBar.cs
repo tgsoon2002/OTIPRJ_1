@@ -35,12 +35,7 @@ public class QuickBar : MonoBehaviour
             quickSlots.Add(tmp.GetComponent<QuickItem>());
         }
 	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
 
-    }
 
     #endregion
 

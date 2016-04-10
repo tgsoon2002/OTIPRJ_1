@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour
 	public GameObject invSlotPrefab;
 	public GameObject playerReference;
 	public ItemOption itemOptionPanel;
+	public AmmountDropOption ammountOptionPanel;
 	public QuickBar quickItemBarPanel;
     public DetailBlock detailBlockPanel;
 

@@ -30,6 +30,7 @@ public class DetailBlock : MonoBehaviour {
 	/// </summary>
 	public void CloseDetailWindow()
 	{
+		
 		gameObject.SetActive(false)	;
 	}
 	#endregion

@@ -89,7 +89,7 @@ public class InventoryDatabase : MonoBehaviour {
 			//Convert Itemslot Type to string by using JsonMapper.ToJson
 			string inputString = JsonMapper.ToJson(tempJsonData);
 			//Write string to Json File.
-			File.WriteAllText(Application.dataPath + "/Database/InventoryDB.json",inputString);
+			File.WriteAllText(Application.dataPath + "/StreamingAssets/InventoryDB.json",inputString);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class InventoryDatabase : MonoBehaviour {
 	void ConstructDatabase (){
 		
 		//Construct data for equipment item
-		inventoryJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/Database/InventoryDB.json"));
+		inventoryJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/InventoryDB.json"));
 		// loop through each item in equipmentData and generate info and add to list
 		for (int i = 0; i < inventoryJson.Count; i++) {
 			inventoryDB.Add(
