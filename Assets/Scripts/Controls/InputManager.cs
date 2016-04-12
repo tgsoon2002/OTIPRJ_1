@@ -217,16 +217,6 @@ public class InputManager : MonoBehaviour
 	{
 		#region Keyboard & Mouse Mapping
 
-		List<KeyBinds> defaultBinds = new List<KeyBinds>();
-
-		//Instantiate KeyBind objects equal to the number of CharacterInputs
-		//enumerations.
-		for(int i = 0; i < Enum.GetNames(typeof(CharacterInputs)).Length; i++)
-		{
-			KeyBinds tmp = new KeyBinds();
-			defaultBinds.Add(tmp);
-		}
-
 		#region Move Left
 
 		KeyBinds moveLeft = new KeyBinds();
