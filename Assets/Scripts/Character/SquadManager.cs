@@ -36,18 +36,18 @@ public class SquadManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyUp(KeyCode.Tab)) 
-		{
-			SwitchFocusCharacter();		
-		}
-		if (focusedUnit != null) 
-		{
-			focusedUnit.MoveThisUnit(Input.GetAxis("MoveHorizontal"));
-		}
-		if (Input.GetKeyUp(KeyCode.P)) 
-		{
-			SpawnUnit();
-		}
+//		if (Input.GetKeyUp(KeyCode.Tab)) 
+//		{
+//			SwitchFocusCharacter();		
+//		}
+//		if (focusedUnit != null) 
+//		{
+//			focusedUnit.MoveThisUnit(Input.GetAxis("MoveHorizontal"));
+//		}
+//		if (Input.GetKeyUp(KeyCode.P)) 
+//		{
+//			SpawnUnit();
+//		}
 	}
 
 	#endregion
