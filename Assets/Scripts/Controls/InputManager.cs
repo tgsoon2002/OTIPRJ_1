@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
 	//Enumeration of Control Type
 	enum BindType
 	{
+		// These should be assigned numbers.
 		Bind_Type_JoystickInput = 0,
 		Bind_Type_KeyBoardInput,
 		Bind_Type_MouseInput,
@@ -27,7 +28,7 @@ public class InputManager : MonoBehaviour
 		//axis values can be mapped to different commands (e.g. Left/Right)
 		public bool axisPositive;
 
-		//Binding name for Axis/Joystick buttons
+		//Binding name for Axis/Directional buttons
 		public string controllerBindName;
 
 		//Binding name for Keyboard Inputs
@@ -154,6 +155,7 @@ public class InputManager : MonoBehaviour
 
 		if(Input.GetKey(bind.keyBindName))
 		{
+			Debug.Log ("CUCKS FOR BERNIE SANDERS!!!!");
 			toReturn = 1.0f;
 		}
 
@@ -206,6 +208,24 @@ public class InputManager : MonoBehaviour
 	{
 		//Insert code here to pass onto the GameObject we need to
 		//manipulate / control.
+		foreach (CharacterInputs cmd in Enum.GetValues(typeof(CharacterInputs))) 
+		{
+			float temp_Input_Value = inputFrameBuffer [(int)cmd];
+
+			if (temp_Input_Value != 0) 
+			{
+				switch (cmd) 
+				{
+					case CharacterInputs.Character_Move_Left:
+						Debug.Log ("MOVE LEFT!!!");
+						break;
+					case CharacterInputs.Character_Move_Right:
+						Debug.Log ("MOVE RIGHT!!!");
+						break;
+				}
+
+			}
+		}
 	}
 		
 	//This function is called internally should an outside source wants to reset
@@ -231,8 +251,8 @@ public class InputManager : MonoBehaviour
 		#region Move Right
 
 		KeyBinds moveRight = new KeyBinds();
-		moveLeft.bindType = BindType.Bind_Type_KeyBoardInput;
-		moveLeft.keyBindName = KeyCode.D;
+		moveRight.bindType = BindType.Bind_Type_KeyBoardInput;
+		moveRight.keyBindName = KeyCode.D;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Right].Add(moveRight);

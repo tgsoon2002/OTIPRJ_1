@@ -4,8 +4,9 @@ namespace GameInputNameSpace
 {
 	enum CharacterInputs
 	{
+		// These should be assigned numbers.
 		Character_Move_Left = 0,
-		Character_Move_Right,
+		Character_Move_Right = 1,
 		Character_Crouch,
 		Character_Primary_Weapon,
 		Character_Secondary_Weapon,
