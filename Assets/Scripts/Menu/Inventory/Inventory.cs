@@ -24,9 +24,16 @@ public class Inventory : MonoBehaviour
 	private int characterCurrentWeight;
 	private int characterMaxWeight;
 
+	public static Inventory _instance;
+
 	#endregion
 
 	#region Setters & Getters
+
+	public static Inventory Instance {
+		get{ return  _instance; }
+
+	}
 
     //Setter for characterWeight
     public int Max_Weight
@@ -42,6 +49,7 @@ public class Inventory : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+		_instance = this;
         characterCurrentWeight = 50; //TEST STATEMENT - REMOVE LATER
 		characterMaxWeight = 50 ;
         itemSlots = new List<InventorySlot>();
@@ -101,14 +109,34 @@ public class Inventory : MonoBehaviour
 		// The value of canAddItem shall determine that.
 		return false;
 	}
-
-
-	//testing, with polymorfism so button can work, using 1 for now. latter, change the reference called by drop panel instead of itemOptionPanel
-	public void DropSelectedItem(bool drop){
-		Debug.Log(itemSlots.FindIndex(o => o == rightClickItem));
-		DropSelectedItem(drop,1);
+		
+	/// <summary>
+	/// Retrive the loot and add to base on "type,id and quantity"
+	/// </summary>
+	/// <param name="type">Type.</param>
+	/// <param name="itemID">Item I.</param>
+	/// <param name="quan">Quan.</param>
+	public void AddItem (int type, int itemID, int quan){
+		BaseItem newItem = ItemDatabase.Instance.GetItem(itemID, type);
+		GameObject newGameObject = Instantiate(lootPrefab);
+		newGameObject.transform.localScale = Vector3.one;
+		newGameObject.GetComponent<ItemInfo>().Item_Object = newItem;
+		newGameObject.GetComponent<ItemInfo>().Item_Qty = 1;
+		if(!AddItem(newGameObject.GetComponent<ItemInfo>()))
+		{
+			Debug.Log("Ey yo, HOL UP!");
+		}
 	}
 
+	public void ClearInventory (){
+	
+		foreach (var item in itemSlots) {
+			GameObject temp = item.gameObject;
+			Destroy(temp);
+		}
+		itemSlots.Clear();
+		weightText.text = "0/" + characterMaxWeight.ToString();
+	}
 
 	/// <summary>
 	/// Drops the selected item. with ammount.
@@ -120,8 +148,7 @@ public class Inventory : MonoBehaviour
 		DropItem(itemSlots.FindIndex(o => o == rightClickItem)   ,ammount,drop);
 	}
 
-    /*///This function is called when player drops
-    //items to the ground.*/
+    
 	/// <summary>
 	/// Drops or remove the item, base on "drop" variable.
 	/// update the weightText and weight of character inventory
@@ -184,6 +211,7 @@ public class Inventory : MonoBehaviour
     {
 		SquadManager.Instance.focusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object));
 
+		//rightClickItem._isEquiped = true;
 	}
 
 	public void RetriveItem(EquipmentItem equipment){

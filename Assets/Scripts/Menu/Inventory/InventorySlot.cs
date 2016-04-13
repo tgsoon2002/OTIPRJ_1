@@ -41,6 +41,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         set { spriteGUI = value; }
     }
 
+
+
     #endregion
 
     #region Built-in Unity Methods
@@ -54,6 +56,9 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 	void Start(){
 		originalParent = transform.parent;
+		if (itemInfo._isEquiped) {
+			//spriteGUI.color = 
+		}
 	}
 
     #endregion
@@ -79,6 +84,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// Call inventory to call fucntion itemOptionWindow with slot is this gameObject
 	/// </summary>
 	public void ItemOption(){
+		
 		transform.parent.GetComponent<Inventory>().ItemOptionWindow(gameObject);
 	}
 
@@ -94,9 +100,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		}
 		else if(Input.GetMouseButtonUp(1))
 		{
-			transform.parent.GetComponent<Inventory>().rightClickItem = this.GetComponent<InventorySlot>();
-			ItemOption();
-			Debug.Log("right mouse click ");
+			if (!itemInfo._isEquiped) {
+				transform.parent.GetComponent<Inventory>().rightClickItem = this.GetComponent<InventorySlot>();
+				ItemOption();
+			}
 		}
 
 	}

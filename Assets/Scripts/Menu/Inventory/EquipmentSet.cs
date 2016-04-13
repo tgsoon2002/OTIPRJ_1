@@ -16,6 +16,7 @@ public class EquipmentSet :MonoBehaviour {
 	private EquipmentItem rightHand;
 	private BasePlayerCharacter playerCharacter;
 	public MenuManager charBlock;
+
 	#endregion
 
 	#region Setters & Getters
@@ -47,6 +48,7 @@ public class EquipmentSet :MonoBehaviour {
 			if (head != null) {
 				playerCharacter.GearOff(head.Equipment_Stats);	
 			}
+
 			listMesh[2].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
 			// add stats to player base on new item.
 			playerCharacter.GearOn(newItem.Equipment_Stats);

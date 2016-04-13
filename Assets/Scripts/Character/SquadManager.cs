@@ -53,7 +53,14 @@ public class SquadManager : MonoBehaviour {
 	#endregion
 
 	#region Main Method
+
+
+
 	void SwitchFocusCharacter(){
+		if (playerCharacterList.Count > 1) {
+			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
+			focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
+		}
 		int i = playerCharacterList.IndexOf (focusedUnit);
 		if (i == playerCharacterList.Count-1) {
 			focusedUnit = playerCharacterList[0];
@@ -62,6 +69,7 @@ public class SquadManager : MonoBehaviour {
 			focusedUnit = playerCharacterList[++i];
 		}
 		FocusCharacterChanged();
+
 	}
 
 	void FocusCharacterChanged(){
@@ -75,6 +83,7 @@ public class SquadManager : MonoBehaviour {
 		}
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
+		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
 		SwitchFocusCharacter();
 		FocusCharacterChanged();
