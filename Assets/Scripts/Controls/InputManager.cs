@@ -6,10 +6,11 @@ using GameInputNameSpace;
 
 public class InputManager : MonoBehaviour
 {
-	#region Data Members
+    #region Data Members
+    bool isShiftPressed = false;
 
-	//Enumeration of Control Type
-	enum BindType
+    //Enumeration of Control Type
+    enum BindType
 	{
 		// These should be assigned numbers.
 		Bind_Type_JoystickInput = 0,
@@ -69,9 +70,20 @@ public class InputManager : MonoBehaviour
 	void Update () 
 	{
 		ClearInputBuffer();
-		ProcessInput();
-		PassInput();
-	}
+        ProcessInput();
+        PassInput();
+
+        /*
+        if (isShiftPressed == false)
+        {
+            //ClearInputBuffer();
+            //ProcessInput();
+            PassInput();
+        }
+        */
+
+        //PassInput();
+    }
 
 	#endregion
 
@@ -155,7 +167,7 @@ public class InputManager : MonoBehaviour
 
 		if(Input.GetKey(bind.keyBindName))
 		{
-			Debug.Log ("DONALD TRUMP 2016");
+			// Debug.Log ("DONALD TRUMP 2016");
 			toReturn = 1.0f;
 		}
 
@@ -211,8 +223,8 @@ public class InputManager : MonoBehaviour
 		foreach (CharacterInputs cmd in Enum.GetValues(typeof(CharacterInputs))) 
 		{
 			float temp_Input_Value = inputFrameBuffer [(int)cmd];
-
-			if (temp_Input_Value != 0) 
+               
+			if (temp_Input_Value != 0 && isShiftPressed == false) 
 			{
 				switch (cmd) 
 				{
@@ -222,11 +234,45 @@ public class InputManager : MonoBehaviour
 					case CharacterInputs.Character_Move_Right:
 						Debug.Log ("MOVE RIGHT!!!");
 						break;
-				}
+                    case CharacterInputs.Character_Crouch:
+                        isShiftPressed = true;
 
-			}
-		}
-	}
+                        Debug.Log("Value of Shift is: " + isShiftPressed);
+                        break;
+                    case CharacterInputs.Character_Dash_Left:
+                        isShiftPressed = true;
+
+                        Debug.Log("DASH LEFT!!!");
+                        break;
+                }
+               
+            }
+            else if (temp_Input_Value != 0 && isShiftPressed == true)
+            {
+                Debug.Log("Value of Shift is: " + isShiftPressed);
+            }
+            isShiftPressed = true;
+
+
+            /*else
+            {
+                isShiftPressed = false;
+                Debug.Log("Value of Shift is: " + isShiftPressed);
+            }*/
+
+            /*
+            if (temp_Input_Value == 0 && isShiftPressed == true)
+            {
+                // Debug.Log("Value of Shift is: " + isShiftPressed);
+                isShiftPressed = false;
+            }
+            if (isShiftPressed == true)
+            {
+                Debug.Log("Value of Shift is: " + isShiftPressed);
+            }
+            */
+        }
+    }
 		
 	//This function is called internally should an outside source wants to reset
 	//controls to their Default state.
@@ -246,11 +292,21 @@ public class InputManager : MonoBehaviour
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Left].Add(moveLeft);
 
-		#endregion
+        #endregion
 
-		#region Move Right
+        #region Check Shift
 
-		KeyBinds moveRight = new KeyBinds();
+        KeyBinds dashLeft  = new KeyBinds();
+        dashLeft.bindType = BindType.Bind_Type_KeyBoardInput;
+        dashLeft.keyBindName = KeyCode.LeftShift;
+
+        gameCommandTable[CharacterInputs.Character_Crouch].Add(dashLeft);
+
+        #endregion
+
+        #region Move Right
+
+        KeyBinds moveRight = new KeyBinds();
 		moveRight.bindType = BindType.Bind_Type_KeyBoardInput;
 		moveRight.keyBindName = KeyCode.D;
 
