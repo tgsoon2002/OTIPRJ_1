@@ -155,7 +155,7 @@ public class InputManager : MonoBehaviour
 
 		if(Input.GetKey(bind.keyBindName))
 		{
-			Debug.Log ("CUCKS FOR BERNIE SANDERS!!!!");
+			Debug.Log ("DONALD TRUMP 2016");
 			toReturn = 1.0f;
 		}
 
