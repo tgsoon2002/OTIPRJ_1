@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     #region Data Members
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
+	public GameObject playerRef;
 
     //Enumeration of Control Type
     enum BindType
@@ -224,119 +225,7 @@ public class InputManager : MonoBehaviour
 
 	private void PassInput()
 	{
-		//Insert code here to pass onto the GameObject we need to
-		//manipulate / control.
-
-		//TO DO FOR LATER: Put all the Stack.Pop commands to the else.
-		foreach (CharacterInputs cmd in Enum.GetValues(typeof(CharacterInputs))) 
-		{
-			float temp_Input_Value = inputFrameBuffer [(int)cmd];
-               
-			if (temp_Input_Value != 0) 
-			{
-				if(temp_Input_Value == 1)
-				{
-					
-				
-					switch (cmd) 
-					{
-						case CharacterInputs.Character_Move_Left:
-							if(lastInput.Count > 0)
-							{
-								lastInput.Pop();
-								lastInput.Push(CharacterInputs.Character_Move_Left);
-
-							}
-
-							Debug.Log ("MOVE LEFT!!!");
-							break;
-						case CharacterInputs.Character_Move_Right:
-
-							if(lastInput.Count > 0)
-							{
-								lastInput.Pop();
-								
-							}
-
-							lastInput.Push(CharacterInputs.Character_Move_Right);
-							Debug.Log("MOVE RIGHT");
-							
-							break;
-	                    case CharacterInputs.Character_Crouch:
-						{
-							if(lastInput.Count > 0)
-							{
-				
-								lastInput.Pop();
-
-							}
-						
-							lastInput.Push(CharacterInputs.Character_Crouch);
-							Debug.Log("Holding shift");
-
-	                        break;
-						}
-
-	                    case CharacterInputs.Character_Dash_Left:
-						{
-							if(lastInput.Count > 0)
-							{
-								if(lastInput.Peek() == CharacterInputs.Character_Crouch)
-								{
-									Debug.Log("Nothing here but us trees...");	
-								}
-								else
-								{
-									lastInput.Push(CharacterInputs.Character_Dash_Left);
-									Debug.Log("Regular input");
-								}
-							}
-							else
-							{
-								lastInput.Push(CharacterInputs.Character_Dash_Left);
-								Debug.Log("Regular input");
-							}
-
-								
-
-							
-	                        break;
-						}
-	                }
-				}
-				else
-				{
-					lastInput.Pop();
-
-					Debug.Log("Keyup!");
-				}
-               
-            }
-//            else if (temp_Input_Value != 0 && isShiftPressed == true)
-//            {
-//                Debug.Log("Value of Shift is: " + isShiftPressed);
-//            }
-//            isShiftPressed = true;
-
-
-            /*else
-            {
-                isShiftPressed = false;
-                Debug.Log("Value of Shift is: " + isShiftPressed);
-            }*/
-
-            /*
-            if (temp_Input_Value == 0 && isShiftPressed == true)
-            {
-                // Debug.Log("Value of Shift is: " + isShiftPressed);
-                isShiftPressed = false;
-            }
-            if (isShiftPressed == true)
-            {
-                Debug.Log("Value of Shift is: " + isShiftPressed);
-            }
-            */
-        }
+		playerRef.GetComponent<TestMovement> ().ProcessCommand (inputFrameBuffer);
     }
 		
 	//This function is called internally should an outside source wants to reset
@@ -359,7 +248,7 @@ public class InputManager : MonoBehaviour
 
         #endregion
 
-        #region Check Shift
+        #region Dash
 
         KeyBinds dashLeft  = new KeyBinds();
         dashLeft.bindType = BindType.Bind_Type_KeyBoardInput;
