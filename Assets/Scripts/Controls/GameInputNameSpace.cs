@@ -2,7 +2,7 @@
 
 namespace GameInputNameSpace
 {
-	enum CharacterInputs
+	public enum CharacterInputs
 	{
 		// These should be assigned numbers.
 		Character_Move_Left = 0,

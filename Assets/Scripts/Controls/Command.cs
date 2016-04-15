@@ -1,63 +1,120 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GameInputNameSpace;
 
-public abstract class Command : IControllable
+namespace CommandsNameSpace
 {
-    #region Data Members
-
-	protected bool isController;
-	protected List<KeyCode> defaultKeyBind;
-	protected List<KeyCode> customKeyBind;
-	protected string commandName;
-	protected int maxKeyBindSize;
-
-    #endregion
-
-    #region Setters & Getters
-    
-	public bool Is_Controller
+	public abstract class Command
 	{
-		get { return isController; }
-		set { isController = value; }
+		#region Data Members
+
+		protected string commandName;
+		protected List<CharacterInputs> cmdType;
+
+		#endregion
+
+		#region Setters & Getters
+
+		public string Command_Name
+		{
+			get { return commandName; }
+			set { commandName = value; }
+		}
+
+
+		#endregion
+
+		#region Built-in Unity Methods
+
+		//None
+
+		#endregion
+
+		#region Public Methods
+
+		public Command()
+		{
+			commandName = string.Empty;
+			cmdType = new List<CharacterInputs>();
+		}
+
+		public virtual void Execute(CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj)
+		{
+			//Override this later
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		#endregion
 	}
-		
-	public string Command_Name
+
+	public class MoveCommand : Command
 	{
-		get { return commandName; }
-		set { commandName = value; }
+		#region Data Members
+
+		private float direction;
+
+		#endregion
+
+		#region Setters & Getters
+
+		#endregion
+
+		#region Built-in Unity Methods
+
+		#endregion
+
+		#region Public Methods
+
+		public MoveCommand() : base()
+		{
+			cmdType.Add(CharacterInputs.Character_Move_Left);
+			cmdType.Add(CharacterInputs.Character_Move_Right);
+			direction = 0.0f;
+		}
+
+		public override void Execute(CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj)
+		{
+			base.Execute(input, prevInput, obj);
+
+			if(input == CharacterInputs.Character_Move_Left)
+			{
+				direction = -1.0f;
+			}
+	
+			if(input == CharacterInputs.Character_Move_Right)
+			{
+				direction = 1.0f;
+			}
+				
+			if(prevInput.Count > 0 && prevInput.Peek() == CharacterInputs.Character_Lock_On)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private void TurnLeft()
+		{
+			
+		}
+
+		private void TurnRight()
+		{
+			
+		}
+
+		#endregion
 	}
-
-	protected int Max_Key_Bind_Size
-	{
-		set { maxKeyBindSize = value; }
-	}
-
-    #endregion
-
-    #region Built-in Unity Methods
-    
-	//None
-
-    #endregion
-
-    #region Public Methods
-    
-	public Command()
-	{
-		isController = false;
-		defaultKeyBind = new List<KeyCode>();
-		customKeyBind = new List<KeyCode>();
-	}
-		
-	public virtual void Execute(GameObject obj)
-	{
-		
-	}
-		
-    #endregion
-
-    #region Private Methods
-    		
-    #endregion
 }
+
