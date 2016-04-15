@@ -11,4 +11,11 @@
 	"quantity": 1,
 	"itemType": 1,
 	"stackable" : false
+},
+{
+	"charIndex": 1,
+	"itemIndex": 0,
+	"quantity": 1,
+	"itemType": 1,
+	"stackable" : false
 }]

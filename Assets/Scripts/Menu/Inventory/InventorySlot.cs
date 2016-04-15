@@ -16,7 +16,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private Vector2 offset;
 	private int quantity;
-
+	public int equipmentPart;
 
     #endregion
 
@@ -35,11 +35,22 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 			itemQuantityText.text = quantity.ToString();}
 	}
 
+
     public Image Sprite_GUI
     {
         get { return spriteGUI; }
         set { spriteGUI = value; }
     }
+
+	public bool IsEquip {
+		get{ return  itemInfo._isEquiped; }
+		set{ itemInfo._isEquiped = value;
+			if (value) {
+				spriteGUI.color = new Color(1f,1f,1f,0.6f);
+			}else{
+				spriteGUI.color = new Color(1f,1f,1f,1.6f);
+			}	}
+	}
 
     #endregion
 
@@ -54,6 +65,9 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 	void Start(){
 		originalParent = transform.parent;
+		if (itemInfo._isEquiped) {
+			spriteGUI.color = new Color(1f,1f,1f,0.6f);
+		}
 	}
 
     #endregion
@@ -79,8 +93,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// Call inventory to call fucntion itemOptionWindow with slot is this gameObject
 	/// </summary>
 	public void ItemOption(){
+		
 		transform.parent.GetComponent<Inventory>().ItemOptionWindow(gameObject);
 	}
+
+
 
 	/// <summary>
 	/// When slot was click by mouse, 
@@ -94,9 +111,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		}
 		else if(Input.GetMouseButtonUp(1))
 		{
-			transform.parent.GetComponent<Inventory>().rightClickItem = this.GetComponent<InventorySlot>();
-			ItemOption();
-			Debug.Log("right mouse click ");
+			if (!itemInfo._isEquiped) {
+				transform.parent.GetComponent<Inventory>().rightClickItem = this.GetComponent<InventorySlot>();
+				ItemOption();
+			}
 		}
 
 	}
@@ -117,7 +135,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-		if (eventData.pointerEnter == null) {
+		if (eventData.pointerEnter == null && !itemInfo._isEquiped) {
 			originalParent.GetComponent<Inventory>().rightClickItem =this;
 			originalParent.GetComponent<Inventory>().ammountOptionPanel.gameObject.SetActive(true);
 			originalParent.GetComponent<Inventory>().ammountOptionPanel._CalledToDrop(true);

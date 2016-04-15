@@ -11,7 +11,7 @@ public class ItemInfo : MonoBehaviour
     private int quantity;
     private Transform originalParent;
     private Vector2 offset;
-  
+	bool equiped;
     #endregion
 
     #region Setters & Getters
@@ -28,6 +28,10 @@ public class ItemInfo : MonoBehaviour
         set { quantity = value; }
     }
 
+	public bool _isEquiped {
+		get{ return  equiped; }
+		set{ equiped = value; }
+	}
     #endregion
 
     #region Built-in Unity Methods
@@ -36,6 +40,7 @@ public class ItemInfo : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = item.Item_Sprite;
+		equiped = false;
     }
 	#endregion
 
