@@ -50,8 +50,7 @@ public class Inventory : MonoBehaviour
 	void Start ()
     {
 		_instance = this;
-        characterCurrentWeight = 50; //TEST STATEMENT - REMOVE LATER
-		characterMaxWeight = 50 ;
+		ClearInventory(50);
         itemSlots = new List<InventorySlot>();
 		UpdateWeightText();
 	}
@@ -73,6 +72,7 @@ public class Inventory : MonoBehaviour
 		// Checks if the inventory max carry is reached.
 		if(!CheckInventoryWeight(item)) 
 		{
+			
 			// Checks if the item is stackable.
             if(item.Item_Object.Is_Stackable) 
 			{
@@ -99,8 +99,11 @@ public class Inventory : MonoBehaviour
 			} else {
 				CreateSlot(item);	
 			}
-			characterCurrentWeight -= item.Item_Object.Item_Weight;
+			characterCurrentWeight -= item.Item_Object.Item_Weight*item.Item_Qty;
+			SquadManager.Instance.focusedUnit.GetComponent<CharacterInventory>().AddItem(item);
 			UpdateWeightText();
+
+
 			return true;
 		}
 
@@ -126,16 +129,43 @@ public class Inventory : MonoBehaviour
 		{
 			Debug.Log("Ey yo, HOL UP!");
 		}
+
 	}
 
-	public void ClearInventory (){
-	
+	/// <summary>
+	/// Called by CharacterInventory after clear the inventory
+	/// Called to create new item slot equivalent to each item in character inventory
+	/// </summary>
+	/// <param name="type">Type.</param>
+	/// <param name="itemID">Item I.</param>
+	/// <param name="quan">Quan.</param>
+	public void PopulateInventoryFromCharacter(int type, int itemID, int quan){
+		BaseItem newItem = ItemDatabase.Instance.GetItem(itemID, type);
+		GameObject newGameObject = Instantiate(lootPrefab);
+		newGameObject.transform.localScale = Vector3.one;
+		newGameObject.GetComponent<ItemInfo>().Item_Object = newItem;
+		newGameObject.GetComponent<ItemInfo>().Item_Qty = 1;
+
+		CreateSlot(newGameObject.GetComponent<ItemInfo>());	
+		characterCurrentWeight -= ItemDatabase.Instance.GetItem(itemID,type).Item_Weight * quan;
+		UpdateWeightText();
+	}
+
+	/// <summary>
+	/// Reset max weight equal to new maxweight.
+	/// Remove all itemin inventory, 
+	/// Update the weigthText
+	/// </summary>
+	/// <param name="maxWeight">Max weight.</param>
+	public void ClearInventory (int maxWeight){
+		characterMaxWeight = maxWeight ;
+		characterCurrentWeight = characterMaxWeight;
 		foreach (var item in itemSlots) {
 			GameObject temp = item.gameObject;
 			Destroy(temp);
 		}
 		itemSlots.Clear();
-		weightText.text = "0/" + characterMaxWeight.ToString();
+		UpdateWeightText();
 	}
 
 	/// <summary>
@@ -145,6 +175,7 @@ public class Inventory : MonoBehaviour
 	/// <param name="ammount">Ammount.</param>
 	public void DropSelectedItem(bool drop, int ammount){
 		Debug.Log(itemSlots.FindIndex(o => o == rightClickItem));
+		SquadManager.Instance.focusedUnit.GetComponent<CharacterInventory>().RemoveItem(itemSlots.Find(o => o == rightClickItem).Inventory_Item);
 		DropItem(itemSlots.FindIndex(o => o == rightClickItem)   ,ammount,drop);
 	}
 
@@ -209,13 +240,16 @@ public class Inventory : MonoBehaviour
 	// This need to work alot on.
 	public void EquipItem()
     {
-		SquadManager.Instance.focusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object));
+		if(SquadManager.Instance.focusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object))){
+			RetriveItem(rightClickItem.equipmentPart);
+		}
 
-		//rightClickItem._isEquiped = true;
+		rightClickItem.IsEquip = true;
 	}
 
-	public void RetriveItem(EquipmentItem equipment){
-		//CreateSlot(item);
+	public void RetriveItem(int part){
+		
+		itemSlots.Find(o=>o.equipmentPart == part && o.IsEquip == true).IsEquip = false;
 	}
 
 	/// <summary>
@@ -293,6 +327,7 @@ public class Inventory : MonoBehaviour
 	/// <param name="newItem">New item.</param>
     private void CreateSlot(ItemInfo newItem)
     {
+		
 		// create item slot. and put information of new item into the slot.
 		GameObject tempSlot = Instantiate(invSlotPrefab);
 		tempSlot.GetComponent<InventorySlot>().Inventory_Item = newItem;
@@ -307,6 +342,9 @@ public class Inventory : MonoBehaviour
 		tempSlot.GetComponent<InventorySlot>().ItemQuantity = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Qty;
 		// add new slot to slot list to controll.
         itemSlots.Add(tempSlot.GetComponent<InventorySlot>());
+		if (newItem.Item_Object.Base_Item_Type == BaseItemType.EQUIPMENT) {
+			tempSlot.GetComponent<InventorySlot>().equipmentPart = (int)((EquipmentItem)newItem.Item_Object).Equipment_Type;
+		}
     }
 
 	/// <summary>

@@ -27,7 +27,7 @@ public class ButtonInventoryTest : MonoBehaviour
 		newGameObject.transform.localScale = Vector3.one;
 		newGameObject.GetComponent<ItemInfo>().Item_Object = newItem;
         newGameObject.GetComponent<ItemInfo>().Item_Qty = 1;
-        Debug.Log(newGameObject);
+
 
         //BaseItem newItem = new BaseItem(1, "Potion", "This sucks", 22, BaseItemType.CONSUMABLE, true, 1);
 

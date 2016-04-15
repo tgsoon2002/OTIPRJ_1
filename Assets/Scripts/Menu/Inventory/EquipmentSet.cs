@@ -39,13 +39,14 @@ public class EquipmentSet :MonoBehaviour {
 	/// 0:head,1;arm,2:hand,3:torso,4:leg,5:feet
 	/// </summary>
 	/// <param name="newItem">New item.</param>
-	public void EquipArmor(EquipmentItem newItem)
+	public bool EquipArmor(EquipmentItem newItem)
 	{
-
+		bool result = false;
 		switch ((int)newItem.Equipment_Type) {
 		case 0:
 			// remove stats in player base on old item
 			if (head != null) {
+				result = true;
 				playerCharacter.GearOff(head.Equipment_Stats);	
 			}
 
@@ -56,6 +57,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		case 1:
 			if (arm != null) {
+				result = true;
 				playerCharacter.GearOff(arm.Equipment_Stats);	
 			}
 			listMesh[3].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
@@ -66,6 +68,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		case 2:
 			if (hand != null) {
+				result = true;
 				playerCharacter.GearOff(hand.Equipment_Stats);	
 			}
 			listMesh[4].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
@@ -75,6 +78,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		case 3:
 			if (torso != null) {
+				result = true;
 				playerCharacter.GearOff(torso.Equipment_Stats);	
 			}
 			listMesh[5].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
@@ -84,6 +88,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		case 4:
 			if (leg != null) {
+				result = true;
 				playerCharacter.GearOff(leg.Equipment_Stats);	
 			}
 			listMesh[6].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
@@ -93,6 +98,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		case 5:
 			if (feet != null) {
+				result = true;
 				playerCharacter.GearOff(feet.Equipment_Stats);	
 			}
 			listMesh[7].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
@@ -105,6 +111,7 @@ public class EquipmentSet :MonoBehaviour {
 			break;
 		}
 		charBlock.GetComponent<MenuManager>().UpdateCharacterBlock();
+		return result;
 	}
 
 	public void EquipWeapon (EquipmentItem newItem){

@@ -57,10 +57,7 @@ public class SquadManager : MonoBehaviour {
 
 
 	void SwitchFocusCharacter(){
-		if (playerCharacterList.Count > 1) {
-			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
-			focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
-		}
+		
 		int i = playerCharacterList.IndexOf (focusedUnit);
 		if (i == playerCharacterList.Count-1) {
 			focusedUnit = playerCharacterList[0];
@@ -69,11 +66,15 @@ public class SquadManager : MonoBehaviour {
 			focusedUnit = playerCharacterList[++i];
 		}
 		FocusCharacterChanged();
-
+//		if (playerCharacterList.Count > 1) {
+//			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
+//
+//		}
 	}
 
 	void FocusCharacterChanged(){
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
+		focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
 	}
 
 	void SpawnUnit(){
@@ -85,9 +86,10 @@ public class SquadManager : MonoBehaviour {
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
 		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
-		SwitchFocusCharacter();
-		FocusCharacterChanged();
+
+		//FocusCharacterChanged();
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
+		SwitchFocusCharacter();
 	}
 	#endregion
 }
