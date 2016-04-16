@@ -50,6 +50,15 @@ public class InventoryDatabase : MonoBehaviour {
 
 	#region Public Methods
 
+	public List<ItemSlot> GetInventoryItemForCharacter (int charID){
+		List<ItemSlot> tempList = new List<ItemSlot>();
+		foreach (var item in inventoryDB) {
+			if (item.characterID == charID) {
+				tempList.Add(item);
+			}
+		}
+		return tempList;
+	}
 //	public List<ItemInventory> GetInventory (int charIndex){
 //		List<ItemInventory> tempinventory = new List<ItemInventory>();
 //		List<ItemSlot> temp = inventoryDB.FindAll(x=>x.characterID == charIndex);
@@ -120,7 +129,7 @@ public class InventoryDatabase : MonoBehaviour {
 
 }
 
-class ItemSlot
+public class ItemSlot
 {
 	public int characterID;
 	public int quantity;

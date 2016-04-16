@@ -38,7 +38,6 @@ public class CharacterBlock : MonoBehaviour {
 	/// The other missing part is text to show stat of the unit.
 	/// </summary>
 	public void UpdateChar (){
-		Debug.Log("Called to update");
 		//update the mesh model first
 		BasePlayerCharacter tempChar =  SquadManager.Instance.focusedUnit;
 		for (int i = 1; i < 6; i++) 

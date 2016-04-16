@@ -65,7 +65,7 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 },
 {
@@ -75,7 +75,7 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 },
 {
@@ -85,7 +85,7 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 },
 {
@@ -95,7 +95,7 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 },
 {
@@ -105,7 +105,7 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 },
 {
@@ -115,6 +115,6 @@
 	"desc": "This is basic armor cover arm ",
 	"price": 100,
 	"type": 0,
-	"stackable" : true,
+	"stackable" : false,
 	"weight" : 5
 }]
