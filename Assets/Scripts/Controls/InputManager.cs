@@ -185,10 +185,10 @@ public class InputManager : MonoBehaviour
 	{
 		//Declaring local variables
 		float toReturn = 0.0f;
-			
-		if(Input.GetKey(bind.keyBindName))
+
+		if(Input.GetKeyDown(bind.keyBindName))
 		{
-			// Debug.Log ("DONALD TRUMP 2016");
+			Debug.Log ("DONALD TRUMP 2016");
 			toReturn = 1.0f;
 		}
 

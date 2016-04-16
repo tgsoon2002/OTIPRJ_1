@@ -10,7 +10,7 @@ namespace CommandsNameSpace
 		#region Data Members
 
 		protected string commandName;
-		protected List<CharacterInputs> cmdType;
+		protected CharacterInputs cmdType;
 
 		#endregion
 
@@ -22,6 +22,11 @@ namespace CommandsNameSpace
 			set { commandName = value; }
 		}
 
+		public CharacterInputs Commmand_Type 
+		{
+			get { return cmdType; }
+			set { cmdType = value; }
+		}
 
 		#endregion
 
@@ -36,7 +41,7 @@ namespace CommandsNameSpace
 		public Command()
 		{
 			commandName = string.Empty;
-			cmdType = new List<CharacterInputs>();
+			cmdType = 0;
 		}
 
 		public virtual void Execute(CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj)
@@ -51,11 +56,9 @@ namespace CommandsNameSpace
 		#endregion
 	}
 
-	public class MoveCommand : Command
+	public class MoveLeft : Command
 	{
 		#region Data Members
-
-		private float direction;
 
 		#endregion
 
@@ -63,39 +66,28 @@ namespace CommandsNameSpace
 
 		#endregion
 
-		#region Built-in Unity Methods
+		#region Built-In Unity Methods
 
 		#endregion
 
 		#region Public Methods
 
-		public MoveCommand() : base()
+		public override void Execute (CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj) 
 		{
-			cmdType.Add(CharacterInputs.Character_Move_Left);
-			cmdType.Add(CharacterInputs.Character_Move_Right);
-			direction = 0.0f;
-		}
-
-		public override void Execute(CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj)
-		{
-			base.Execute(input, prevInput, obj);
-
-			if(input == CharacterInputs.Character_Move_Left)
+			if (base.cmdType == input) 
 			{
-				direction = -1.0f;
-			}
+				float tmp = obj.GetComponent<BasePlayerCharacter> ().CharacterStats.AttributeValue (6);
 
-			if(input == CharacterInputs.Character_Move_Right)
-			{
-				direction = 1.0f;
-			}
+				if (prevInput.Peek () == CharacterInputs.Character_Move_Left) {
+					// TBD Code for dashing left
+				} 
+				else if (/*TBD*/true)
+				{
 
-			if(prevInput.Count > 0 && prevInput.Peek() == CharacterInputs.Character_Lock_On)
-			{
+				}
 
-			}
-			else
-			{
+				// This line TBD
+				//obj.transform.position += new Vector3()
 
 			}
 		}
@@ -104,15 +96,52 @@ namespace CommandsNameSpace
 
 		#region Private Methods
 
-		private void TurnLeft()
-		{
+		#endregion
 
+		#region Helper Classes/Structs
+
+		#endregion
+	}
+
+	public class MoveRight : Command
+	{
+		#region Data Members
+
+		#endregion
+
+		#region Setters & Getters
+
+		#endregion
+
+		#region Built-In Unity Methods
+
+		#endregion
+
+		#region Public Methods
+
+		public override void Execute (CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj) {
+			if (base.cmdType == input) 
+			{
+				float tmp = obj.GetComponent<BasePlayerCharacter> ().CharacterStats.AttributeValue (6);
+
+				if (prevInput.Peek () == CharacterInputs.Character_Move_Right) 
+				{
+					// TBD Code for dashing right
+				}
+
+				// This line TBD
+				//obj.transform.position += new Vector3()
+
+			}
 		}
 
-		private void TurnRight()
-		{
+		#endregion
 
-		}
+		#region Private Methods
+
+		#endregion
+
+		#region Helper Classes/Structs
 
 		#endregion
 	}
