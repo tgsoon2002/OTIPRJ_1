@@ -186,14 +186,15 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
-		if(Input.GetKeyDown(bind.keyBindName))
+		if(Input.GetKey(bind.keyBindName))
 		{
-			Debug.Log ("DONALD TRUMP 2016");
+			//Debug.Log ("TAP");
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
+			//Debug.Log("HOLD");
 			toReturn = 2.0f;
 		}
 
@@ -244,7 +245,9 @@ public class InputManager : MonoBehaviour
 
 	private void PassInput()
 	{
-		playerRef.GetComponent<TestMovement> ().ProcessCommand (inputFrameBuffer);
+//HACK
+		playerRef.GetComponent<CharacterBody>().ProcessCommand(inputFrameBuffer);
+//HACK
     }
 		
 	//This function is called internally should an outside source wants to reset
