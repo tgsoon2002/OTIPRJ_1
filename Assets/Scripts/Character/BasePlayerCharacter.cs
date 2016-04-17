@@ -20,7 +20,7 @@ public class BasePlayerCharacter : BaseCharacter {
 	public CharacterInventory charInv;
 	//protected JobClass classType;
 	protected int index;
-
+	FeetCollider bottomCollider;
 
 	#endregion
 
@@ -30,9 +30,11 @@ public class BasePlayerCharacter : BaseCharacter {
 
 		UnitDataBase.Instance.SetUnitStat(base.statTable,index);
 		UnitDataBase.Instance.SetUnitInfo(this,index);
+		bottomCollider = GetComponentInChildren<FeetCollider>();
 		}
 
 	#region MainMethod
+	#region Get Value
 	public string CharacterName {
 		get{ return  base.characterName; }
 		set{ base.characterName = value; }
@@ -43,16 +45,46 @@ public class BasePlayerCharacter : BaseCharacter {
 		set{base.statTable = value;}
 	}
 
-
 	public virtual float PercentageStamina(){
 		return 0.0f;//(statTable.staminaPoint/statTable.maxStaminaPoint);
 	}
+	#endregion
+	#region Perform Action
 
-	public virtual void BasicAttack(){}
+	#endregion
+	/// <summary>
+	/// Called to player character perform Primary attack action
+	/// </summary>
+	public virtual void PrimaryAttack(){}
 
-	public virtual void Jump(){
-		rig.velocity = new Vector2(5.0f,rig.velocity.y);
+	public override void MoveThisUnit(float direction){
+		if (bottomCollider.IsTouchGround) {
+			base.MoveThisUnit(direction);
+		}
 	}
+
+	/// <summary>
+	/// Called to player perform Jump action
+	/// </summary>
+	public virtual void Jump(){
+		//base.rig.velocity = new Vector2(5.0f,base.rig.velocity.y); 
+		if (bottomCollider.IsTouchGround) {
+			bottomCollider.IsTouchGround = false;
+			base.rig.AddForce((Vector3.up * 10.0f ),ForceMode.Impulse);
+		}
+
+	}
+
+	/// <summary>
+	/// Call to player character perform dash action
+	/// </summary>
+	public virtual void DashThisUnit(float direction){
+		
+		if (bottomCollider.IsTouchGround) {
+		base.rig.AddForce((Vector3.right * 10.0f * direction),ForceMode.Impulse);
+		}
+	}
+	#region Update Status
 
 	/// <summary>
 	/// Add the Stat and Attribute to character statTable base on new equipment
@@ -81,6 +113,13 @@ public class BasePlayerCharacter : BaseCharacter {
 			statTable.AttributeChange(newEquipment.attributes[i]* -1.0f,i);
 		}
 	}
+	#endregion
+
+	#endregion
+
+	#region Collider Methods
+
+
 	#endregion
 
 }
