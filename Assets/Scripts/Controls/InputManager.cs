@@ -9,7 +9,6 @@ public class InputManager : MonoBehaviour
     #region Data Members
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
-	public GameObject playerRef;
 	bool isCharMovement = true;
 
     //Enumeration of Control Type
@@ -159,6 +158,7 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
+
 	private void AddInputToBuffer(CharacterInputs cmd, float cmdVal)
 	{
 		//Nothing happens if the Command Value is zero
@@ -166,19 +166,12 @@ public class InputManager : MonoBehaviour
 		{
 			return;
 		}
+		
+		//Store value of integers to be actually processed
+		//later on. If two devices made an input at the same
+		//time. The most recent input shall be the one to use.
+		inputFrameBuffer[(int)cmd] = cmdVal;
 
-		// Checks for type of input (character movement or UI)
-		if (isCharMovement) 
-		{
-			//Store value of integers to be actually processed
-			//later on. If two devices made an input at the same
-			//time. The most recent input shall be the one to use.
-			inputFrameBuffer[(int)cmd] = cmdVal;
-		} 
-		else 
-		{
-			uiInputBuffer[(int)cmd] = cmdVal;
-		}
 	}
 
 	private float GetKeyBoardInput(KeyBinds bind)
@@ -246,7 +239,8 @@ public class InputManager : MonoBehaviour
 	private void PassInput()
 	{
 //HACK
-		playerRef.GetComponent<CharacterBody>().ProcessCommand(inputFrameBuffer);
+		//playerRef.GetComponent<CharacterBody>().ProcessCommand(inputFrameBuffer);
+		InputProcessor.Instance.ReadInput(inputFrameBuffer);
 //HACK
     }
 		
@@ -267,16 +261,6 @@ public class InputManager : MonoBehaviour
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Left].Add(moveLeft);
-
-        #endregion
-
-        #region Dash
-
-        KeyBinds dashLeft  = new KeyBinds();
-        dashLeft.bindType = BindType.Bind_Type_KeyBoardInput;
-		dashLeft.keyBindName = KeyCode.LeftShift;
-
-		gameCommandTable[CharacterInputs.Character_Dash_Left].Add(dashLeft);
 
         #endregion
 

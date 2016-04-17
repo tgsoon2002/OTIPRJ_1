@@ -1,21 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuManager : MonoBehaviour {
-
+public class MenuManager : MonoBehaviour 
+{
 	#region Data Members
 	public Transform characterModel;
 	public GameObject menu;
 	public CharacterBlock charModelManager;
+
+	private static MenuManager instance;
+
 	#endregion
 
 	#region Setters & Getters
 
+	public static MenuManager Instance
+	{
+		get { return instance; }
+	}
+
 	#endregion
 
 	#region Built-in Unity Methods
+	void Awake()
+	{
+		instance = this;
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		//menu = transform.FindChild("Menu");
 		menu.SetActive (false) ;
 		characterModel.gameObject.SetActive (false) ;
@@ -50,10 +64,6 @@ public class MenuManager : MonoBehaviour {
 		menu.SetActive (visible) ;
 		characterModel.gameObject.SetActive (visible) ;
 		charModelManager.UpdateChar();
-
-
-	}
 	#endregion
-
-
+	}
 }
