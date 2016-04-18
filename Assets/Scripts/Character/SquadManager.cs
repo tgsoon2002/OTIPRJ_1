@@ -60,11 +60,6 @@ public class SquadManager : MonoBehaviour
 
 	#region Main Method
 
-	public void ReceiveInput(float[] inputBuffer)
-	{
-		
-	}
-
 	public void SwitchFocusCharacter()
 	{
 		
