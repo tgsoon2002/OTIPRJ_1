@@ -1,28 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuManager : MonoBehaviour {
-
+public class MenuManager : MonoBehaviour 
+{
 	#region Data Members
 	public Transform characterModel;
 	public GameObject menu;
 	public CharacterBlock charModelManager;
+
+	private static MenuManager _instance;
 	#endregion
 
 	#region Setters & Getters
-
+	public static MenuManager Instance {
+		get{ return  _instance; }
+		set{ _instance = value; }
+	}
 	#endregion
 
 	#region Built-in Unity Methods
+	void Awake(){
+		_instance = this;
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		//menu = transform.FindChild("Menu");
 		menu.SetActive (false) ;
 		characterModel.gameObject.SetActive (false) ;
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (Input.GetKeyUp(KeyCode.Escape)) {
 			if (menu.activeSelf) {
 				
@@ -36,7 +47,8 @@ public class MenuManager : MonoBehaviour {
 	#endregion
 
 	#region Public Methods
-	public void UpdateCharacterBlock(){
+	public void UpdateCharacterBlock()
+	{
 		charModelManager.GetComponent<CharacterBlock>().UpdateChar();
 	}
 	#endregion
@@ -50,10 +62,6 @@ public class MenuManager : MonoBehaviour {
 		menu.SetActive (visible) ;
 		characterModel.gameObject.SetActive (visible) ;
 		charModelManager.UpdateChar();
-
-
-	}
 	#endregion
-
-
+	}
 }
