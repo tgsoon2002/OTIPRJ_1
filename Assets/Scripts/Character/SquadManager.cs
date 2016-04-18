@@ -33,6 +33,7 @@ public class SquadManager : MonoBehaviour {
 		SpawnUnit();
 	}
 
+<<<<<<< HEAD
 	// Update is called once per frame
 	void Update () 
 	{
@@ -50,11 +51,11 @@ public class SquadManager : MonoBehaviour {
 //		}
 	}
 
+=======
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	#endregion
 
 	#region Main Method
-
-
 
 	void SwitchFocusCharacter(){
 		
@@ -90,6 +91,9 @@ public class SquadManager : MonoBehaviour {
 		//FocusCharacterChanged();
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
 		SwitchFocusCharacter();
+		if (Commands.Instance.focusUnit == null) {
+			Commands.Instance.focusUnit = tempchar.GetComponent<BasePlayerCharacter>();
+		}
 	}
 	#endregion
 }

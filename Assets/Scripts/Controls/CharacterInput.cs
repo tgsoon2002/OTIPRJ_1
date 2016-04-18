@@ -2,30 +2,60 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using CommandsNameSpace;
 using GameInputNameSpace;
 
 public class NewBehaviourScript : MonoBehaviour {
+=======
+using GameInputNameSpace;
+
+public class CharacterInput : MonoBehaviour 
+{
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 
 	#region Data Members
 
 	Stack<CharacterInputs> prevInput;
+<<<<<<< HEAD
+=======
+	bool isSprinting = false;
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 
 	#endregion
 
 	#region Setters & Getters
 
+<<<<<<< HEAD
+=======
+	public bool Is_Sprinting
+	{
+		get{ return isSprinting; }
+		set{ isSprinting = value; }
+	}
+
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	#endregion
 
 	#region Built-In Unity Methods
 
 	// Use this for initialization
+<<<<<<< HEAD
 	void Start () {
+=======
+	void Start () 
+	{
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 		prevInput = new Stack<CharacterInputs> ();
 	}
 
 	// Update is called once per frame
+<<<<<<< HEAD
 	void Update () {
+=======
+	void Update () 
+	{
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 
 	}
 
@@ -38,6 +68,7 @@ public class NewBehaviourScript : MonoBehaviour {
 		//TO DO FOR LATER: Put all the Stack.Pop commands to the else.
 		foreach (CharacterInputs cmd in Enum.GetValues(typeof(CharacterInputs))) 
 		{
+<<<<<<< HEAD
 			float temp_Input_Value = inputs [(int)cmd];
 
 			if (temp_Input_Value != 0) 
@@ -112,6 +143,14 @@ public class NewBehaviourScript : MonoBehaviour {
 
 			}
 
+=======
+			float temp_Input_Value = inputs[(int)cmd];
+
+			if(temp_Input_Value != 0) 
+			{
+		
+			}
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 		}	
 	}
 

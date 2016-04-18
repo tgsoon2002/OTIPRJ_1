@@ -9,7 +9,10 @@ public class InputManager : MonoBehaviour
     #region Data Members
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
+<<<<<<< HEAD
 	public GameObject playerRef;
+=======
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	bool isCharMovement = true;
 
     //Enumeration of Control Type
@@ -159,6 +162,10 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	private void AddInputToBuffer(CharacterInputs cmd, float cmdVal)
 	{
 		//Nothing happens if the Command Value is zero
@@ -166,6 +173,7 @@ public class InputManager : MonoBehaviour
 		{
 			return;
 		}
+<<<<<<< HEAD
 
 		// Checks for type of input (character movement or UI)
 		if (isCharMovement) 
@@ -179,6 +187,14 @@ public class InputManager : MonoBehaviour
 		{
 			uiInputBuffer[(int)cmd] = cmdVal;
 		}
+=======
+		
+		//Store value of integers to be actually processed
+		//later on. If two devices made an input at the same
+		//time. The most recent input shall be the one to use.
+		inputFrameBuffer[(int)cmd] = cmdVal;
+
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	}
 
 	private float GetKeyBoardInput(KeyBinds bind)
@@ -186,14 +202,24 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
+<<<<<<< HEAD
 		if(Input.GetKeyDown(bind.keyBindName))
 		{
 			Debug.Log ("DONALD TRUMP 2016");
+=======
+		if(Input.GetKey(bind.keyBindName))
+		{
+			//Debug.Log ("TAP");
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
+<<<<<<< HEAD
+=======
+			//Debug.Log("HOLD");
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 			toReturn = 2.0f;
 		}
 
@@ -231,6 +257,7 @@ public class InputManager : MonoBehaviour
 		
 	private float GetMouseClickInput(KeyBinds bind)
 	{
+<<<<<<< HEAD
 		//Declaring local variables
 		float toReturn = 0.0f;
 
@@ -240,11 +267,31 @@ public class InputManager : MonoBehaviour
 		}
 
 		return toReturn;
+=======
+		
+		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
+		{
+			return 1.0f;
+		}
+		else 
+		{
+			return 0.0f;
+		}
+
+
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
 	}
 
 	private void PassInput()
 	{
+<<<<<<< HEAD
 		playerRef.GetComponent<TestMovement> ().ProcessCommand (inputFrameBuffer);
+=======
+//HACK
+		//playerRef.GetComponent<CharacterBody>().ProcessCommand(inputFrameBuffer);
+		InputProcessor.Instance.ReadInput(inputFrameBuffer);
+//HACK
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
     }
 		
 	//This function is called internally should an outside source wants to reset
@@ -267,6 +314,7 @@ public class InputManager : MonoBehaviour
 
         #endregion
 
+<<<<<<< HEAD
         #region Dash
 
         KeyBinds dashLeft  = new KeyBinds();
@@ -277,6 +325,8 @@ public class InputManager : MonoBehaviour
 
         #endregion
 
+=======
+>>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
         #region Move Right
 
         KeyBinds moveRight = new KeyBinds();
