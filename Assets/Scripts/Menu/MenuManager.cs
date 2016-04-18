@@ -8,23 +8,19 @@ public class MenuManager : MonoBehaviour
 	public GameObject menu;
 	public CharacterBlock charModelManager;
 
-	private static MenuManager instance;
-
+	private static MenuManager _instance;
 	#endregion
 
 	#region Setters & Getters
-
-	public static MenuManager Instance
-	{
-		get { return instance; }
+	public static MenuManager Instance {
+		get{ return  _instance; }
+		set{ _instance = value; }
 	}
-
 	#endregion
 
 	#region Built-in Unity Methods
-	void Awake()
-	{
-		instance = this;
+	void Awake(){
+		_instance = this;
 	}
 
 	// Use this for initialization
@@ -36,7 +32,8 @@ public class MenuManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (Input.GetKeyUp(KeyCode.Escape)) {
 			if (menu.activeSelf) {
 				
@@ -50,7 +47,8 @@ public class MenuManager : MonoBehaviour
 	#endregion
 
 	#region Public Methods
-	public void UpdateCharacterBlock(){
+	public void UpdateCharacterBlock()
+	{
 		charModelManager.GetComponent<CharacterBlock>().UpdateChar();
 	}
 	#endregion
