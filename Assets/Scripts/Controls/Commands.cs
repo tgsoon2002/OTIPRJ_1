@@ -57,7 +57,6 @@ public class Commands : MonoBehaviour
 		commands += Crouch;
 		commands += PrimaryWeapon;
 		commands += SecondaryWeapon;
-
 	}
 
 	// Update is called once per frame

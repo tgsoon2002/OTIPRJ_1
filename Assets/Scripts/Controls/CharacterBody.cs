@@ -69,12 +69,14 @@ public class CharacterBody : MonoBehaviour
 
 	private void MoveLeft(CharacterInputs cmd, int type)
 	{	
-		
+
+
 	}
 
 	private void MoveRight(CharacterInputs cmd, int type)
 	{
-		
+
+
 	}
 
 	private void Jump(CharacterInputs cmd)

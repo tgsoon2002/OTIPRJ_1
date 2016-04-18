@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using System;
+using GameInputNameSpace;
 using System.Collections;
 using System.Collections.Generic;
-public class SquadManager : MonoBehaviour {
-
+public class SquadManager : MonoBehaviour 
+{
 	#region Member
 	[SerializeField]
 	List<BasePlayerCharacter> playerCharacterList;
@@ -10,6 +12,9 @@ public class SquadManager : MonoBehaviour {
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
 	public GameObject playerCharacter;
+	public GameObject commandContainer;
+
+	private Commands commands;
 
 	#endregion
 
@@ -21,18 +26,20 @@ public class SquadManager : MonoBehaviour {
 		get { return _instance; }
 	}
 
-	void Awake(){
+	void Awake()
+	{
 		_instance = this;
 	}
 
 	// Use this for initialization
 	void Start () 
-	{
-		
+	{		
+		commands = gameObject.GetComponent<Commands>();
 		mainCam = FindObjectOfType<GamePlayCamera>();
 		SpawnUnit();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	// Update is called once per frame
 	void Update () 
@@ -53,17 +60,24 @@ public class SquadManager : MonoBehaviour {
 
 =======
 >>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
+=======
+>>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 	#endregion
 
 	#region Main Method
 
-	void SwitchFocusCharacter(){
+	void SwitchFocusCharacter()
+	{
+
 		
 		int i = playerCharacterList.IndexOf (focusedUnit);
-		if (i == playerCharacterList.Count-1) {
+
+		if (i == playerCharacterList.Count-1)
+		{
 			focusedUnit = playerCharacterList[0];
 		}
-		else {
+		else 
+		{
 			focusedUnit = playerCharacterList[++i];
 		}
 		FocusCharacterChanged();
@@ -73,16 +87,20 @@ public class SquadManager : MonoBehaviour {
 //		}
 	}
 
-	void FocusCharacterChanged(){
+	void FocusCharacterChanged()
+	{
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
 	}
-
-	void SpawnUnit(){
-		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) {
+		
+	public void SpawnUnit()
+	{
+		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) 
+		{
 			
 			return;
 		}
+
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
 		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
@@ -95,5 +113,25 @@ public class SquadManager : MonoBehaviour {
 			Commands.Instance.focusUnit = tempchar.GetComponent<BasePlayerCharacter>();
 		}
 	}
+
+	#endregion
+
+	#region Private Methods
+
+	private void CharacterSwitch(int direction)
+	{
+		
+	}
+
+	private void OpenInventory()
+	{
+		
+	}
+
+	private void OpenSettings()
+	{
+		
+	}
+
 	#endregion
 }
