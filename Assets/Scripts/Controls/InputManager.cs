@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
 	public GameObject playerRef;
+	bool isCharMovement = true;
 
     //Enumeration of Control Type
     enum BindType
@@ -48,6 +49,13 @@ public class InputManager : MonoBehaviour
 	//user input.
 	private float[] inputFrameBuffer;
 
+	/// <summary>
+	/// This arrary holds the buffer for the inputs towards
+	/// the UI.  Updated once per frame.  Passed to the 
+	/// GameObject that requires user input.
+	/// </summary>
+	private float[] uiInputBuffer;
+
 	//Dictionary to map our Enumerated Commands to actual Inputs
 	Dictionary<CharacterInputs, List<KeyBinds>> gameCommandTable;
 
@@ -66,6 +74,9 @@ public class InputManager : MonoBehaviour
 		InitKeyBinds();
 		SetDefaultControls();
 		inputFrameBuffer = new float[Enum.GetValues(typeof(CharacterInputs)).Length];
+
+		// Be sure to change the typeof to another enumeration for UI inputs.
+		uiInputBuffer = new float[Enum.GetValues(typeof(CharacterInputs)).Length];
 	}
 
 	// Update is called once per frame
@@ -156,10 +167,18 @@ public class InputManager : MonoBehaviour
 			return;
 		}
 
-		//Store value of integers to be actually processed
-		//later on. If two devices made an input at the same
-		//time. The most recent input shall be the one to use.
-		inputFrameBuffer[(int)cmd] = cmdVal;
+		// Checks for type of input (character movement or UI)
+		if (isCharMovement) 
+		{
+			//Store value of integers to be actually processed
+			//later on. If two devices made an input at the same
+			//time. The most recent input shall be the one to use.
+			inputFrameBuffer[(int)cmd] = cmdVal;
+		} 
+		else 
+		{
+			uiInputBuffer[(int)cmd] = cmdVal;
+		}
 	}
 
 	private float GetKeyBoardInput(KeyBinds bind)
@@ -167,9 +186,9 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
-		if(Input.GetKey(bind.keyBindName))
+		if(Input.GetKeyDown(bind.keyBindName))
 		{
-			// Debug.Log ("DONALD TRUMP 2016");
+			Debug.Log ("DONALD TRUMP 2016");
 			toReturn = 1.0f;
 		}
 

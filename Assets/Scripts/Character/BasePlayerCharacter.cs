@@ -16,7 +16,7 @@ public class BasePlayerCharacter : BaseCharacter {
 	public List <int> activeItem;
 	public List<BaseItem> inventory;
 	public int charLevel;
-
+	public int charID;
 	public CharacterInventory charInv;
 	//protected JobClass classType;
 	protected int index;
@@ -24,10 +24,10 @@ public class BasePlayerCharacter : BaseCharacter {
 
 	#endregion
 
-	public void Init(int i){
+	public void Init(int index){
 		
 		base.statTable = new UnitStats();
-		index = i;
+
 		UnitDataBase.Instance.SetUnitStat(base.statTable,index);
 		UnitDataBase.Instance.SetUnitInfo(this,index);
 		}

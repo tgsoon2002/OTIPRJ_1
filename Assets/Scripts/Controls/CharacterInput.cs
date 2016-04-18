@@ -2,34 +2,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CommandsNameSpace;
 using GameInputNameSpace;
 
-public class TestMovement : MonoBehaviour {
+public class NewBehaviourScript : MonoBehaviour {
 
-	private Stack<CharacterInputs> prevInput;
-	private float direction;
-	private Rigidbody physics;
-	bool isDashing = false;
+	#region Data Members
 
+	Stack<CharacterInputs> prevInput;
+
+	#endregion
+
+	#region Setters & Getters
+
+	#endregion
+
+	#region Built-In Unity Methods
 
 	// Use this for initialization
 	void Start () {
-		prevInput = new Stack<CharacterInputs>();
-		physics = gameObject.GetComponent<Rigidbody>();
-		direction = 1.0f;
+		prevInput = new Stack<CharacterInputs> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		Debug.Log ("STACK SIZE: " + prevInput.Count);
 
-		if (prevInput.Count > 0) {
-			Debug.Log (prevInput.Peek());
-		}
 	}
 
-	public void ProcessCommand (float [] inputs) {
+	#endregion
 
+	#region Public Methods
+
+	public void processInput (float[] inputs) 
+	{
 		//TO DO FOR LATER: Put all the Stack.Pop commands to the else.
 		foreach (CharacterInputs cmd in Enum.GetValues(typeof(CharacterInputs))) 
 		{
@@ -46,12 +51,12 @@ public class TestMovement : MonoBehaviour {
 						{
 							prevInput.Pop ();
 							prevInput.Push(CharacterInputs.Character_Move_Left);
-							physics.AddForce (Vector3.left * 50.0f);
+
 						} 
 						else
 						{
 							prevInput.Push(CharacterInputs.Character_Move_Left);
-							physics.AddForce (Vector3.left * 50.0f);
+
 
 							Debug.Log ("MOVE LEFT!!!");
 						}
@@ -62,13 +67,13 @@ public class TestMovement : MonoBehaviour {
 						{
 							prevInput.Pop();
 							prevInput.Push (CharacterInputs.Character_Move_Right);
-							physics.AddForce (Vector3.right * 50.0f);
+
 
 						}
 						else
 						{
 							prevInput.Push(CharacterInputs.Character_Move_Right);
-							physics.AddForce (Vector3.right * 50.0f);
+
 
 							Debug.Log ("MOVE RIGHT!!!");
 						}
@@ -107,7 +112,18 @@ public class TestMovement : MonoBehaviour {
 
 			}
 
-		}
+		}	
 	}
+
+	#endregion
+
+	#region Private Methods
+
+	#endregion
+
+	#region Helper Classes/Structs
+
+	#endregion
+
 
 }

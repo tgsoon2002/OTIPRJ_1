@@ -3,50 +3,146 @@ using System.Collections;
 using System.Collections.Generic;
 using GameInputNameSpace;
 
-public class Command : IControllable
+namespace CommandsNameSpace
 {
-    #region Data Members
-	protected string commandName;
-    protected CharacterInputs charMovement;   
+	public abstract class Command
+	{
+		#region Data Members
 
-    #endregion
+		protected string commandName;
+		protected CharacterInputs cmdType;
 
-    #region Setters & Getters
+		#endregion
 
-    public CharacterInputs Command_Type
-    {
-        get { return charMovement; }
-        set { charMovement = value; }
-    }
+		#region Setters & Getters
 
-    public string Command_Name
-    {
-        get { return commandName; }
-        set { commandName = value; }
-    }
+		public string Command_Name
+		{
+			get { return commandName; }
+			set { commandName = value; }
+		}
 
-    #endregion
+		public CharacterInputs Commmand_Type 
+		{
+			get { return cmdType; }
+			set { cmdType = value; }
+		}
 
-    #region Built-in Unity Methods
+		#endregion
 
-    #endregion
+		#region Built-in Unity Methods
 
-    #region Public Methods
-    public Command (string _commandName,  CharacterInputs _charMovement)
-    {
-        commandName = _commandName;
-        charMovement = _charMovement;
-    }
+		//None
 
-    public void Execute (GameObject obj)
-    {
+		#endregion
 
-    }
+		#region Public Methods
 
-    #endregion
+		public Command()
+		{
+			commandName = string.Empty;
+			cmdType = 0;
+		}
 
-    #region Private Methods
+		public virtual void Execute(CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj)
+		{
+			//Override this later
+		}
 
-    #endregion
+		#endregion
+
+		#region Private Methods
+
+		#endregion
+	}
+
+	public class MoveLeft : Command
+	{
+		#region Data Members
+
+		#endregion
+
+		#region Setters & Getters
+
+		#endregion
+
+		#region Built-In Unity Methods
+
+		#endregion
+
+		#region Public Methods
+
+		public override void Execute (CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj) 
+		{
+			if (base.cmdType == input) 
+			{
+				float tmp = obj.GetComponent<BasePlayerCharacter> ().CharacterStats.AttributeValue (6);
+
+				if (prevInput.Peek () == CharacterInputs.Character_Move_Left) {
+					// TBD Code for dashing left
+				} 
+				else if (/*TBD*/true)
+				{
+
+				}
+
+				// This line TBD
+				//obj.transform.position += new Vector3()
+
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		#endregion
+
+		#region Helper Classes/Structs
+
+		#endregion
+	}
+
+	public class MoveRight : Command
+	{
+		#region Data Members
+
+		#endregion
+
+		#region Setters & Getters
+
+		#endregion
+
+		#region Built-In Unity Methods
+
+		#endregion
+
+		#region Public Methods
+
+		public override void Execute (CharacterInputs input, Stack<CharacterInputs> prevInput, GameObject obj) {
+			if (base.cmdType == input) 
+			{
+				float tmp = obj.GetComponent<BasePlayerCharacter> ().CharacterStats.AttributeValue (6);
+
+				if (prevInput.Peek () == CharacterInputs.Character_Move_Right) 
+				{
+					// TBD Code for dashing right
+				}
+
+				// This line TBD
+				//obj.transform.position += new Vector3()
+
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		#endregion
+
+		#region Helper Classes/Structs
+
+		#endregion
+	}
 }
-
