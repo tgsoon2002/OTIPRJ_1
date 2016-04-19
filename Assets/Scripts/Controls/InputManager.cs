@@ -207,24 +207,23 @@ public class InputManager : MonoBehaviour
 
 		if(Input.GetKey(bind.keyBindName))
 		{
-<<<<<<< HEAD
+
 			//Debug.Log ("TAP");
 
-=======
 			//Debug.Log ("Press and hold");
->>>>>>> origin/Kien
+
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
-<<<<<<< HEAD
+
 			//Debug.Log("HOLD");
 
 			//Debug.Log("HOLD");
-=======
+
 			//Debug.Log("release");
->>>>>>> origin/Kien
+
 			toReturn = 2.0f;
 		}
 

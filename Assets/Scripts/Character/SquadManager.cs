@@ -62,13 +62,9 @@ public class SquadManager : MonoBehaviour
 
 	#region Main Method
 
-<<<<<<< HEAD
-	void SwitchFocusCharacter()
-	{
 
-=======
 	public void SwitchFocusCharacter(){
->>>>>>> origin/Kien
+
 		
 		int i = playerCharacterList.IndexOf (focusedUnit);
 
