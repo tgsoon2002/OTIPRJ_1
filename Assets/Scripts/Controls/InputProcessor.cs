@@ -62,6 +62,10 @@ public class InputProcessor : MonoBehaviour
 				else if(cmd == CharacterInputs.Character_Switch_Left)
 				{
 					//Switch character here
+					if ((int)temp_Input_Value == 2) {
+						SquadManager.Instance.SwitchFocusCharacter();
+					}
+				
 				}
 				else if(cmd == CharacterInputs.Character_Switch_Right)
 				{

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class CharacterBlock : MonoBehaviour {
 
-
-
 	#region Data Members
 
 	public  List<Image> equipmentPartList;
@@ -14,13 +12,20 @@ public class CharacterBlock : MonoBehaviour {
 	public Transform characterEquipmentIcon;
 	public Text characterStatsText;
 	public Text characterAttributeText;
+	private static CharacterBlock _instance;
 	#endregion
 
 	#region Setters & Getters
-
+	public static CharacterBlock Instance {
+		get{ return  _instance; }
+		//set{ _instance = value; }
+	}
 	#endregion
 
 	#region Built-in Unity Methods
+	void Awake(){
+		_instance = this;
+	}
 	// Use this for initialization
 	void Start () {
 		//pull information of all the bodypart to the list
@@ -39,13 +44,13 @@ public class CharacterBlock : MonoBehaviour {
 	/// </summary>
 	public void UpdateChar (){
 		//update the mesh model first
-		BasePlayerCharacter tempChar =  SquadManager.Instance.focusedUnit;
+		Transform tempChar =  SquadManager.Instance.focusedUnit.transform;
 		for (int i = 1; i < 6; i++) 
 		{
-			characterModel.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh = tempChar.transform.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh;
+			characterModel.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh = tempChar.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh;
 		}
 		//update the Equipment icon 
-		//this need to work on.
+		//equipmentPartList[0].sprite = tempChar.GetComponent<EquipmentSet>()
 
 		//Update stat text
 		characterStatsText.text= "";
