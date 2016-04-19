@@ -207,16 +207,24 @@ public class InputManager : MonoBehaviour
 
 		if(Input.GetKey(bind.keyBindName))
 		{
+<<<<<<< HEAD
 			//Debug.Log ("TAP");
 
+=======
+			//Debug.Log ("Press and hold");
+>>>>>>> origin/Kien
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
+<<<<<<< HEAD
 			//Debug.Log("HOLD");
 
 			//Debug.Log("HOLD");
+=======
+			//Debug.Log("release");
+>>>>>>> origin/Kien
 			toReturn = 2.0f;
 		}
 
@@ -365,6 +373,17 @@ public class InputManager : MonoBehaviour
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Jump].Add(jump);
+
+		#endregion
+
+		#region Jump
+
+		KeyBinds switchFocusUnit = new KeyBinds();
+		switchFocusUnit.bindType = BindType.Bind_Type_KeyBoardInput;
+		switchFocusUnit.keyBindName = KeyCode.P;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);
 
 		#endregion
 
