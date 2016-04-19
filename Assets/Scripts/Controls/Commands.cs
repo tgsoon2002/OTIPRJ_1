@@ -130,10 +130,10 @@ public class Commands : MonoBehaviour
 
 
 				// check if character should sprint or walk
-				if( Time.time - tapTimer > 0.5f && tap <= -1)
+				if( Time.time - tapTimer > 0.2f && tap <= -1)
 				{
 					Debug.Log("Sprint...");
-					focusUnit.MoveThisUnit(-3.0f);
+					focusUnit.MoveThisUnit(-5.0f);
 					prevInput.Push(CharacterInputs.Character_Move_Left);
 					tap = -2;
 				}
@@ -156,7 +156,7 @@ public class Commands : MonoBehaviour
 						tap = 0;
 					}
 					// If previous button is tap left then perform dash left
-					if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
+					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
 					{
 						lastTapped = Time.time;
 						if(tap == -1)
@@ -197,9 +197,9 @@ public class Commands : MonoBehaviour
 						startTimer = true;
 					}
 					// check if character should sprint or walk
-					if( Time.time - tapTimer > 0.6f && tap >= 1)
+					if( Time.time - tapTimer > 0.2f && tap >= 1)
 					{
-						focusUnit.MoveThisUnit(3.0f);
+						focusUnit.MoveThisUnit(5.0f);
 						prevInput.Push(CharacterInputs.Character_Move_Right);
 						tap = 2;
 					}
@@ -221,7 +221,7 @@ public class Commands : MonoBehaviour
 						tap = 0;
 					}
 
-					if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
+					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
 					{
 						lastTapped = Time.time;
 						if(tap == 1)
@@ -256,7 +256,18 @@ public class Commands : MonoBehaviour
 
 	public void Crouch(CharacterInputs cmd, int type)
 	{
-		
+		if(cmd == CharacterInputs.Character_Crouch)
+		{
+			if(type == 1)
+			{
+				Debug.Log("Crouch down!");
+				//focusUnit.Crouch();
+			}
+			if (type == 2) 
+			{
+				Debug.Log("Stand up!");
+			}
+		}
 	}
 
 	public void PrimaryWeapon(CharacterInputs cmd, int type)

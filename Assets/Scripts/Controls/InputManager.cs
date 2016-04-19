@@ -41,7 +41,7 @@ public class InputManager : MonoBehaviour
 		public KeyCode keyBindName;
 
 		//Binding name for Mouse Input
-		public string mouseBindName;
+		public int mouseBindCode;
 
 	}
 
@@ -197,7 +197,7 @@ public class InputManager : MonoBehaviour
 
 
 		if (Input.GetKeyDown (bind.keyBindName)) {
-			Debug.Log ("DONALD TRUMP 2016");
+			Debug.Log ("Pressed key.");
 		}
 
 		if(Input.GetKey(bind.keyBindName))
@@ -265,21 +265,43 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
+		/*
 		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
 		{
 			toReturn = 1.0f;
 		}
+		*/
 
-		return toReturn;
-
-		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
+		//return toReturn;
+		/*
+		if (Input.GetMouseButtonDown (0)) 
 		{
+			Debug.Log ("Left Mouse click!");
+		}
+
+		if (Input.GetMouseButtonDown (1))
+		{
+			Debug.Log ("Right Mouse click!");
+		}
+		*/
+
+	
+
+		if(Input.GetMouseButtonDown(bind.mouseBindCode))
+		{
+			Debug.Log ("Mouse pressed down.");
 			return 1.0f;
+
 		}
-		else 
+		else if (Input.GetMouseButtonUp (bind.mouseBindCode))
 		{
-			return 0.0f;
+			Debug.Log ("Mouse let go.");
+			return 2.0f;
+
 		}
+
+		return 0.0f;
+
 	}
 
 	private void PassInput()
@@ -346,7 +368,7 @@ public class InputManager : MonoBehaviour
 
 		KeyBinds primaryWpn = new KeyBinds();
 		primaryWpn.bindType = BindType.Bind_Type_MouseInput;
-		primaryWpn.mouseBindName = "mouse_1";
+		primaryWpn.mouseBindCode = 0;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Primary_Weapon].Add(primaryWpn);
@@ -357,7 +379,7 @@ public class InputManager : MonoBehaviour
 
 		KeyBinds secondWpn = new KeyBinds();
 		secondWpn.bindType = BindType.Bind_Type_MouseInput;
-		secondWpn.mouseBindName = "mouse_2";
+		secondWpn.mouseBindCode = 1;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Secondary_Weapon].Add(secondWpn);
@@ -375,7 +397,7 @@ public class InputManager : MonoBehaviour
 
 		#endregion
 
-		#region Jump
+		#region Switch Characters
 
 		KeyBinds switchFocusUnit = new KeyBinds();
 		switchFocusUnit.bindType = BindType.Bind_Type_KeyBoardInput;

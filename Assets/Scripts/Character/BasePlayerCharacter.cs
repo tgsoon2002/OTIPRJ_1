@@ -72,7 +72,11 @@ public class BasePlayerCharacter : BaseCharacter {
 			bottomCollider.IsTouchGround = false;
 			base.rig.AddForce((Vector3.up * 10.0f ),ForceMode.Impulse);
 		}
+	}
 
+	public virtual void Crouch()
+	{
+		
 	}
 
 	/// <summary>
