@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
 		public KeyCode keyBindName;
 
 		//Binding name for Mouse Input
-		public string mouseBindName;
+		public int mouseBindCode;
 
 	}
 
@@ -226,16 +226,20 @@ public class InputManager : MonoBehaviour
 	private float GetMouseClickInput(KeyBinds bind)
 	{
 		
-		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
-		{
+//		if( Input.GetMouseButtonDown(bind.mouseBindCode))
+//		{
+//			Debug.Log("got mouse input");
+//			return 1.0f;
+//		}
+//		else 
+			if (Input.GetMouseButton(bind.mouseBindCode)) {
 			return 1.0f;
 		}
-		else 
-		{
-			return 0.0f;
+		else if (Input.GetMouseButtonUp(bind.mouseBindCode)){
+			return 2.0f;
 		}
 
-
+		return 0f;
 	}
 
 	private void PassInput()
@@ -254,6 +258,7 @@ public class InputManager : MonoBehaviour
 	private void SetDefaultControls()
 	{
 		#region Keyboard & Mouse Mapping
+		#region Character Control
 
 		#region Move Left
 
@@ -264,11 +269,11 @@ public class InputManager : MonoBehaviour
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Left].Add(moveLeft);
 
-        #endregion
+		#endregion
 
-        #region Move Right
+		#region Move Right
 
-        KeyBinds moveRight = new KeyBinds();
+		KeyBinds moveRight = new KeyBinds();
 		moveRight.bindType = BindType.Bind_Type_KeyBoardInput;
 		moveRight.keyBindName = KeyCode.D;
 
@@ -292,7 +297,7 @@ public class InputManager : MonoBehaviour
 
 		KeyBinds primaryWpn = new KeyBinds();
 		primaryWpn.bindType = BindType.Bind_Type_MouseInput;
-		primaryWpn.mouseBindName = "mouse_1";
+		primaryWpn.mouseBindCode = 0;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Primary_Weapon].Add(primaryWpn);
@@ -303,7 +308,7 @@ public class InputManager : MonoBehaviour
 
 		KeyBinds secondWpn = new KeyBinds();
 		secondWpn.bindType = BindType.Bind_Type_MouseInput;
-		secondWpn.mouseBindName = "mouse_2";
+		secondWpn.mouseBindCode = 1;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Secondary_Weapon].Add(secondWpn);
@@ -321,7 +326,10 @@ public class InputManager : MonoBehaviour
 
 		#endregion
 
-		#region Jump
+		#endregion
+
+		#region Squad Control
+		#region Switch Character
 
 		KeyBinds switchFocusUnit = new KeyBinds();
 		switchFocusUnit.bindType = BindType.Bind_Type_KeyBoardInput;
@@ -329,6 +337,21 @@ public class InputManager : MonoBehaviour
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);
+
+		#endregion
+		#endregion
+		#region Menu and Settings
+
+		#region Jump
+
+		KeyBinds inventory = new KeyBinds();
+		inventory.bindType = BindType.Bind_Type_KeyBoardInput;
+		inventory.keyBindName = KeyCode.I;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Character_Inventory].Add(inventory);
+
+		#endregion
 
 		#endregion
 

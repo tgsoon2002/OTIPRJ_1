@@ -115,7 +115,11 @@ public class Commands : MonoBehaviour
 	{
 		commands(cmd, type);
 	}
-
+	/// <summary>
+	/// Move character to the left, base on the combo key, can walk or sprint
+	/// </summary>
+	/// <param name="cmd">Cmd.</param>
+	/// <param name="type">Type.</param>
 	public void MoveLeft(CharacterInputs cmd, int type)
 	{
 		if(cmd == CharacterInputs.Character_Move_Left)
@@ -180,7 +184,7 @@ public class Commands : MonoBehaviour
 		}
 	}
 	/// <summary>
-	/// 
+	/// Move character to the right, base on the combo key, can walk or sprint
 	/// </summary>
 	/// <param name="cmd">Cmd.</param>
 	/// <param name="type">Type.</param>
@@ -243,7 +247,11 @@ public class Commands : MonoBehaviour
 			}
 		}
 	}
-
+	/// <summary>
+	/// Call fucntion jump
+	/// </summary>
+	/// <param name="cmd">Cmd.</param>
+	/// <param name="type">Type.</param>
 	public void Jump(CharacterInputs cmd, int type)
 	{
 		if(cmd == CharacterInputs.Character_Jump)
@@ -257,17 +265,38 @@ public class Commands : MonoBehaviour
 
 	public void Crouch(CharacterInputs cmd, int type)
 	{
-		
+		if(cmd == CharacterInputs.Character_Crouch)
+		{
+			if(type == 1)
+			{
+				focusUnit.Crounch(true);
+			}
+			else if (type == 2) {
+				focusUnit.Crounch(false);
+			}
+		}
 	}
 
 	public void PrimaryWeapon(CharacterInputs cmd, int type)
 	{
-		
+		if(cmd == CharacterInputs.Character_Primary_Weapon)
+		{
+			if(type == 2)
+			{
+				focusUnit.PrimaryAttack();
+			}
+		}
 	}
 
 	public void SecondaryWeapon(CharacterInputs cmd, int type)
 	{
-
+		if(cmd == CharacterInputs.Character_Secondary_Weapon)
+		{
+			if(type == 2)
+			{
+				focusUnit.SecondaryAttack();
+			}
+		}
 	}
 
 	#endregion
