@@ -38,9 +38,7 @@ public class SquadManager : MonoBehaviour
 		mainCam = FindObjectOfType<GamePlayCamera>();
 		SpawnUnit();
 	}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
+		
 	// Update is called once per frame
 	void Update () 
 	{
@@ -58,10 +56,7 @@ public class SquadManager : MonoBehaviour
 //		}
 	}
 
-=======
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
+
 	#endregion
 
 	#region Main Method

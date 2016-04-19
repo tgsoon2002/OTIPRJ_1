@@ -9,13 +9,9 @@ public class InputManager : MonoBehaviour
     #region Data Members
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	public GameObject playerRef;
-=======
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
+
 	bool isCharMovement = true;
 
     //Enumeration of Control Type
@@ -164,15 +160,7 @@ public class InputManager : MonoBehaviour
 			}
 		}
 	}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
-
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
+		
 	private void AddInputToBuffer(CharacterInputs cmd, float cmdVal)
 	{
 		//Nothing happens if the Command Value is zero
@@ -180,8 +168,7 @@ public class InputManager : MonoBehaviour
 		{
 			return;
 		}
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 		// Checks for type of input (character movement or UI)
 		if (isCharMovement) 
@@ -195,19 +182,12 @@ public class InputManager : MonoBehaviour
 		{
 			uiInputBuffer[(int)cmd] = cmdVal;
 		}
-=======
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 		
 		//Store value of integers to be actually processed
 		//later on. If two devices made an input at the same
 		//time. The most recent input shall be the one to use.
 		inputFrameBuffer[(int)cmd] = cmdVal;
 
-<<<<<<< HEAD
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 	}
 
 	private float GetKeyBoardInput(KeyBinds bind)
@@ -215,38 +195,33 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if(Input.GetKeyDown(bind.keyBindName))
-		{
+
+		if (Input.GetKeyDown (bind.keyBindName)) {
 			Debug.Log ("DONALD TRUMP 2016");
-=======
+		}
+
 		if(Input.GetKey(bind.keyBindName))
 		{
 			//Debug.Log ("TAP");
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
+		}
+
 		if(Input.GetKey(bind.keyBindName))
 		{
 			//Debug.Log ("TAP");
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
+
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 			//Debug.Log("HOLD");
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
+
 			//Debug.Log("HOLD");
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 			toReturn = 2.0f;
 		}
 
 		return toReturn;
+		
 	}
 
 	private float GetJoyStickButtonInput(KeyBinds bind)
@@ -280,8 +255,6 @@ public class InputManager : MonoBehaviour
 		
 	private float GetMouseClickInput(KeyBinds bind)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
 		//Declaring local variables
 		float toReturn = 0.0f;
 
@@ -291,10 +264,7 @@ public class InputManager : MonoBehaviour
 		}
 
 		return toReturn;
-=======
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
-		
+
 		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
 		{
 			return 1.0f;
@@ -303,31 +273,14 @@ public class InputManager : MonoBehaviour
 		{
 			return 0.0f;
 		}
-<<<<<<< HEAD
-
-
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
-			
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 	}
 
 	private void PassInput()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		playerRef.GetComponent<TestMovement> ().ProcessCommand (inputFrameBuffer);
-=======
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
 //HACK
 		//playerRef.GetComponent<CharacterBody>().ProcessCommand(inputFrameBuffer);
 		InputProcessor.Instance.ReadInput(inputFrameBuffer);
 //HACK
-<<<<<<< HEAD
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
     }
 		
 	//This function is called internally should an outside source wants to reset
@@ -350,8 +303,6 @@ public class InputManager : MonoBehaviour
 
         #endregion
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         #region Dash
 
         KeyBinds dashLeft  = new KeyBinds();
@@ -362,10 +313,6 @@ public class InputManager : MonoBehaviour
 
         #endregion
 
-=======
->>>>>>> 9b8f50be6b5b13f0d4cf57d65bee39fda6b2aa76
-=======
->>>>>>> 9ed8b8f7e09796e796746d4740337136e8e2f54e
         #region Move Right
 
         KeyBinds moveRight = new KeyBinds();
