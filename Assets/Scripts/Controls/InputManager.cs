@@ -225,15 +225,17 @@ public class InputManager : MonoBehaviour
 		
 	private float GetMouseClickInput(KeyBinds bind)
 	{
-		//Declaring local variables
-		float toReturn = 0.0f;
-
+		
 		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
 		{
-			toReturn = 1.0f;
+			return 1.0f;
+		}
+		else 
+		{
+			return 0.0f;
 		}
 
-		return toReturn;
+
 	}
 
 	private void PassInput()

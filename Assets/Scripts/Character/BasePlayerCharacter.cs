@@ -50,6 +50,9 @@ public class BasePlayerCharacter : BaseCharacter {
 
 	public virtual void BasicAttack(){}
 
+	/// <summary>
+	/// Jump this instance.
+	/// </summary>
 	public virtual void Jump(){
 		rig.velocity = new Vector2(5.0f,rig.velocity.y);
 	}

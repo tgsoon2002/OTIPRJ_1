@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using GameInputNameSpace;
+
+
 
 public class Commands : MonoBehaviour
 {
@@ -10,6 +13,18 @@ public class Commands : MonoBehaviour
 	CommandMethods commands;
 	static Commands instance;
 	GameObject objToControl;
+
+
+	Stack<CharacterInputs> prevInput;
+	bool startTimer = false;
+	int tap;
+	float tapTimer;
+	float lastTapped;
+	delegate void CommandInput(CharacterInputs cmd, int type);
+
+	CommandInput delHandler;
+
+	Rigidbody physics;
 
 	#endregion
 
@@ -32,6 +47,7 @@ public class Commands : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		
 		commands += MoveLeft;
 		commands += MoveRight;
 		commands += Jump;
@@ -98,12 +114,142 @@ public class Commands : MonoBehaviour
 
 	public void MoveLeft(CharacterInputs cmd, int type)
 	{
-		
+		if(cmd == CharacterInputs.Character_Move_Left)
+		{
+			if(type == 1)
+			{
+				Debug.Log("calling move left");
+				if(cmd == CharacterInputs.Character_Move_Left)
+				{
+					if(!startTimer)
+					{
+						tapTimer = Time.time;
+						startTimer = true;
+					}
+
+					float temp = 0.0f;
+
+					temp = Time.time - tapTimer;
+
+					if( temp > 0.5f && tap <= -0.5f)
+					{
+						Debug.Log("Sprint...");
+
+						physics.AddForce(Vector3.left * 100.0f);
+						prevInput.Push(CharacterInputs.Character_Move_Left);
+
+						tap = -2;
+					}
+					else
+					{
+						physics.AddForce(Vector3.left * 20.0f);
+						prevInput.Push(CharacterInputs.Character_Move_Left);
+						//tap = false;
+					}
+				}
+			}
+			else if(type == 2)
+			{
+				if(cmd == CharacterInputs.Character_Move_Left)
+				{
+					startTimer = false;
+					tapTimer = Time.time - tapTimer;
+
+					if(tap == 2 || tap == -2) 
+					{
+						tap = 0;
+					}
+
+					if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
+					{
+						lastTapped = Time.time;
+						if(tap == -1)
+						{
+							physics.AddForce(Vector3.left * 1000.0f);
+							prevInput.Pop();
+							prevInput.Push(CharacterInputs.Character_Move_Left);
+							tap = 0;
+							Debug.Log("DASH");
+						}
+						else
+						{
+							tap = -1;
+						}
+					}
+
+					prevInput.Clear();
+				}
+			}
+		}
 	}
 
 	public void MoveRight(CharacterInputs cmd, int type)
 	{
-		
+		if(cmd == CharacterInputs.Character_Move_Left)
+		{
+		if(type == 1)
+		{
+			if(cmd == CharacterInputs.Character_Move_Right)
+			{
+				if(!startTimer)
+				{
+					tapTimer = Time.time;
+					startTimer = true;
+				}
+
+				float temp = 0.0f;
+
+				temp = Time.time - tapTimer;
+
+				if( temp > 0.5f && tap <= -0.5f)
+				{
+					Debug.Log("Sprint...");
+
+					physics.AddForce(Vector3.right * 100.0f);
+					prevInput.Push(CharacterInputs.Character_Move_Right);
+
+					tap = -2;
+				}
+				else
+				{
+					physics.AddForce(Vector3.right * 20.0f);
+					prevInput.Push(CharacterInputs.Character_Move_Right);
+					//tap = false;
+				}
+			}
+		}
+		else if(type == 2)
+		{
+			if(cmd == CharacterInputs.Character_Move_Right)
+			{
+				startTimer = false;
+				tapTimer = Time.time - tapTimer;
+
+				if(tap == 2 || tap == -2) 
+				{
+					tap = 0;
+				}
+
+				if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
+				{
+					lastTapped = Time.time;
+					if(tap == -1)
+					{
+						physics.AddForce(Vector3.right * 1000.0f);
+						prevInput.Pop();
+						prevInput.Push(CharacterInputs.Character_Move_Right);
+						tap = 0;
+					}
+					else
+					{
+						tap = -1;
+					}
+				}
+
+				prevInput.Clear();
+			}
+		}
+		}
 	}
 
 	public void Jump(CharacterInputs cmd, int type)

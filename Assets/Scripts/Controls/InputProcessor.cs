@@ -73,8 +73,9 @@ public class InputProcessor : MonoBehaviour
 				}
 				else
 				{
+		
 					//Default case is Character movement or GUI Movement
-					Commands.Instance.ReceiveInput(cmd, 0);
+					Commands.Instance.ReceiveInput(cmd, (int)temp_Input_Value);
 				}
 			}
 		}	

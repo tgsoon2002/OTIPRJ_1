@@ -11,8 +11,8 @@ public class SquadManager : MonoBehaviour
 	public BasePlayerCharacter focusedUnit;
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
-	public GameObject playerCharacter;
-	public GameObject commandContainer;
+	public GameObject playerPrefab;
+
 
 	private Commands commands;
 
@@ -99,7 +99,7 @@ public class SquadManager : MonoBehaviour
 			return;
 		}
 
-		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
+		GameObject tempchar =  Instantiate(playerPrefab,spawnPoint.position,spawnPoint.rotation) as GameObject;
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
 		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
