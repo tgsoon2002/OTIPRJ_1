@@ -57,11 +57,19 @@ public class InputProcessor : MonoBehaviour
 				if(cmd == CharacterInputs.Open_Character_Inventory)
 				{
 					//Open Inventory here
-					MenuManager.Instance.MenuVisibility(true);
+					if (temp_Input_Value == 2) {
+						MenuManager.Instance.MenuVisibility();
+					}
+
 				}	
+
 				else if(cmd == CharacterInputs.Character_Switch_Left)
 				{
 					//Switch character here
+					if (temp_Input_Value == 2) {
+						SquadManager.Instance.SwitchFocusCharacter();
+					}
+				
 				}
 				else if(cmd == CharacterInputs.Character_Switch_Right)
 				{

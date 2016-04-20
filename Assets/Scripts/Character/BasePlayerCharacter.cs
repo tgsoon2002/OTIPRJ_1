@@ -17,6 +17,7 @@ public class BasePlayerCharacter : BaseCharacter {
 	public List<BaseItem> inventory;
 	public int charLevel;
 	public int charID;
+	bool isCrounching = false;
 	public CharacterInventory charInv;
 	//protected JobClass classType;
 	protected int index;
@@ -51,39 +52,61 @@ public class BasePlayerCharacter : BaseCharacter {
 	#endregion
 	#region Perform Action
 
-	#endregion
+
 	/// <summary>
 	/// Called to player character perform Primary attack action
 	/// </summary>
-	public virtual void PrimaryAttack(){}
+	public void PrimaryAttack(){
+		anim.SetTrigger("attackPrimary");
+	}
 
+	public void SecondaryAttack(){
+		anim.SetTrigger("attackSecondary");
+	}
+
+	/// <summary>
+	/// Moves the this unit if they are on the ground and is not crounching
+	/// 
+	/// </summary>
+	/// <param name="direction">Direction.</param>
 	public override void MoveThisUnit(float direction){
-		if (bottomCollider.IsTouchGround) {
+		if (bottomCollider.IsTouchGround && !isCrounching ) {
 			base.MoveThisUnit(direction);
 		}
 	}
+
+
 
 	/// <summary>
 	/// Called to player perform Jump action
 	/// </summary>
 	public virtual void Jump(){
 		//base.rig.velocity = new Vector2(5.0f,base.rig.velocity.y); 
-		if (bottomCollider.IsTouchGround) {
+		float jumpPw = 1;
+		if (bottomCollider.IsTouchGround ) {
 			bottomCollider.IsTouchGround = false;
-			base.rig.AddForce((Vector3.up * 10.0f ),ForceMode.Impulse);
+			if (isCrounching) {
+				jumpPw *= 1.7f;
+			}
+			base.rig.AddForce((Vector3.up * 10.0f *jumpPw ),ForceMode.Impulse);
 		}
+	}
 
+	public void Crounch(bool val){
+		anim.SetBool("crounching",val);
+		isCrounching = val;
 	}
 
 	/// <summary>
-	/// Call to player character perform dash action
+	/// Call to player character perform dash action if character on ground and is not crounching
 	/// </summary>
 	public virtual void DashThisUnit(float direction){
-		
-		if (bottomCollider.IsTouchGround) {
+		if (bottomCollider.IsTouchGround && !isCrounching) {
 		base.rig.AddForce((Vector3.right * 10.0f * direction),ForceMode.Impulse);
 		}
 	}
+
+	#endregion
 	#region Update Status
 
 	/// <summary>
@@ -115,6 +138,19 @@ public class BasePlayerCharacter : BaseCharacter {
 	}
 	#endregion
 
+	public void ResetTriggerAttack(int typeOfAttack){
+		switch (typeOfAttack) {
+		case 0:
+			anim.ResetTrigger("attackPrimary");
+			break;
+			case 1:
+			anim.ResetTrigger("attackSecondary");
+			break;
+		default:
+			break;
+		}
+
+	}
 	#endregion
 
 	#region Collider Methods

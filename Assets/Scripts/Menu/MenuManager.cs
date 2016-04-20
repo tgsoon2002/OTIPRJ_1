@@ -32,17 +32,18 @@ public class MenuManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update ()
-	{
-		if (Input.GetKeyUp(KeyCode.Escape)) {
-			if (menu.activeSelf) {
-				
-				MenuVisibility (false);
-			} else {
-				
-				MenuVisibility (true);
-			}
-		}
+
+	void Update () {
+//		if (Input.GetKeyUp(KeyCode.Escape)) {
+//			if (menu.activeSelf) {
+//				
+//				MenuVisibility (false);
+//			} else {
+//				
+//				MenuVisibility (true);
+//			}
+//		}
+
 	}
 	#endregion
 
@@ -51,17 +52,27 @@ public class MenuManager : MonoBehaviour
 	{
 		charModelManager.GetComponent<CharacterBlock>().UpdateChar();
 	}
-	#endregion
-
-	#region Private Methods
 	/// <summary>
 	/// this used to turn the model on and off.
 	/// </summary>
 	/// <param name="visible">If set to <c>true</c> visible.</param>
-	public void MenuVisibility (bool visible){
-		menu.SetActive (visible) ;
-		characterModel.gameObject.SetActive (visible) ;
+	public void MenuVisibility (){
+		if (menu.activeSelf) {
+			menu.SetActive (false) ;
+			characterModel.gameObject.SetActive (false) ;
+		} else {
+			menu.SetActive (true) ;
+			characterModel.gameObject.SetActive (true) ;
+		}
+
+
 		charModelManager.UpdateChar();
 	#endregion
+
+
+	#region Private Methods
+
+	#endregion
+
 	}
 }

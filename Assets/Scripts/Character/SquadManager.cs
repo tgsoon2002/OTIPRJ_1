@@ -12,7 +12,7 @@ public class SquadManager : MonoBehaviour
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
 	public GameObject playerCharacter;
-	public GameObject commandContainer;
+	//public GameObject commandContainer;
 
 	private Commands commands;
 
@@ -37,13 +37,14 @@ public class SquadManager : MonoBehaviour
 		commands = gameObject.GetComponent<Commands>();
 		mainCam = FindObjectOfType<GamePlayCamera>();
 		SpawnUnit();
+		SpawnUnit();
 	}
 
 	#endregion
 
 	#region Main Method
 
-	void SwitchFocusCharacter()
+	public void SwitchFocusCharacter()
 	{
 
 		
@@ -58,6 +59,7 @@ public class SquadManager : MonoBehaviour
 			focusedUnit = playerCharacterList[++i];
 		}
 		FocusCharacterChanged();
+
 //		if (playerCharacterList.Count > 1) {
 //			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
 //
@@ -67,7 +69,9 @@ public class SquadManager : MonoBehaviour
 	void FocusCharacterChanged()
 	{
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
+		Commands.Instance.focusUnit = focusedUnit;
 		focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
+		CharacterBlock.Instance.UpdateChar();
 	}
 		
 	public void SpawnUnit()

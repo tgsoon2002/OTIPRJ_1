@@ -135,11 +135,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-		if (eventData.pointerEnter == null && !itemInfo._isEquiped) {
+		if (eventData.pointerEnter == null && itemInfo.Item_Object.Base_Item_Type == BaseItemType.CONSUMABLE) {
 			originalParent.GetComponent<Inventory>().rightClickItem =this;
 			originalParent.GetComponent<Inventory>().ammountOptionPanel.gameObject.SetActive(true);
 			originalParent.GetComponent<Inventory>().ammountOptionPanel._CalledToDrop(true);
-
 		} 
 		this.transform.SetParent(originalParent);
 		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
