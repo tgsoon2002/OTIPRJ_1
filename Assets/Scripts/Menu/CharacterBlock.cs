@@ -50,7 +50,17 @@ public class CharacterBlock : MonoBehaviour {
 			characterModel.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh = tempChar.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh;
 		}
 		//update the Equipment icon 
-		//equipmentPartList[0].sprite = tempChar.GetComponent<EquipmentSet>()
+		for (int i = 0; i < 8; i++) {
+			if (tempChar.GetComponent<EquipmentSet>().listEquipment != null) {
+				EquipmentItem[] tempList = tempChar.GetComponent<EquipmentSet>().listEquipment;
+				if (tempList[i] != null) {
+					equipmentPartList[i].sprite = tempList[i].Item_Sprite;
+				}
+			}
+
+			//equipmentPartList[i].sprite = tempChar.GetComponent<EquipmentSet>()
+		}
+
 
 		//Update stat text
 		characterStatsText.text= "";

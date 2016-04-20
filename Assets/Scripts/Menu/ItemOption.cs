@@ -49,15 +49,15 @@ public class ItemOption : MonoBehaviour {
 	public void PopulateOption (GameObject slot){
 		transform.position = slot.transform.position;
 		switch ((int)slot.GetComponent<InventorySlot>().Inventory_Item.Item_Object.Base_Item_Type) {
-		case 0:
+		case 0:  // Equipment
 			button[0].gameObject.SetActive(true);
 			button[3].gameObject.SetActive(false);
 			break;
-		case 1:
+		case 1:  // consumable
 			button[0].gameObject.SetActive(false);
 			button[3].gameObject.SetActive(true);
 			break;
-		default:
+		default:  // non - consumeable
 			button[0].gameObject.SetActive(false);
 			button[3].gameObject.SetActive(false);
 
