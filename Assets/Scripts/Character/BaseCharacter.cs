@@ -14,7 +14,9 @@ public class BaseCharacter : MonoBehaviour {
 	#endregion
 
 	#region UnitBuiltInMethod
-
+	void Update(){
+		anim.SetFloat("speed",rig.velocity.x) ;
+	}
 		
 	#endregion
 

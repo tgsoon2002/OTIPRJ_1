@@ -250,7 +250,6 @@ public class Inventory : MonoBehaviour
 	}
 
 	public void RetriveItem(int part){
-		
 		itemSlots.Find(o=>o.equipmentPart == part && o.IsEquip == true).IsEquip = false;
 	}
 

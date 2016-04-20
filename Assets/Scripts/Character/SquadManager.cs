@@ -12,8 +12,6 @@ public class SquadManager : MonoBehaviour
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
 	public GameObject playerPrefab;
-
-
 	private Commands commands;
 
 	#endregion
@@ -37,36 +35,16 @@ public class SquadManager : MonoBehaviour
 		commands = gameObject.GetComponent<Commands>();
 		mainCam = FindObjectOfType<GamePlayCamera>();
 		SpawnUnit();
-	}
-
-	// Update is called once per frame
-	void Update () 
-	{
-//		if (Input.GetKeyUp(KeyCode.Tab)) 
-//		{
-//			SwitchFocusCharacter();		
-//		}
-//		if (focusedUnit != null) 
-//		{
-//			focusedUnit.MoveThisUnit(Input.GetAxis("MoveHorizontal"));
-//		}
-//		if (Input.GetKeyUp(KeyCode.P)) 
-//		{
-//			SpawnUnit();
-//		}
+		SpawnUnit();
 	}
 
 	#endregion
 
 	#region Main Method
 
-	public void ReceiveInput(float[] inputBuffer)
-	{
-		
-	}
-
 	public void SwitchFocusCharacter()
 	{
+
 		
 		int i = playerCharacterList.IndexOf (focusedUnit);
 
@@ -79,6 +57,7 @@ public class SquadManager : MonoBehaviour
 			focusedUnit = playerCharacterList[++i];
 		}
 		FocusCharacterChanged();
+
 //		if (playerCharacterList.Count > 1) {
 //			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
 //
@@ -88,7 +67,9 @@ public class SquadManager : MonoBehaviour
 	void FocusCharacterChanged()
 	{
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
+		Commands.Instance.focusUnit = focusedUnit;
 		focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
+		CharacterBlock.Instance.UpdateChar();
 	}
 		
 	public void SpawnUnit()
@@ -107,6 +88,9 @@ public class SquadManager : MonoBehaviour
 		//FocusCharacterChanged();
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
 		SwitchFocusCharacter();
+		if (Commands.Instance.focusUnit == null) {
+			Commands.Instance.focusUnit = tempchar.GetComponent<BasePlayerCharacter>();
+		}
 	}
 
 	#endregion
