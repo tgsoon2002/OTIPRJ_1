@@ -9,9 +9,6 @@ public class InputManager : MonoBehaviour
     #region Data Members
     bool isShiftPressed = false;
 	Stack<CharacterInputs> lastInput = new Stack<CharacterInputs>();
-
-	public GameObject playerRef;
-
 	bool isCharMovement = true;
 
     //Enumeration of Control Type
@@ -160,27 +157,14 @@ public class InputManager : MonoBehaviour
 			}
 		}
 	}
-		
+
+
 	private void AddInputToBuffer(CharacterInputs cmd, float cmdVal)
 	{
 		//Nothing happens if the Command Value is zero
 		if(cmdVal == 0)
 		{
 			return;
-		}
-
-
-		// Checks for type of input (character movement or UI)
-		if (isCharMovement) 
-		{
-			//Store value of integers to be actually processed
-			//later on. If two devices made an input at the same
-			//time. The most recent input shall be the one to use.
-			inputFrameBuffer[(int)cmd] = cmdVal;
-		} 
-		else 
-		{
-			uiInputBuffer[(int)cmd] = cmdVal;
 		}
 		
 		//Store value of integers to be actually processed
@@ -195,40 +179,19 @@ public class InputManager : MonoBehaviour
 		//Declaring local variables
 		float toReturn = 0.0f;
 
-
-		if (Input.GetKeyDown (bind.keyBindName)) {
-			Debug.Log ("Pressed key.");
-		}
-
 		if(Input.GetKey(bind.keyBindName))
 		{
-			//Debug.Log ("TAP");
-		}
-
-		if(Input.GetKey(bind.keyBindName))
-		{
-
-			//Debug.Log ("TAP");
-
 			//Debug.Log ("Press and hold");
-
 			toReturn = 1.0f;
 		}
 
 		if(Input.GetKeyUp(bind.keyBindName))
 		{
-
-			//Debug.Log("HOLD");
-
-			//Debug.Log("HOLD");
-
 			//Debug.Log("release");
-
 			toReturn = 2.0f;
 		}
 
 		return toReturn;
-		
 	}
 
 	private float GetJoyStickButtonInput(KeyBinds bind)
@@ -262,46 +225,21 @@ public class InputManager : MonoBehaviour
 		
 	private float GetMouseClickInput(KeyBinds bind)
 	{
-		//Declaring local variables
-		float toReturn = 0.0f;
-
-		/*
-		if(bind.mouseBindName == "mouse_1" || bind.mouseBindName == "mouse_2")
-		{
-			toReturn = 1.0f;
-		}
-		*/
-
-		//return toReturn;
-		/*
-		if (Input.GetMouseButtonDown (0)) 
-		{
-			Debug.Log ("Left Mouse click!");
-		}
-
-		if (Input.GetMouseButtonDown (1))
-		{
-			Debug.Log ("Right Mouse click!");
-		}
-		*/
-
-	
-
-		if(Input.GetMouseButtonDown(bind.mouseBindCode))
-		{
-			Debug.Log ("Mouse pressed down.");
+		
+//		if( Input.GetMouseButtonDown(bind.mouseBindCode))
+//		{
+//			Debug.Log("got mouse input");
+//			return 1.0f;
+//		}
+//		else 
+			if (Input.GetMouseButton(bind.mouseBindCode)) {
 			return 1.0f;
-
 		}
-		else if (Input.GetMouseButtonUp (bind.mouseBindCode))
-		{
-			Debug.Log ("Mouse let go.");
+		else if (Input.GetMouseButtonUp(bind.mouseBindCode)){
 			return 2.0f;
-
 		}
 
-		return 0.0f;
-
+		return 0f;
 	}
 
 	private void PassInput()
@@ -320,6 +258,7 @@ public class InputManager : MonoBehaviour
 	private void SetDefaultControls()
 	{
 		#region Keyboard & Mouse Mapping
+		#region Character Control
 
 		#region Move Left
 
@@ -330,26 +269,36 @@ public class InputManager : MonoBehaviour
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Left].Add(moveLeft);
 
-        #endregion
+		#endregion
 
-        #region Dash
+		#region Move Right
 
-        KeyBinds dashLeft  = new KeyBinds();
-        dashLeft.bindType = BindType.Bind_Type_KeyBoardInput;
-		dashLeft.keyBindName = KeyCode.LeftShift;
-
-		gameCommandTable[CharacterInputs.Character_Dash_Left].Add(dashLeft);
-
-        #endregion
-
-        #region Move Right
-
-        KeyBinds moveRight = new KeyBinds();
+		KeyBinds moveRight = new KeyBinds();
 		moveRight.bindType = BindType.Bind_Type_KeyBoardInput;
 		moveRight.keyBindName = KeyCode.D;
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Right].Add(moveRight);
+
+		#region Switch Left
+
+		KeyBinds switchLeft = new KeyBinds();
+		switchLeft.bindType = BindType.Bind_Type_KeyBoardInput;
+		switchLeft.keyBindName = KeyCode.Q;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchLeft);
+
+		#endregion
+
+		#region Switch Right
+
+		KeyBinds switchRight = new KeyBinds();
+		switchRight.bindType = BindType.Bind_Type_KeyBoardInput;
+		switchRight.keyBindName = KeyCode.E;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Switch_Right].Add(switchLeft);
 
 		#endregion
 
@@ -397,7 +346,10 @@ public class InputManager : MonoBehaviour
 
 		#endregion
 
-		#region Switch Characters
+		#endregion
+
+		#region Squad Control
+		#region Switch Character
 
 		KeyBinds switchFocusUnit = new KeyBinds();
 		switchFocusUnit.bindType = BindType.Bind_Type_KeyBoardInput;
@@ -405,6 +357,21 @@ public class InputManager : MonoBehaviour
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);
+
+		#endregion
+		#endregion
+		#region Menu and Settings
+
+		#region Jump
+
+		KeyBinds inventory = new KeyBinds();
+		inventory.bindType = BindType.Bind_Type_KeyBoardInput;
+		inventory.keyBindName = KeyCode.I;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Character_Inventory].Add(inventory);
+
+		#endregion
 
 		#endregion
 
