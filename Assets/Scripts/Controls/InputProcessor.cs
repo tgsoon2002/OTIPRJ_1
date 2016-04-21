@@ -59,7 +59,7 @@ public class InputProcessor : MonoBehaviour
 					//Open Inventory here
 					MenuManager.Instance.MenuVisibility(true);
 				}	
-				else if(cmd == CharacterInputs.Character_Switch_Left)
+				/*else if(cmd == CharacterInputs.Character_Switch_Left)
 				{
 					//Switch character here
 					if ((int)temp_Input_Value == 2) {
@@ -70,7 +70,7 @@ public class InputProcessor : MonoBehaviour
 				else if(cmd == CharacterInputs.Character_Switch_Right)
 				{
 					//Switch
-				}
+				}*/
 				else if(cmd == CharacterInputs.Open_Settings)
 				{
 					//Open settings here

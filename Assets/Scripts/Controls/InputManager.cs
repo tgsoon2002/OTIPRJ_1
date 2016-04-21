@@ -298,7 +298,7 @@ public class InputManager : MonoBehaviour
 		switchRight.keyBindName = KeyCode.E;
 
 		//Add the KeyBind to the Dictionary
-		gameCommandTable[CharacterInputs.Character_Switch_Right].Add(switchLeft);
+		gameCommandTable[CharacterInputs.Character_Switch_Right].Add(switchRight);
 
 		#endregion
 
@@ -349,16 +349,7 @@ public class InputManager : MonoBehaviour
 		#endregion
 
 		#region Squad Control
-		#region Switch Character
 
-		KeyBinds switchFocusUnit = new KeyBinds();
-		switchFocusUnit.bindType = BindType.Bind_Type_KeyBoardInput;
-		switchFocusUnit.keyBindName = KeyCode.P;
-
-		//Add the KeyBind to the Dictionary
-		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);
-
-		#endregion
 		#endregion
 		#region Menu and Settings
 
@@ -380,3 +371,4 @@ public class InputManager : MonoBehaviour
 
 	#endregion
 }
+#endregion
