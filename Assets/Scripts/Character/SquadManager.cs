@@ -64,6 +64,7 @@ public class SquadManager : MonoBehaviour {
 	public void SwitchCurrent(BasePlayerCharacter newFocused)
 	{
 		focusedUnit = newFocused;
+		mainCam.ChangeFocusUnit (focusedUnit.gameObject.transform);
 	}
 	/*
 	void FocusCharacterChanged(){
@@ -89,6 +90,7 @@ public class SquadManager : MonoBehaviour {
 		if (focusedUnit == null) {
 			focusedUnit = tempchar.GetComponent<BasePlayerCharacter>();
 		}
+		mainCam.ChangeFocusUnit (focusedUnit.gameObject.transform);
 	}
 	#endregion
 }

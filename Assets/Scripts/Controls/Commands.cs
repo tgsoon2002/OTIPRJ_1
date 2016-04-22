@@ -266,7 +266,8 @@ public class Commands : MonoBehaviour
 						isLeft = true;
 						//SquadManager.Instance.focusedUnit.gameObject = tmp.gameObject;
 						//SquadManager.Instance.SwitchCurrent(tmp);
-						SquadManager.Instance.focusedUnit = tmp;
+						SquadManager.Instance.SwitchCurrent(tmp);
+						//SquadManager.Instance.focusedUnit = tmp;
 					}	
 				}
 
@@ -286,7 +287,7 @@ public class Commands : MonoBehaviour
 						}	
 					}
 
-					SquadManager.Instance.focusedUnit = theRight;
+					SquadManager.Instance.SwitchCurrent(theRight);
 				}
 			}
 		}
@@ -311,7 +312,7 @@ public class Commands : MonoBehaviour
 					if (tmpPos.x > curPlayPosition.x && !isRight) 
 					{
 						isRight = true;
-						SquadManager.Instance.focusedUnit = tmp;
+						SquadManager.Instance.SwitchCurrent(tmp);
 					}	
 				}
 
@@ -331,7 +332,7 @@ public class Commands : MonoBehaviour
 						}	
 					}
 
-					SquadManager.Instance.focusedUnit = theLeft;
+					SquadManager.Instance.SwitchCurrent(theLeft);
 				}
 			}
 		}
