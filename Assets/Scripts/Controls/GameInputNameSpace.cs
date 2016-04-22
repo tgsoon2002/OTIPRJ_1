@@ -15,7 +15,6 @@ namespace GameInputNameSpace
 		Character_Sprint_Right,		// done
 		Character_Dash_Left,		// done
 		Character_Dash_Right,		// done
-		Character_Lock_On,
 		Character_Context_Action,
 		Character_Non_2D_Movement,
 		Character_Switch_Left,		// done
