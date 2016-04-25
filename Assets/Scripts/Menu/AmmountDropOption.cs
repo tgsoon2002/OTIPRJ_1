@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AmmountDropOption : MonoBehaviour {
+public class AmmountDropOption : MonoBehaviour 
+{
 
 	#region Data Members
 	public Inventory invRef;
@@ -46,8 +47,10 @@ public class AmmountDropOption : MonoBehaviour {
 	/// Set ammount text = ammount
 	/// </summary>
 	/// <param name="newVal">New value.</param>
-	public void ChangeValueButton (int newVal){
-		if (ammount > invRef.rightClickItem.ItemQuantity) {
+	public void ChangeValueButton (int newVal)
+	{
+		if (ammount > invRef.rightClickItem.ItemQuantity)
+		{
 			ammount = invRef.rightClickItem.ItemQuantity;
 		}
 		if ((ammount + newVal) > 0 && (ammount + newVal) < invRef.rightClickItem.ItemQuantity) {
@@ -61,7 +64,8 @@ public class AmmountDropOption : MonoBehaviour {
 	/// Call inventory to drop itemSelect by right click base on dropOption and ammount.
 	/// Then close ammount drop panel
 	/// </summary>
-	public void _Confirm_Button (){
+	public void _Confirm_Button ()
+	{
 		invRef.DropSelectedItem(dropOption,ammount);
 		gameObject.SetActive(false);
 	}
@@ -69,9 +73,11 @@ public class AmmountDropOption : MonoBehaviour {
 	/// <summary>
 	/// Just close ammount drop panel.
 	/// </summary>
-	public void _Cancel_Button (){
+	public void _Cancel_Button ()
+	{
 		gameObject.SetActive(false);
 	}
+
 	#endregion
 
 	#region Private Methods
@@ -80,13 +86,4 @@ public class AmmountDropOption : MonoBehaviour {
 		ammount = int.Parse(ammountText.text);
 	}
 	#endregion
-
-
-
-
-
-
-
-
-
 }

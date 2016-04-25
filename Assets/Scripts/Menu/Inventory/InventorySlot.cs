@@ -35,21 +35,28 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 			itemQuantityText.text = quantity.ToString();}
 	}
 
-
     public Image Sprite_GUI
     {
         get { return spriteGUI; }
         set { spriteGUI = value; }
     }
 
-	public bool IsEquip {
-		get{ return  itemInfo._isEquiped; }
-		set{ itemInfo._isEquiped = value;
-			if (value) {
+	public bool IsEquip 
+	{
+		get { return  itemInfo._isEquiped; }
+
+		set
+		{ 
+			itemInfo._isEquiped = value;
+			if (value) 
+			{
 				spriteGUI.color = new Color(1f,1f,1f,0.6f);
-			}else{
+			}
+            else
+            {
 				spriteGUI.color = new Color(1f,1f,1f,1.6f);
-			}	}
+			}	
+		}
 	}
 
     #endregion
@@ -63,9 +70,13 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         spriteGUI = gameObject.GetComponent<Image>();
 
 	}
-	void Start(){
+
+	void Start()
+    {
 		originalParent = transform.parent;
-		if (itemInfo._isEquiped) {
+
+		if (itemInfo._isEquiped) 
+        {
 			spriteGUI.color = new Color(1f,1f,1f,0.6f);
 		}
 	}
@@ -76,7 +87,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// <summary>
 	/// Deactivate the highliter child.
 	/// </summary>
-	public void Deselected(){
+	public void Deselected()
+    {
 		highlighter.SetActive(false);
 	}
 
@@ -92,12 +104,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// <summary>
 	/// Call inventory to call fucntion itemOptionWindow with slot is this gameObject
 	/// </summary>
-	public void ItemOption(){
+	public void ItemOption()
+    {
 		
 		transform.parent.GetComponent<Inventory>().ItemOptionWindow(gameObject);
 	}
-
-
 
 	/// <summary>
 	/// When slot was click by mouse, 
@@ -105,18 +116,20 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// Else If Right click, call ItemOption fucntion
 	/// </summary>
 	/// <param name="eventData">Event data.</param>
-	public void OnPointerClick(PointerEventData eventData){
-		if (Input.GetMouseButtonUp(0)) {
+	public void OnPointerClick(PointerEventData eventData)
+    {
+		if (Input.GetMouseButtonUp(0)) 
+        {
 			Selecting();
 		}
 		else if(Input.GetMouseButtonUp(1))
 		{
-			if (!itemInfo._isEquiped) {
+			if (!itemInfo._isEquiped)
+            {
 				transform.parent.GetComponent<Inventory>().rightClickItem = this.GetComponent<InventorySlot>();
 				ItemOption();
 			}
 		}
-
 	}
 
     public void OnBeginDrag(PointerEventData eventData)

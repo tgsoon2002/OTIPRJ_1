@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterInventory : MonoBehaviour {
+public class CharacterInventory : MonoBehaviour 
+{
 
 	#region Data Members
 	List<ItemSlot> listOfItem;
@@ -11,7 +12,8 @@ public class CharacterInventory : MonoBehaviour {
 	#endregion
 
 	#region Setters & Getters
-	public int CharacterMaxWeight {
+	public int CharacterMaxWeight 
+	{
 		get{ return  maxWeight; }
 		set{ maxWeight = value; }
 	}
@@ -28,7 +30,8 @@ public class CharacterInventory : MonoBehaviour {
 	#endregion
 
 	#region Public Methods
-	public void RepopulateInventory (){
+	public void RepopulateInventory ()
+	{
 		// Get list of item from database if the list is empty
 		if (listOfItem == null) {
 			listOfItem = InventoryDatabase.Instance.GetInventoryItemForCharacter(charID);
@@ -42,16 +45,26 @@ public class CharacterInventory : MonoBehaviour {
 
 	}
 
-	public void AddItem (ItemInfo item){
+	public void AddItem (ItemInfo item)
+	{
 
-		if (item.Item_Object.Is_Stackable) {
-			int temp = listOfItem.FindIndex(o => o.itemID == item.Item_Object.Item_ID && o.itemType == (int)item.Item_Object.Base_Item_Type);
-			if (temp > -1) {
+		if (item.Item_Object.Is_Stackable)
+		{
+			int temp = listOfItem.FindIndex(o => o.itemID == 
+											item.Item_Object.Item_ID && o.itemType == 
+											(int)item.Item_Object.Base_Item_Type);
+
+			if (temp > -1) 
+			{
 				listOfItem[temp].quantity += item.Item_Qty;
-			} else {
+			} 
+			else 
+			{
 				listOfItem.Add(new ItemSlot(charID, item.Item_Object.Item_ID, item.Item_Qty, (int)item.Item_Object.Base_Item_Type));
 			}
-		} else {
+		} 
+		else 
+		{
 			listOfItem.Add(new ItemSlot(charID, item.Item_Object.Item_ID, item.Item_Qty, (int)item.Item_Object.Base_Item_Type));
 		}
 	}

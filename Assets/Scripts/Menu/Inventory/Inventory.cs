@@ -30,7 +30,8 @@ public class Inventory : MonoBehaviour
 
 	#region Setters & Getters
 
-	public static Inventory Instance {
+	public static Inventory Instance 
+	{
 		get{ return  _instance; }
 
 	}
@@ -93,10 +94,14 @@ public class Inventory : MonoBehaviour
                    
                     //Destroy the item since we don't need it.
                     Destroy(item.gameObject);
-                } else {
+                } 
+				else
+				{
 					CreateSlot(item);		
 				}
-			} else {
+			}
+			else 
+			{
 				CreateSlot(item);	
 			}
 			characterCurrentWeight -= item.Item_Object.Item_Weight*item.Item_Qty;
@@ -119,7 +124,8 @@ public class Inventory : MonoBehaviour
 	/// <param name="type">Type.</param>
 	/// <param name="itemID">Item I.</param>
 	/// <param name="quan">Quan.</param>
-	public void AddItem (int type, int itemID, int quan){
+	public void AddItem (int type, int itemID, int quan)
+	{
 		BaseItem newItem = ItemDatabase.Instance.GetItem(itemID, type);
 		GameObject newGameObject = Instantiate(lootPrefab);
 		newGameObject.transform.localScale = Vector3.one;
@@ -139,7 +145,8 @@ public class Inventory : MonoBehaviour
 	/// <param name="type">Type.</param>
 	/// <param name="itemID">Item I.</param>
 	/// <param name="quan">Quan.</param>
-	public void PopulateInventoryFromCharacter(int type, int itemID, int quan){
+	public void PopulateInventoryFromCharacter(int type, int itemID, int quan)
+	{
 		BaseItem newItem = ItemDatabase.Instance.GetItem(itemID, type);
 		GameObject newGameObject = Instantiate(lootPrefab);
 		newGameObject.transform.localScale = Vector3.one;
@@ -173,7 +180,8 @@ public class Inventory : MonoBehaviour
 	/// </summary>
 	/// <param name="drop">If set to <c>true</c> drop.</param>
 	/// <param name="ammount">Ammount.</param>
-	public void DropSelectedItem(bool drop, int ammount){
+	public void DropSelectedItem(bool drop, int ammount)
+	{
 		Debug.Log(itemSlots.FindIndex(o => o == rightClickItem));
 		SquadManager.Instance.focusedUnit.GetComponent<CharacterInventory>().RemoveItem(itemSlots.Find(o => o == rightClickItem).Inventory_Item);
 		DropItem(itemSlots.FindIndex(o => o == rightClickItem)   ,ammount,drop);
@@ -247,7 +255,8 @@ public class Inventory : MonoBehaviour
 		rightClickItem.IsEquip = true;
 	}
 
-	public void RetriveItem(int part){
+	public void RetriveItem(int part)
+	{
 		itemSlots.Find(o=>o.equipmentPart == part && o.IsEquip == true).IsEquip = false;
 	}
 
@@ -281,8 +290,10 @@ public class Inventory : MonoBehaviour
 	/// Then call PopulateOption fnc in ItemOptionPanel with parameter is slotbeing select by right click.
 	/// </summary>
 	/// <param name="slot">Slot.</param>
-	public void ItemOptionWindow(GameObject slot){
-		if (!itemOptionPanel.gameObject.activeSelf) {
+	public void ItemOptionWindow(GameObject slot)
+	{
+		if (!itemOptionPanel.gameObject.activeSelf)
+		{
 			itemOptionPanel.gameObject.SetActive(true);
 		}
 		itemOptionPanel.PopulateOption(slot);

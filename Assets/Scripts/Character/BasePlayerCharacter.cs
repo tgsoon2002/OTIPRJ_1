@@ -92,9 +92,10 @@ public class BasePlayerCharacter : BaseCharacter {
 		}
 	}
 
-	public void Crounch(bool val){
-		anim.SetBool("crounching",val);
-		isCrounching = val;
+
+	public virtual void Crouch()
+	{
+		
 	}
 
 	/// <summary>

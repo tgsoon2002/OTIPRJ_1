@@ -85,11 +85,13 @@ public class ItemDatabase : MonoBehaviour {
 	#endregion
 
 	#region Private Methods
-	void  ConstructItemDatabase(){
+	void  ConstructItemDatabase()
+    {
 		//Construct data for equipment item
 		equipmentData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/EquipmentItem.json"));
 
-		for (int i = 0; i < equipmentData.Count; i++) {
+		for (int i = 0; i < equipmentData.Count; i++)
+        {
 			equipmentDB.Add(
 				new EquipmentItem(GetMesh(equipmentData[i]["modelSet"].ToString(),(EquipmentPart)(int)equipmentData[i]["BodyPart"]),
 					(EquipmentPart)(int)equipmentData[i]["BodyPart"],
