@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class AmmountDropOption : MonoBehaviour {
+public class AmountDropOption : MonoBehaviour {
 
 	#region Data Members
-	public Inventory invRef;
+	public JMInventoryMenu invRef;
 	public InputField ammountText;
 	int ammount;
 	bool dropOption;

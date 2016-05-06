@@ -11,7 +11,7 @@ public class Inventory : MonoBehaviour
 	public GameObject invSlotPrefab;
 	public GameObject playerReference;
 	public ItemOption itemOptionPanel;
-	public AmmountDropOption ammountOptionPanel;
+	public AmountDropOption ammountOptionPanel;
 	public QuickBar quickItemBarPanel;
     public DetailBlock detailBlockPanel;
 
@@ -127,7 +127,7 @@ public class Inventory : MonoBehaviour
 		newGameObject.GetComponent<ItemInfo>().Item_Qty = 1;
 		if(!AddItem(newGameObject.GetComponent<ItemInfo>()))
 		{
-			Debug.Log("Ey yo, HOL UP!");
+			Debug.Log("Ay yo, HOL UP!");
 		}
 
 	}

@@ -28,6 +28,9 @@ public class CharacterInventory : MonoBehaviour {
 	#endregion
 
 	#region Public Methods
+	/// <summary>
+	/// Ask Kien WTF this does later.
+	/// </summary>
 	public void RepopulateInventory (){
 		// Get list of item from database if the list is empty
 		if (listOfItem == null) {

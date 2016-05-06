@@ -19,8 +19,6 @@ public class InventoryDatabase : MonoBehaviour {
 
 	#region Getters/Setters
 
-
-
 	#endregion
 
 	#region Built-in Unity Methods
@@ -76,17 +74,22 @@ public class InventoryDatabase : MonoBehaviour {
 	/// <param name="newItemID">New item I.</param>
 	/// <param name="newItemType">New item type.</param>
 	/// <param name="quan">Quan.</param>
-	public void SaveInventory (int charID, int newItemID, int newItemType, int quan){
-		if (inventoryDB.Exists(o => o.characterID == charID && o.itemID == newItemID && o.itemType == newItemType)) {
+	public void SaveInventory (int charID, int newItemID, int newItemType, int quan)
+	{
+		if (inventoryDB.Exists(o => o.characterID == charID && o.itemID == newItemID && o.itemType == newItemType)) 
+		{
 			inventoryDB.Find(o => o.characterID == charID && o.itemID == newItemID && o.itemType == newItemType).quantity = quan;
 		}
-		else {
+		else
+		{
 			inventoryDB.Add (new ItemSlot(charID,newItemID,quan,newItemType));	
 		}
 	}
 
 	/// <summary>
 	/// Saves the data from ItemSlot List to Json database file.
+	/// 
+	/// Ask Kien WTF this does later.
 	/// </summary>
 	public void SaveDatabase (){
 		for (int i = 0; i < inventoryDB.Count; i++) {

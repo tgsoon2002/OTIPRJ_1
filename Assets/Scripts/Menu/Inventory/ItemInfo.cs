@@ -12,6 +12,7 @@ public class ItemInfo : MonoBehaviour
     private Transform originalParent;
     private Vector2 offset;
 	bool equiped;
+
     #endregion
 
     #region Setters & Getters
@@ -43,10 +44,4 @@ public class ItemInfo : MonoBehaviour
 		equiped = false;
     }
 	#endregion
-
-   
-   
-
-  
-
 }

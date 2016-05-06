@@ -63,6 +63,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         spriteGUI = gameObject.GetComponent<Image>();
 
 	}
+
 	void Start(){
 		originalParent = transform.parent;
 		if (itemInfo._isEquiped) {
@@ -96,9 +97,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		
 		transform.parent.GetComponent<Inventory>().ItemOptionWindow(gameObject);
 	}
-
-
-
+		
 	/// <summary>
 	/// When slot was click by mouse, 
 	/// If left click, then call selecting fucntion.
