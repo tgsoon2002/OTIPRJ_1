@@ -9,12 +9,14 @@ public class JMCharacterInventory : MonoBehaviour
 	List<JMItemInfo> listOfItem;
 	int maxWeight = 50;				// This value is hard coded. Character stats should
 									// determine the weight.
-	public int charID;
+	public int charID;				// The character's ID.
+	public GameObject quickBarRef;
 
 	#endregion
 
 	#region Setters & Getters
 
+	// Gets and sets the character's max weight
 	public int CharacterMaxWeight 
 	{
 		get{ return  maxWeight; }
@@ -42,7 +44,8 @@ public class JMCharacterInventory : MonoBehaviour
 	#region Public Methods
 
 	/// <summary>
-	/// Ask Kien WTF this does later.  May move this function to JMInventory.
+	/// Ask Kien WTF this does later.  
+	/// Might remove this function later.
 	/// </summary>
 	public void RepopulateInventory ()
 	{
@@ -55,21 +58,26 @@ public class JMCharacterInventory : MonoBehaviour
 		//update inventory block. 
 		//Inventory.Instance.ClearInventory(maxWeight);
 
+
 		foreach (var item in listOfItem) 
 		{
 			//to do: 
 			//Implement JMInventory later.
-			//Inventory.Instance.PopulateInventoryFromCharacter();
+			//JMInventoryMenu._instance.PopulateInventoryFromCharacter();
 		}
 		//Update character Block
 	}
 
+	/// <summary>
+	/// Adds the item.
+	/// </summary>
+	/// <param name="item">Item.</param>
 	public void AddItem (JMItemInfo item)
 	{
 		if (item.item.Is_Stackable)
 		{
 			int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
-											o.item.Base_Item_Type == item.item.Base_Item_Type);
+				o.item.Base_Item_Type == item.item.Base_Item_Type);
 
 			if (temp > -1) 
 			{
@@ -88,6 +96,10 @@ public class JMCharacterInventory : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Removes the item.
+	/// </summary>
+	/// <param name="item">Item.</param>
 	public void RemoveItem(JMItemInfo item)
 	{
 		int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
@@ -100,9 +112,40 @@ public class JMCharacterInventory : MonoBehaviour
 
 	}
 
+	public void AccessInventoryMenu (bool isMenuOpen)
+	{
+		if (isMenuOpen) 
+		{
+			JMQuickBarManager.itemAssigned += AssignItemToQuickBarSlot;
+		} 
+		else 
+		{
+			JMQuickBarManager.itemAssigned -= AssignItemToQuickBarSlot;
+		}
+	}
+
+	public void DropItem (int id, int amount)
+	{
+		int tempIndex = listOfItem.FindIndex (o => o.Item_Info.Item_ID == id);
+
+		if (listOfItem [tempIndex].itemQuantity - amount <= 0) 
+		{
+			if (listOfItem [tempIndex].Is_In_Quickbar) 
+			{
+				quickBarRef.GetComponent<JMQuickBarManager>().CheckAndClearOtherSlots()
+			}
+
+		}
+	}
+
 	#endregion
 
 	#region Private Methods
+
+	private void AssignItemToQuickBarSlot (int id)
+	{
+		listOfItem [listOfItem.FindIndex (o => o.Item_Info.Item_ID == id)].Is_In_Quickbar = true;
+	}
 
 	#endregion
 

@@ -49,7 +49,8 @@ public class QuickBar : MonoBehaviour
 
 	public void UpdateQuickItemSlot(int itemID)
     {
-		if (quickSlots.Exists(o=>o.itemID==itemID)) {
+		if (quickSlots.Exists(o=>o.itemID==itemID)) 
+		{
 			quickSlots[quickSlots.FindIndex(o => o.itemID == itemID)].GetComponent<QuickItem>().UpdateInfo();	
 		}
     }

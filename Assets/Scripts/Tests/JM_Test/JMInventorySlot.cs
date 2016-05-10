@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler 
 {
@@ -96,8 +97,11 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	/// </summary>
 	public void Selecting()
 	{
+		// Highlights the selected item.
 		transform.parent.GetComponent<JMInventoryMenu>().UpdateSelectingItem(gameObject);
 		highlighter.SetActive(true);
+
+		// Deactivates the Inventory panel.
 		transform.parent.GetComponent<JMInventoryMenu>().itemOptionPanel.gameObject.SetActive(false);
 	}
 
@@ -106,7 +110,7 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	/// </summary>
 	public void ItemOption()
 	{
-
+		// 
 		transform.parent.GetComponent<JMInventoryMenu>().ItemOptionWindow(gameObject);
 	}
 
@@ -149,11 +153,11 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		if (eventData.pointerEnter == null && eventData.pointerEnter.gameObject.GetComponent<JMInventorySlot> ().Is_Equipped) {
+		if (eventData.pointerEnter == null && eventData.pointerEnter.gameObject.GetComponent<JMInventorySlot> ().Is_Equipped) 
+		{
 			originalParent.GetComponent<JMInventoryMenu> ().rightClickItem = this;
 			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.SetActive (true);
 			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.GetComponent<AmountDropOption> ()._CalledToDrop (true); 
-
 		} 
 		this.transform.SetParent (originalParent);
 		gameObject.GetComponent<CanvasGroup> ().blocksRaycasts = true;

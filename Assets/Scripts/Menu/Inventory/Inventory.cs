@@ -354,6 +354,7 @@ public class Inventory : MonoBehaviour
     private void UpdateQuickItemSlot(int index)
     {
 		Debug.Log(quickItemBarPanel.CheckIfItemOnBar(itemSlots[index].Inventory_Item.Item_Object.Item_ID));
+
         //Check if Item is on Quick Item Bar
 		if(quickItemBarPanel.CheckIfItemOnBar(itemSlots[index].Inventory_Item.Item_Object.Item_ID))
         {

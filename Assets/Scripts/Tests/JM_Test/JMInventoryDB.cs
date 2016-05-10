@@ -113,6 +113,9 @@ public class JMInventoryDB : MonoBehaviour
 
 	#region Private Methods
 
+	/// <summary>
+	/// Constructs the database.
+	/// </summary>
 	private void ConstructDatabase ()
 	{
 		//Construct data for equipment item

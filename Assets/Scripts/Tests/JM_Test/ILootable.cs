@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface IContainableItem
+public interface ILootable
 {
 	void CopyItemInfo (JMItemInfo item);		
 }

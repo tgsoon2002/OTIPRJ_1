@@ -50,6 +50,7 @@ public class JMInventoryMenu : MonoBehaviour
 
 	#region Public Methods
 
+
 	/// <summary>
 	/// Retrive the loot and add to base on "type,id and quantity"
 	/// </summary>
@@ -87,14 +88,15 @@ public class JMInventoryMenu : MonoBehaviour
 		}
 
 		//Check if detail canvas is on, if not turn it on.
-		if (!detailBlockPanel.gameObject.activeSelf) {
+		if (!detailBlockPanel.gameObject.activeSelf)
+		{
 			detailBlockPanel.gameObject.SetActive(true);
 		}
 
 		// put detail of the item to detail block
 		currentItem = selectedItem.GetComponent<JMInventorySlot>();
-		BaseItem tempItem = currentItem.Inventory_Item.item;
-		detailBlockPanel.GetComponent<DetailBlock>().UpdateDetail(tempItem.Item_ID,currentItem.Inventory_Item.itemQuantity,tempItem.Base_Item_Type);
+
+		detailBlockPanel.GetComponent<DetailBlock>().UpdateItemDetail(currentItem.Inventory_Item);
 	}
 
 	/// <summary>
@@ -134,6 +136,7 @@ public class JMInventoryMenu : MonoBehaviour
 			{
 				CreateSlot(item);	
 			}
+
 			characterCurrentWeight -= item.item.Item_Weight*item.itemQuantity;
 			SquadManager.Instance.focusedUnit.GetComponent<JMCharacterInventory>().AddItem(item);
 		
@@ -145,6 +148,7 @@ public class JMInventoryMenu : MonoBehaviour
 		// The value of canAddItem shall determine that.
 		return false;
 	}
+
 	/// <summary>
 	/// If itemOptionPanel is deactivate then activate.
 	/// Then call PopulateOption fnc in ItemOptionPanel with parameter is slotbeing select by right click.
@@ -189,9 +193,11 @@ public class JMInventoryMenu : MonoBehaviour
 
 		// since player decide to remove or drop then update the ammount.
 		itemSlots[slotIndex].Inventory_Item.itemQuantity -= amt;
+
 		// add the weight back equal to ammount of item time weight of item.
 		characterCurrentWeight += itemSlots[slotIndex].Inventory_Item.item.Item_Weight * amt;
 		UpdateWeightText();
+
 		// if player choose to drop instead of remove then instatiate the item
 		// WE need to update this function to 3D model instead of the icon of the item.
 		if(drop)
@@ -199,7 +205,7 @@ public class JMInventoryMenu : MonoBehaviour
 			GameObject copy;
 			copy = Instantiate(lootPrefab);
 
-			copy.GetComponent<IContainableItem>().CopyItemInfo(itemSlots[slotIndex].Inventory_Item);
+			copy.GetComponent<ILootable>().CopyItemInfo(itemSlots[slotIndex].Inventory_Item);
 			copy.gameObject.transform.parent = null;
 			copy.gameObject.transform.localScale = new Vector3(10, 10, 10);
 			copy.gameObject.GetComponent<Rigidbody>().useGravity = true;
@@ -256,7 +262,6 @@ public class JMInventoryMenu : MonoBehaviour
 	/// <param name="newItem">New item.</param>
 	private void CreateSlot(JMItemInfo newItem)
 	{
-
 		// create item slot. and put information of new item into the slot.
 		GameObject tempSlot = Instantiate(invSlotPrefab);
 		tempSlot.GetComponent<JMInventorySlot>().Inventory_Item = newItem;
@@ -268,9 +273,12 @@ public class JMInventoryMenu : MonoBehaviour
 		tempSlot.GetComponent<JMInventorySlot>().Sprite_GUI.sprite = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Object.Item_Sprite;
 		tempSlot.GetComponent<JMInventorySlot>().Sprite_GUI.color = new Vector4(255, 255, 255, 255);
 		tempSlot.GetComponent<JMInventorySlot>().ItemQuantity = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Qty;
+
 		// add new slot to slot list to controll.
 		itemSlots.Add(tempSlot.GetComponent<JMInventorySlot>());
-		if (newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT) {
+
+		if (newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT) 
+		{
 			tempSlot.GetComponent<JMInventorySlot>().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
 		}
 	}
