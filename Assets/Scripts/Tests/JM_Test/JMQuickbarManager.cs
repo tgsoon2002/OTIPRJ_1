@@ -28,9 +28,8 @@ public class JMQuickBarManager : MonoBehaviour
 			GameObject tmp = Instantiate(slotPrefab);
 
 			tmp.transform.SetParent(gameObject.transform);
-			tmp.GetComponent<JMQuickItem>().quickBarMngr = 
-				gameObject.GetComponent<JMQuickBarManager>();
-			quickSlots.Add(tmp.GetComponent<JMQuickItem>());
+			tmp.GetComponent<JMQuickItem>().quickBarMngr = gameObject;
+			quickSlots.Add(tmp);
 		}
 	}
 

@@ -132,7 +132,7 @@ public class JMCharacterInventory : MonoBehaviour
 		{
 			if (listOfItem [tempIndex].Is_In_Quickbar) 
 			{
-				quickBarRef.GetComponent<JMQuickBarManager>().CheckAndClearOtherSlots()
+				quickBarRef.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (id);
 			}
 
 		}
