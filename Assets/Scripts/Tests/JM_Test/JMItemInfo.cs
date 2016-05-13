@@ -47,10 +47,10 @@ public class JMItemInfo : IContainable
 	/// <param name="itemID">Item ID.</param>
 	/// <param name="quan">Item Quantity.</param>
 	/// <param name="type">Item Type.</param> 
-	public JMItemInfo(int char_ID, int itemID, int itemQty, int itemType)
+	public JMItemInfo(int char_ID, int itemID, int _itemQty, int itemType)
 	{
 		item = ItemDatabase.Instance.GetItem (itemID, itemType);
-		itemQty = itemQty;
+		itemQuantity = _itemQty;
 		charID = char_ID;
 		isEquipped = false;
 	}

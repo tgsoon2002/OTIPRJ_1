@@ -40,7 +40,7 @@ public class ItemInfo : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = item.Item_Sprite;
+        //gameObject.GetComponent<SpriteRenderer>().sprite = item.Item_Sprite;
 		equiped = false;
     }
 	#endregion

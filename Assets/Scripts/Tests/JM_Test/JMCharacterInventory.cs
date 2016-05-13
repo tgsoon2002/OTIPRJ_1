@@ -23,6 +23,11 @@ public class JMCharacterInventory : MonoBehaviour
 		set{ maxWeight = value; }
 	}
 
+	public List<JMItemInfo> List_Of_Item
+	{
+		get { return listOfItem; }
+	}
+
 	#endregion
 
 	#region Built-In Unity Methods

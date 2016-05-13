@@ -13,15 +13,20 @@ public class JMInventoryMenu : MonoBehaviour
 	public GameObject itemOptionPanel;
 	public GameObject amountOptionPanel;
 	public GameObject detailBlockPanel;
+	public GameObject itemContainer;
 
 	public Text weightText;
 
 	private JMInventorySlot currentItem;
+
+	[SerializeField]
+	private List<GameObject> containers;
+
 	public JMInventorySlot rightClickItem;
 	public List<JMInventorySlot> itemSlots;
 
-	private int characterCurrentWeight;
-	private int characterMaxWeight;
+	private int characterCurrentWeight = 50;
+	private int characterMaxWeight = 50;
 
 	// Might take this out later.
 	public static JMInventoryMenu _instance;
@@ -59,14 +64,18 @@ public class JMInventoryMenu : MonoBehaviour
 	/// <param name="quan">Quan.</param>
 	public void AddItem (JMItemInfo item)
 	{
-		BaseItem newItem = ItemDatabase.Instance.GetItem(item.charID, (int) item.item.Base_Item_Type);
+		//BaseItem newItem = ItemDatabase.Instance.GetItem(item.charID, (int) item.item.Base_Item_Type);
 
+		/*
 		GameObject newGameObject = Instantiate(lootPrefab);
 		newGameObject.transform.localScale = Vector3.one;
 		newGameObject.GetComponent<JMItemInfo>().item = newItem;
 		newGameObject.GetComponent<JMItemInfo>().itemQuantity = 1;
+		*/
 
-		if(!AddItemFromMenu(newGameObject.GetComponent<JMItemInfo>()))
+		JMItemInfo tempItem = item;
+
+		if(!AddItemFromMenu(tempItem))
 		{
 			Debug.Log("Ay yo, HOL UP!");
 		}
@@ -109,9 +118,14 @@ public class JMInventoryMenu : MonoBehaviour
 	/// <param name="item">Item.</param>
 	public bool AddItemFromMenu (JMItemInfo item)
 	{
+		Debug.Log ("GGG");
+
 		// Checks if the inventory max carry is reached.
 		if(!CheckInventoryWeight(item)) 
 		{
+
+
+
 			// Checks if the item is stackable.
 			if(item.item.Is_Stackable) 
 			{
@@ -138,7 +152,9 @@ public class JMInventoryMenu : MonoBehaviour
 			}
 
 			characterCurrentWeight -= item.item.Item_Weight*item.itemQuantity;
-			SquadManager.Instance.focusedUnit.GetComponent<JMCharacterInventory>().AddItem(item);
+
+			//UNCOMMENT LATER
+			//SquadManager.Instance.focusedUnit.GetComponent<JMCharacterInventory>().AddItem(item);
 		
 			return true;
 		}
@@ -215,6 +231,7 @@ public class JMInventoryMenu : MonoBehaviour
 				playerReference.transform.position.z);
 		}
 
+
 		//Check if still have item of same type in the inventory
 		if(itemSlots[slotIndex].Inventory_Item.itemQuantity > 0)
 		{
@@ -263,7 +280,23 @@ public class JMInventoryMenu : MonoBehaviour
 	private void CreateSlot(JMItemInfo newItem)
 	{
 		// create item slot. and put information of new item into the slot.
-		GameObject tempSlot = Instantiate(invSlotPrefab);
+		GameObject slot = Instantiate(itemContainer);
+		//GameObject item = Instantiate(invSlotPrefab);
+
+		slot.transform.SetParent (transform);
+		//item.transform.SetParent (slot.transform);
+		//item.transform.position = Vector2.zero;
+		//item.GetComponent<JMInventorySlot>().InitItemSlot(newItem);
+		slot.transform.GetChild(0).GetComponent<JMInventorySlot>().InitItemSlot(newItem);
+
+		if (newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT)
+		{
+			//	item.GetComponent<JMInventorySlot> ().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
+		}
+
+		containers.Add(slot);
+
+		/*
 		tempSlot.GetComponent<JMInventorySlot>().Inventory_Item = newItem;
 
 		//newItem.item.gameObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -273,14 +306,18 @@ public class JMInventoryMenu : MonoBehaviour
 		tempSlot.GetComponent<JMInventorySlot>().Sprite_GUI.sprite = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Object.Item_Sprite;
 		tempSlot.GetComponent<JMInventorySlot>().Sprite_GUI.color = new Vector4(255, 255, 255, 255);
 		tempSlot.GetComponent<JMInventorySlot>().ItemQuantity = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Qty;
+		*/
 
 		// add new slot to slot list to controll.
-		itemSlots.Add(tempSlot.GetComponent<JMInventorySlot>());
+		//itemSlots.Add(tempSlot.GetComponent<JMInventorySlot>());
 
-		if (newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT) 
+		/*
+		if(newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT) 
 		{
-			tempSlot.GetComponent<JMInventorySlot>().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
+			item.GetComponent<JMInventorySlot> ().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
+			//tempSlot.GetComponent<JMInventorySlot>().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
 		}
+		*/
 	}
 
 	/// <summary>
@@ -288,6 +325,18 @@ public class JMInventoryMenu : MonoBehaviour
 	/// </summary>
 	private void UpdateWeightText(){
 		weightText.text = "Weight : " + characterCurrentWeight.ToString() + " / " +characterMaxWeight.ToString();
+	}
+
+	private void CreateItemContainer ()
+	{
+		containers = new List<GameObject> ();
+
+		for (int i = 0; i < playerReference.GetComponent<JMCharacterInventory> ().List_Of_Item.Count; i++) 
+		{
+			GameObject tmp = Instantiate (itemContainer);
+
+			tmp.transform.SetParent (transform);
+		}
 	}
 
 	#endregion

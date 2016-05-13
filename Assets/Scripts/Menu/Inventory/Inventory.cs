@@ -325,20 +325,22 @@ public class Inventory : MonoBehaviour
 	/// </summary>
 	/// <param name="newItem">New item.</param>
     private void CreateSlot(ItemInfo newItem)
-    {
-		
+    {		
 		// create item slot. and put information of new item into the slot.
 		GameObject tempSlot = Instantiate(invSlotPrefab);
 		tempSlot.GetComponent<InventorySlot>().Inventory_Item = newItem;
+
 		// set parent of item just add to the slot, and turn off rigid body, turn off sprite so no conflict.
         newItem.gameObject.transform.SetParent(tempSlot.transform);
         newItem.gameObject.GetComponent<Rigidbody>().isKinematic = true;
         newItem.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+
 		// Set parent newslot to this inventory gameobject, reconfigure the sprite and info.
         tempSlot.transform.SetParent(transform);
 		tempSlot.GetComponent<InventorySlot>().Sprite_GUI.sprite = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Object.Item_Sprite;
         tempSlot.GetComponent<InventorySlot>().Sprite_GUI.color = new Vector4(255, 255, 255, 255);
 		tempSlot.GetComponent<InventorySlot>().ItemQuantity = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Qty;
+
 		// add new slot to slot list to controll.
         itemSlots.Add(tempSlot.GetComponent<InventorySlot>());
 		if (newItem.Item_Object.Base_Item_Type == BaseItemType.EQUIPMENT) {

@@ -13,6 +13,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Image spriteGUI;
 	private GameObject highlighter;
 	public Transform originalParent;
+	private GameObject tempClone;
 
     private Vector2 offset;
 	private int quantity;
@@ -66,9 +67,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
 	void Start(){
 		originalParent = transform.parent;
-		if (itemInfo._isEquiped) {
-			spriteGUI.color = new Color(1f,1f,1f,0.6f);
-		}
+
+//		if (itemInfo._isEquiped) {
+//			spriteGUI.color = new Color(1f,1f,1f,0.6f);
+//		}
 	}
 
     #endregion
@@ -120,16 +122,40 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+		/*
         offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
        // originalParent = this.transform.parent;
 		this.transform.SetParent(this.transform.parent.parent.parent.parent);
         this.transform.position = eventData.position;
+        */
+
+		tempClone = Instantiate (gameObject);
+		tempClone.GetComponent<InventorySlot> ().itemInfo = itemInfo;
+		tempClone.GetComponent<Image> ().sprite = itemInfo.Item_Object.Item_Sprite;
+		Debug.Log (tempClone.GetComponent<InventorySlot> ().itemInfo);
+		tempClone.transform.SetParent (this.transform.parent.parent.parent.parent);
+		tempClone.transform.position = eventData.position;
+
+		offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
+		// originalParent = this.transform.parent;
+		/*
+		this.transform.SetParent(this.transform.parent.parent.parent.parent);
+		this.transform.position = eventData.position;
+		*/
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+		/*
         this.transform.position = eventData.position - offset;
         gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        */
+
+		//this.transform.position = eventData.position - offset;
+		tempClone.transform.position = eventData.position - offset;
+		tempClone.GetComponent<CanvasGroup>().blocksRaycasts= false;
+
+		//gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void OnEndDrag(PointerEventData eventData)

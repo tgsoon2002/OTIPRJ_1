@@ -46,7 +46,7 @@ public class ButtonInventoryTest : MonoBehaviour
 
         if(!invRef.AddItem(newGameObject.GetComponent<ItemInfo>()))
         {
-            Debug.Log("Ey yo, HOL UP!");
+            Debug.Log("Ay yo, HOL UP!");
         }
     }
 	

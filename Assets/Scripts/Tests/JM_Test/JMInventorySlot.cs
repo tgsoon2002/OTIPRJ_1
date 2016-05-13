@@ -14,6 +14,7 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	private Vector2 offset;
 	private int quantity;
 	private bool equipped;
+	private GameObject tempClone;
 
 	public Text itemQuantityText;
 	public Transform originalParent;
@@ -59,7 +60,8 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	//Use this for initialization
 	void Awake () 
 	{
-		highlighter = transform.GetChild(1).gameObject;
+		//highlighter = transform.GetChild(1).gameObject;
+		itemQuantityText = gameObject.transform.GetChild(0).GetComponent<Text>();
 		spriteGUI = gameObject.GetComponent<Image>();
 	}
 
@@ -83,6 +85,17 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	#endregion
 
 	#region Public Methods
+
+	/// <summary>
+	/// Initializes the item slot.
+	/// </summary>
+	/// <param name="item">Item.</param>
+	public void InitItemSlot(JMItemInfo _item)
+	{
+		itemInfo = _item;
+		spriteGUI.sprite = itemInfo.Item_Info.Item_Sprite;
+		itemQuantityText.text = itemInfo.itemQuantity.ToString();
+	}
 
 	/// <summary>
 	/// Deactivate the highliter child.
@@ -134,31 +147,36 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 				ItemOption();
 			}
 		}
-
 	}
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
 		offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
-		// originalParent = this.transform.parent;
+		originalParent = this.transform.parent;
 		this.transform.SetParent(this.transform.parent.parent.parent.parent);
 		this.transform.position = eventData.position;
+
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
 		this.transform.position = eventData.position - offset;
+		//tempClone.transform.position = eventData.position - offset;
+		//tempClone.GetComponent<CanvasGroup>().blocksRaycasts= false;
+
 		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 	}
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		if (eventData.pointerEnter == null && eventData.pointerEnter.gameObject.GetComponent<JMInventorySlot> ().Is_Equipped) 
-		{
-			originalParent.GetComponent<JMInventoryMenu> ().rightClickItem = this;
-			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.SetActive (true);
-			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.GetComponent<AmountDropOption> ()._CalledToDrop (true); 
-		} 
+
+
+//		if (eventData.pointerEnter == null && eventData.pointerEnter.gameObject.GetComponent<JMInventorySlot> ().Is_Equipped) 
+//		{
+//			originalParent.GetComponent<JMInventoryMenu> ().rightClickItem = this;
+//			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.SetActive (true);
+//			originalParent.GetComponent<JMInventoryMenu> ().amountOptionPanel.GetComponent<AmountDropOption> ()._CalledToDrop (true); 
+//		} 
 		this.transform.SetParent (originalParent);
 		gameObject.GetComponent<CanvasGroup> ().blocksRaycasts = true;
 	}
