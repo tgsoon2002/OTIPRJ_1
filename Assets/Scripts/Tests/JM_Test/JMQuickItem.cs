@@ -14,6 +14,17 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 	private Image slotIcon;
 	private Sprite oriSlotIcon;
 	private Text qtyGUI;
+	private JMItemInfo itemRef;
+
+	#endregion
+
+	#region Setters and Getters
+
+	public JMItemInfo Item_Ref 
+	{
+		get { return itemRef; }
+		set { itemRef = value; }
+	}
 
 	#endregion
 
@@ -38,30 +49,36 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 		//Declaring local variables
 		bool itemExistsOnSlot;
 
-		IContainable itemRef = eventData.pointerDrag.GetComponent<JMInventorySlot>().Inventory_Item;
-		itemExistsOnSlot = quickBarMngr.GetComponent<JMQuickBarManager>().CheckIfItemOnBar(itemRef.Item_Info.Item_ID);
+		JMItemInfo tmp = eventData.pointerDrag.GetComponent<JMInventorySlot>().Inventory_Item;
+		itemExistsOnSlot = quickBarMngr.GetComponent<JMQuickBarManager>().CheckIfItemOnBar(tmp.Item_Info.Item_ID);
 
+		// Checking if the item is in the slot
 		if (itemExistsOnSlot) 
 		{
-			quickBarMngr.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (itemRef.Item_Info.Item_ID);
+			quickBarMngr.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (tmp.Item_Info.Item_ID);
 		} 
 		else 
 		{
-			quickBarMngr.GetComponent<JMQuickBarManager> ().TriggerItemAssignedEvent (itemRef.Item_Info.Item_ID);
+			quickBarMngr.GetComponent<JMQuickBarManager> ().TriggerItemAssignedEvent (tmp);
 		}
 			
-		slotIcon.sprite = itemRef.Item_Info.Item_Sprite;  // Set icon Sprite
-		qtyGUI.text = itemRef.Item_Qty.ToString();	// Set quantity
-		itemID = itemRef.Item_Info.Item_ID;		// set itemID to keep track
+		slotIcon.sprite = tmp.Item_Info.Item_Sprite;  // Set icon Sprite
+		qtyGUI.text = tmp.Item_Qty.ToString();	// Set quantity
+		itemID = tmp.Item_Info.Item_ID;		// set itemID to keep track
 	}
 
 	// Update infomation of the quickItem, remove if item is empty
-	public void UpdateInfo(int amount)
+	public void UpdateInfo(JMItemInfo newItem)
 	{
 		//Declaring local variables
+		/*
 		int originalAmount = Int32.Parse(qtyGUI.text);
 
-		qtyGUI.text = (originalAmount - amount).ToString();
+		qtyGUI.text = (originalAmount - amount).ToString();	
+		*/
+
+		itemRef = newItem;
+		qtyGUI.text = itemRef.Item_Qty.ToString();
 	}
 
 	// remove the reference of quickItem to ItemSlots

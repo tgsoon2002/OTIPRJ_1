@@ -8,16 +8,27 @@ public class JMQuickBarManager : MonoBehaviour
 
 	private List<GameObject> quickSlots;
 	public GameObject slotPrefab;
-	public delegate void InventorySlotEvent (int index);
+	public delegate void InventorySlotEvent (JMItemInfo item);
 	public static event InventorySlotEvent itemAssigned;
+	private static JMQuickBarManager _instance;
 
 	#endregion
 
 	#region Setters & Getters
 
+	public static JMQuickBarManager Instance 
+	{
+		get { return _instance; }
+	}
+
 	#endregion
 
 	#region Built-in Unity Methods
+
+	void Awake()
+	{
+		_instance = this;
+	}
 
 	// Use this for initialization
 	void Start ()
@@ -51,21 +62,21 @@ public class JMQuickBarManager : MonoBehaviour
 		}
 	}
 
-	public void ClearQuickBarSlot (int index)
+	public void ClearQuickBarSlot (JMItemInfo item)
 	{
 		quickSlots [quickSlots.FindIndex (o => o.GetComponent<JMQuickItem> ().itemID ==
-		index)].GetComponent<JMQuickItem> ().RemoveReference ();		
+			item.Item_Info.Item_ID)].GetComponent<JMQuickItem> ().RemoveReference ();		
 	}
 
-	public void UpdateQuickBarSlot (int amount, int index)
+	public void UpdateQuickBarSlot (JMItemInfo newItem)
 	{
 		quickSlots [quickSlots.FindIndex (o => o.GetComponent<JMQuickItem> ().itemID ==
-			index)].GetComponent<JMQuickItem> ().UpdateInfo (amount);
+			newItem.Item_Info.Item_ID)].GetComponent<JMQuickItem> ().UpdateInfo (newItem);
 	}
 
-	public void TriggerItemAssignedEvent (int index)
+	public void TriggerItemAssignedEvent (JMItemInfo item)
 	{
-		itemAssigned (index);
+		itemAssigned (item);
 	}
 
 	#endregion

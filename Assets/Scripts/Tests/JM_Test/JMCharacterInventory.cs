@@ -79,21 +79,30 @@ public class JMCharacterInventory : MonoBehaviour
 	/// <param name="item">Item.</param>
 	public void AddItem (JMItemInfo item)
 	{
+		// Checking to see if the item is stackable...
 		if (item.item.Is_Stackable)
 		{
+			// Obtain the index of the item on the list
 			int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
 				o.item.Base_Item_Type == item.item.Base_Item_Type);
 
+			// If the temp > -1, the item has been found
 			if (temp > -1) 
 			{
 				listOfItem[temp].itemQuantity += item.itemQuantity;
+				JMQuickBarManager.Instance.UpdateQuickBarSlot (item);
 			} 
+			// Otherwise, the item has not been found.
+			// This means the item is a new stackable item.
+			// Therefore, the new item is added to the list.
 			else 
 			{
 				listOfItem.Add(new JMItemInfo(charID, item.item.Item_ID, item.itemQuantity, 
 							  (int)item.item.Base_Item_Type));
 			}
 		} 
+		// Otherwise, the item is an Equipment.
+		// Equipment shall always be added to the list.
 		else 
 		{
 			listOfItem.Add(new JMItemInfo(charID, item.item.Item_ID, item.itemQuantity, 
@@ -107,9 +116,12 @@ public class JMCharacterInventory : MonoBehaviour
 	/// <param name="item">Item.</param>
 	public void RemoveItem(JMItemInfo item)
 	{
+		// Grabbing the index of the item to be removed.
 		int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
 									    o.item.Base_Item_Type == item.item.Base_Item_Type);
 
+		// If a valid index of the item has been found, the item is removed.
+		// REMINDER: Possible unit testing (try/catch block) to be added here later.
 		if (temp > -1) 
 		{
 			listOfItem.RemoveAt(temp);
@@ -147,9 +159,21 @@ public class JMCharacterInventory : MonoBehaviour
 
 	#region Private Methods
 
-	private void AssignItemToQuickBarSlot (int id)
+	// The item is assigned to the Quickbar slot.
+	// When the user drags the item to the Quickbar slot,
+	// An event is called in conjunction with this function.
+	private void AssignItemToQuickBarSlot (JMItemInfo item)
 	{
-		listOfItem [listOfItem.FindIndex (o => o.Item_Info.Item_ID == id)].Is_In_Quickbar = true;
+		listOfItem [listOfItem.FindIndex (o => o.Item_Info.Item_ID == item.Item_Info.Item_ID)].Is_In_Quickbar = true;
+	}
+
+
+	// TODO: to complete later.
+	private void UpdateFromQuickbar (JMItemInfo item)
+	{
+
+
+
 	}
 
 	#endregion
