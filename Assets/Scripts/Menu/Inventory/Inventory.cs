@@ -203,13 +203,14 @@ public class Inventory : MonoBehaviour
     {
         //Declaring local variables
 		GameObject temp;
-        
-        
+       
 		// since player decide to remove or drop then update the ammount.
 		itemSlots[slotIndex].Inventory_Item.Item_Qty -= amt;
+
 		// add the weight back equal to ammount of item time weight of item.
 		characterCurrentWeight += itemSlots[slotIndex].Inventory_Item.Item_Object.Item_Weight * amt;
 		UpdateWeightText();
+
 		// if player choose to drop instead of remove then instatiate the item
 		// WE need to update this function to 3D model instead of the icon of the item.
 		if(drop)
@@ -242,8 +243,7 @@ public class Inventory : MonoBehaviour
 			Destroy(temp.gameObject);
 		}
     }
-
-
+		
 	// Allows a character to equip a specific item.
 	// This need to work alot on.
 	public void EquipItem()

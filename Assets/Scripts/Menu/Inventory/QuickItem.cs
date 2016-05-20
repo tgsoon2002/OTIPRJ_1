@@ -51,6 +51,7 @@ public class QuickItem : MonoBehaviour, IDropHandler
         qtyGUI.text = itemRef.Item_Qty.ToString();	// Set quantity
 		itemID = itemRef.Item_Object.Item_ID;		// set itemID to keep track
     }
+
 	// Update infomation of the quickItem, remove if item is empty
     public void UpdateInfo()
     {
