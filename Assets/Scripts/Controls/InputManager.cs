@@ -224,20 +224,12 @@ public class InputManager : MonoBehaviour
 		
 	private float GetMouseClickInput(KeyBinds bind)
 	{
-		
-//		if( Input.GetMouseButtonDown(bind.mouseBindCode))
-//		{
-//			Debug.Log("got mouse input");
-//			return 1.0f;
-//		}
-//		else 
-			if (Input.GetMouseButton(bind.mouseBindCode)) {
+		if (Input.GetMouseButton(bind.mouseBindCode)) {
 			return 1.0f;
 		}
 		else if (Input.GetMouseButtonUp(bind.mouseBindCode)){
 			return 2.0f;
 		}
-
 		return 0f;
 	}
 

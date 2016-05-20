@@ -46,11 +46,13 @@ public class Inventory : MonoBehaviour
 	#endregion
 
 	#region Built-In Unity Methods
-
+	void Awake(){
+		_instance = this;
+	}
 	// Use this for initialization
 	void Start ()
     {
-		_instance = this;
+		
 		ClearInventory(50);
         itemSlots = new List<InventorySlot>();
 		UpdateWeightText();

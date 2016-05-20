@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameInputNameSpace;
 
 
+
 /// <summary>
 /// Command.cs recive chacteracter control input, proccess then send command to focus unit character
 /// </summary>
@@ -138,8 +139,8 @@ public class Commands : MonoBehaviour
 				// check if character should sprint or walk
 				if( Time.time - tapTimer > 0.2f && tap <= -1)
 				{
-					Debug.Log("Sprint...");
-					SquadManager.Instance.focusedUnit.MoveThisUnit(-5.0f);
+
+					//focusUnit.MoveThisUnit(-3.0f);
 					prevInput.Push(CharacterInputs.Character_Move_Left);
 					tap = -2;
 				}
@@ -153,13 +154,24 @@ public class Commands : MonoBehaviour
 			// move left button up
 			else if(type == 2)
 			{
-				
-					startTimer = false;
-					tapTimer = Time.time - tapTimer;
+				startTimer = false;
+				tapTimer = Time.time - tapTimer;
 
-					if(tap == 2 || tap == -2) 
+				if(tap == 2 || tap == -2) 
+				{
+					tap = 0;
+				}
+				// If previous button is tap left then perform dash left
+				if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
+				{
+					lastTapped = Time.time;
+					if(tap == -1)
 					{
+						//focusUnit.DashThisUnit(-1.0f);
+						prevInput.Pop();
+						prevInput.Push(CharacterInputs.Character_Move_Left);
 						tap = 0;
+						Debug.Log("DASH");
 					}
 					// If previous button is tap left then perform dash left
 					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
@@ -178,9 +190,9 @@ public class Commands : MonoBehaviour
 							tap = -1;
 						}
 					}
+				}
 
-					prevInput.Clear();
-
+				prevInput.Clear();
 			}
 		}
 	}
@@ -191,6 +203,7 @@ public class Commands : MonoBehaviour
 	/// <param name="type">Type.</param>
 	public void MoveRight(CharacterInputs cmd, int type)
 	{
+
 		if(cmd == CharacterInputs.Character_Move_Right)
 		{
 			if(type == 1)

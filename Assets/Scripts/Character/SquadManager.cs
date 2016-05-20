@@ -9,7 +9,9 @@ public class SquadManager : MonoBehaviour {
 	public BasePlayerCharacter focusedUnit;
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
-	public GameObject playerCharacter;
+
+	public GameObject playerPrefab;
+	private Commands commands;
 
 
 	#endregion
@@ -28,7 +30,8 @@ public class SquadManager : MonoBehaviour {
 	}
 
 
-	void Awake(){
+	void Awake()
+	{
 		_instance = this;
 	}
 
@@ -80,7 +83,8 @@ public class SquadManager : MonoBehaviour {
 			
 			return;
 		}
-		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
+
+		GameObject tempchar =  Instantiate(playerPrefab,spawnPoint.position,spawnPoint.rotation) as GameObject;
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
 		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
