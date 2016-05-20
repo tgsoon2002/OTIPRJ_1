@@ -38,10 +38,10 @@ public class DetailBlock : MonoBehaviour
 	public void UpdateItemDetail (JMItemInfo item)
 	{
 		
-		itemIcon.sprite = item.item.Item_Sprite;
-		descText.text = "Description : " + item.item.Item_Description;
-		infoText.text = "Type : " + item.item.Base_Item_Type + 
-			"\nPrice : " + item.item.Item_Price ;
+		itemIcon.sprite = item.Item_Info.Item_Sprite;
+		descText.text = "Description : " + item.Item_Info.Item_Description;
+		infoText.text = "Type : " + item.Item_Info.Base_Item_Type + 
+			"\nPrice : " + item.Item_Info.Item_Price ;
 	}
 
 	/// <summary>

@@ -123,23 +123,20 @@ public class JMInventoryMenu : MonoBehaviour
 		// Checks if the inventory max carry is reached.
 		if(!CheckInventoryWeight(item)) 
 		{
-
-
-
 			// Checks if the item is stackable.
-			if(item.item.Is_Stackable) 
+			if(item.Item_Info.Is_Stackable) 
 			{
 				//Checks if the item exists in the character's inventory.
-				if(itemSlots.Exists(o => o.Inventory_Item.item.Item_ID == item.item.Item_ID))
+				if(itemSlots.Exists(o => o.Inventory_Item.Item_Info.Item_ID == item.Item_Info.Item_ID))
 				{
 					//Obtains the item index.
-					int tempIndex = itemSlots.FindIndex(o => o.Inventory_Item.item.Item_ID == item.item.Item_ID);
+					int tempIndex = itemSlots.FindIndex(o => o.Inventory_Item.Item_Info.Item_ID == item.Item_Info.Item_ID);
 
 					//Updates the inventory quantity.
-					itemSlots[tempIndex].Inventory_Item.itemQuantity += item.itemQuantity;
+					itemSlots[tempIndex].Inventory_Item.Item_Qty += item.Item_Qty;
 
 					//Update the GUI
-					itemSlots[tempIndex].ItemQuantity = itemSlots[tempIndex].Inventory_Item.itemQuantity;
+					itemSlots[tempIndex].ItemQuantity = itemSlots[tempIndex].Inventory_Item.Item_Qty;
 				} 
 				else 
 				{
@@ -151,7 +148,7 @@ public class JMInventoryMenu : MonoBehaviour
 				CreateSlot(item);	
 			}
 
-			characterCurrentWeight -= item.item.Item_Weight*item.itemQuantity;
+			characterCurrentWeight -= item.Item_Info.Item_Weight*item.Item_Qty;
 
 			//UNCOMMENT LATER
 			//SquadManager.Instance.focusedUnit.GetComponent<JMCharacterInventory>().AddItem(item);
@@ -208,10 +205,10 @@ public class JMInventoryMenu : MonoBehaviour
 		GameObject temp;
 
 		// since player decide to remove or drop then update the ammount.
-		itemSlots[slotIndex].Inventory_Item.itemQuantity -= amt;
+		itemSlots[slotIndex].Inventory_Item.Item_Qty -= amt;
 
 		// add the weight back equal to ammount of item time weight of item.
-		characterCurrentWeight += itemSlots[slotIndex].Inventory_Item.item.Item_Weight * amt;
+		characterCurrentWeight += itemSlots[slotIndex].Inventory_Item.Item_Info.Item_Weight * amt;
 		UpdateWeightText();
 
 		// if player choose to drop instead of remove then instatiate the item
@@ -233,9 +230,9 @@ public class JMInventoryMenu : MonoBehaviour
 
 
 		//Check if still have item of same type in the inventory
-		if(itemSlots[slotIndex].Inventory_Item.itemQuantity > 0)
+		if(itemSlots[slotIndex].Inventory_Item.Item_Qty > 0)
 		{
-			itemSlots[slotIndex].ItemQuantity= itemSlots[slotIndex].Inventory_Item.itemQuantity;
+			itemSlots[slotIndex].ItemQuantity= itemSlots[slotIndex].Inventory_Item.Item_Qty;
 			//UpdateQuickItemSlot(slotIndex);
 		}
 		// if item is not enough then remove the slot.
@@ -261,7 +258,7 @@ public class JMInventoryMenu : MonoBehaviour
 	/// <param name="item">Item.</param>
 	private bool CheckInventoryWeight(JMItemInfo item)
 	{
-		if(characterCurrentWeight - (item.item.Item_Weight * item.itemQuantity) <= 0)
+		if(characterCurrentWeight - (item.Item_Info.Item_Weight * item.Item_Qty) <= 0)
 		{
 			return true;
 		}
@@ -289,7 +286,7 @@ public class JMInventoryMenu : MonoBehaviour
 		//item.GetComponent<JMInventorySlot>().InitItemSlot(newItem);
 		slot.transform.GetChild(0).GetComponent<JMInventorySlot>().InitItemSlot(newItem);
 
-		if (newItem.item.Base_Item_Type == BaseItemType.EQUIPMENT)
+		if (newItem.Item_Info.Base_Item_Type == BaseItemType.EQUIPMENT)
 		{
 			//	item.GetComponent<JMInventorySlot> ().equipmentPart = (int)((EquipmentItem)newItem.item).Equipment_Type;
 		}

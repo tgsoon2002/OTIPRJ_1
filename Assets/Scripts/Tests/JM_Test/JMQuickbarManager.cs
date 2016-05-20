@@ -8,7 +8,7 @@ public class JMQuickBarManager : MonoBehaviour
 
 	private List<GameObject> quickSlots;
 	public GameObject slotPrefab;
-	public delegate void InventorySlotEvent (JMItemInfo item);
+	public delegate void InventorySlotEvent (int index);
 	public static event InventorySlotEvent itemAssigned;
 	private static JMQuickBarManager _instance;
 
@@ -40,6 +40,7 @@ public class JMQuickBarManager : MonoBehaviour
 
 			tmp.transform.SetParent(gameObject.transform);
 			tmp.GetComponent<JMQuickItem>().quickBarMngr = gameObject;
+			tmp.GetComponent<JMQuickItem> ().Slot_Index = i;
 			quickSlots.Add(tmp);
 		}
 	}
@@ -53,13 +54,9 @@ public class JMQuickBarManager : MonoBehaviour
 		return quickSlots.Exists(o => o.GetComponent<JMQuickItem>().itemID == itemID);
 	}
 
-	public void CheckAndClearOtherSlots(int itemID)
+	public void CheckAndClearOtherSlots(int index, int amount)
 	{
-		if(quickSlots.Exists(o => o.GetComponent<JMQuickItem>().itemID == itemID))
-		{
-			quickSlots[quickSlots.FindIndex(o => o.GetComponent<JMQuickItem>().itemID == 
-				itemID)].GetComponent<JMQuickItem>().RemoveReference();
-		}
+		quickSlots [index].GetComponent<JMQuickItem> ().UpdateInfo (amount);
 	}
 
 	public void ClearQuickBarSlot (JMItemInfo item)
@@ -68,15 +65,14 @@ public class JMQuickBarManager : MonoBehaviour
 			item.Item_Info.Item_ID)].GetComponent<JMQuickItem> ().RemoveReference ();		
 	}
 
-	public void UpdateQuickBarSlot (JMItemInfo newItem)
+	public void UpdateQuickBarSlot (int index, int amount)
 	{
-		quickSlots [quickSlots.FindIndex (o => o.GetComponent<JMQuickItem> ().itemID ==
-			newItem.Item_Info.Item_ID)].GetComponent<JMQuickItem> ().UpdateInfo (newItem);
+		quickSlots [index].GetComponent<JMQuickItem> ().Item_Ref.Item_Qty += amount;
 	}
 
-	public void TriggerItemAssignedEvent (JMItemInfo item)
+	public void TriggerItemAssignedEvent (int slotIndex)
 	{
-		itemAssigned (item);
+		itemAssigned (slotIndex);
 	}
 
 	#endregion

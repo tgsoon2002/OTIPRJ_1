@@ -94,7 +94,7 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 	{
 		itemInfo = _item;
 		spriteGUI.sprite = itemInfo.Item_Info.Item_Sprite;
-		itemQuantityText.text = itemInfo.itemQuantity.ToString();
+		itemQuantityText.text = itemInfo.Item_Qty.ToString();
 	}
 
 	/// <summary>
@@ -141,7 +141,7 @@ public class JMInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 		}
 		else if(Input.GetMouseButtonUp(1))
 		{
-			if (!itemInfo.isEquipped) 
+			if (!itemInfo.Is_Equipped) 
 			{
 				transform.parent.GetComponent<JMInventoryMenu>().rightClickItem = this.GetComponent<JMInventorySlot>();
 				ItemOption();

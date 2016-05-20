@@ -15,6 +15,7 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 	private Sprite oriSlotIcon;
 	private Text qtyGUI;
 	private JMItemInfo itemRef;
+	private int slotIndex;
 
 	#endregion
 
@@ -24,6 +25,11 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 	{
 		get { return itemRef; }
 		set { itemRef = value; }
+	}
+
+	public int Slot_Index 
+	{
+		set { slotIndex = value; }
 	}
 
 	#endregion
@@ -46,29 +52,11 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 	//Checking when some object Drop on the quickItem(itemSlot)
 	public void OnDrop(PointerEventData eventData)
 	{
-		//Declaring local variables
-		bool itemExistsOnSlot;
-
-		JMItemInfo tmp = eventData.pointerDrag.GetComponent<JMInventorySlot>().Inventory_Item;
-		itemExistsOnSlot = quickBarMngr.GetComponent<JMQuickBarManager>().CheckIfItemOnBar(tmp.Item_Info.Item_ID);
-
-		// Checking if the item is in the slot
-		if (itemExistsOnSlot) 
-		{
-			quickBarMngr.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (tmp.Item_Info.Item_ID);
-		} 
-		else 
-		{
-			quickBarMngr.GetComponent<JMQuickBarManager> ().TriggerItemAssignedEvent (tmp);
-		}
-			
-		slotIcon.sprite = tmp.Item_Info.Item_Sprite;  // Set icon Sprite
-		qtyGUI.text = tmp.Item_Qty.ToString();	// Set quantity
-		itemID = tmp.Item_Info.Item_ID;		// set itemID to keep track
+		quickBarMngr.GetComponent<JMQuickBarManager> ().TriggerItemAssignedEvent (slotIndex);
 	}
 
 	// Update infomation of the quickItem, remove if item is empty
-	public void UpdateInfo(JMItemInfo newItem)
+	public void UpdateInfo(int amount)
 	{
 		//Declaring local variables
 		/*
@@ -77,7 +65,14 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 		qtyGUI.text = (originalAmount - amount).ToString();	
 		*/
 
-		itemRef = newItem;
+		if (amount < 0) {
+			itemRef.Item_Qty -= amount;
+		} 
+		else 
+		{
+			itemRef.Item_Qty += amount;
+		}
+			
 		qtyGUI.text = itemRef.Item_Qty.ToString();
 	}
 
@@ -87,6 +82,7 @@ public class JMQuickItem : MonoBehaviour, IDropHandler
 		slotIcon.sprite = oriSlotIcon;
 		qtyGUI.text = "0";
 		itemID = null;
+		itemRef = null;
 	}
 
 	#endregion

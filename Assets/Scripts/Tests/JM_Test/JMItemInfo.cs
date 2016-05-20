@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JMItemInfo : IContainable
+public class JMItemInfo
 {
 	#region Data Members
 
-	public BaseItem item;
-	public int itemQuantity;
-	public int charID;
-	public bool isEquipped;
-	private bool isInQuickbar;
+	private BaseItem item;
+	private int itemQuantity;
+	private int charID;
+	private bool isEquipped;
+	private int isInQuickbar;
 
 	#endregion
 
@@ -21,7 +21,7 @@ public class JMItemInfo : IContainable
 		set { item = value; }
 	}
 
-	public bool Is_In_Quickbar 
+	public int Is_In_Quickbar 
 	{
 		get { return isInQuickbar; }
 		set { isInQuickbar = value; }
@@ -31,6 +31,18 @@ public class JMItemInfo : IContainable
 	{
 		get { return itemQuantity; }
 		set { itemQuantity = value; }
+	}
+
+	public int Char_ID 
+	{
+		get { return charID; }
+		set { charID = value; }
+	}
+
+	public bool Is_Equipped
+	{
+		get { return isEquipped; }
+		set { isEquipped = value; }
 	}
 
 	#endregion

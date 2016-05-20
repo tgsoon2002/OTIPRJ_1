@@ -7,20 +7,20 @@ public class JMCharacterInventory : MonoBehaviour
 	#region Data Members
 
 	List<JMItemInfo> listOfItem;
-	int maxWeight = 50;				// This value is hard coded. Character stats should
-									// determine the weight.
+	private int currentWeight;	    // The character's current weight.
 	public int charID;				// The character's ID.
 	public GameObject quickBarRef;
+
 
 	#endregion
 
 	#region Setters & Getters
 
 	// Gets and sets the character's max weight
-	public int CharacterMaxWeight 
+	public int Current_Weight 
 	{
-		get{ return  maxWeight; }
-		set{ maxWeight = value; }
+		get{ return currentWeight; }
+		set{ currentWeight = value; }
 	}
 
 	public List<JMItemInfo> List_Of_Item
@@ -80,33 +80,33 @@ public class JMCharacterInventory : MonoBehaviour
 	public void AddItem (JMItemInfo item)
 	{
 		// Checking to see if the item is stackable...
-		if (item.item.Is_Stackable)
+		if (item.Item_Info.Is_Stackable)
 		{
 			// Obtain the index of the item on the list
-			int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
-				o.item.Base_Item_Type == item.item.Base_Item_Type);
+			int temp = listOfItem.FindIndex(o => o.Item_Info.Item_ID == item.Item_Info.Item_ID && 
+				o.Item_Info.Base_Item_Type == item.Item_Info.Base_Item_Type);
 
 			// If the temp > -1, the item has been found
 			if (temp > -1) 
 			{
-				listOfItem[temp].itemQuantity += item.itemQuantity;
-				JMQuickBarManager.Instance.UpdateQuickBarSlot (item);
+				listOfItem[temp].Item_Qty += item.Item_Qty;
+				JMQuickBarManager.Instance.CheckAndClearOtherSlots(listOfItem[temp].Is_In_Quickbar, item.Item_Qty);
 			} 
 			// Otherwise, the item has not been found.
 			// This means the item is a new stackable item.
 			// Therefore, the new item is added to the list.
 			else 
 			{
-				listOfItem.Add(new JMItemInfo(charID, item.item.Item_ID, item.itemQuantity, 
-							  (int)item.item.Base_Item_Type));
+				listOfItem.Add(new JMItemInfo(charID, item.Item_Info.Item_ID, item.Item_Qty, 
+					(int)item.Item_Info.Base_Item_Type));
 			}
 		} 
 		// Otherwise, the item is an Equipment.
 		// Equipment shall always be added to the list.
 		else 
 		{
-			listOfItem.Add(new JMItemInfo(charID, item.item.Item_ID, item.itemQuantity, 
-						  (int)item.item.Base_Item_Type));
+			listOfItem.Add(new JMItemInfo(charID, item.Item_Info.Item_ID, item.Item_Qty, 
+				(int)item.Item_Info.Base_Item_Type));
 		}
 	}
 
@@ -117,8 +117,8 @@ public class JMCharacterInventory : MonoBehaviour
 	public void RemoveItem(JMItemInfo item)
 	{
 		// Grabbing the index of the item to be removed.
-		int temp = listOfItem.FindIndex(o => o.item.Item_ID == item.item.Item_ID && 
-									    o.item.Base_Item_Type == item.item.Base_Item_Type);
+		int temp = listOfItem.FindIndex(o => o.Item_Info.Item_ID == item.Item_Info.Item_ID && 
+			o.Item_Info.Base_Item_Type == item.Item_Info.Base_Item_Type);
 
 		// If a valid index of the item has been found, the item is removed.
 		// REMINDER: Possible unit testing (try/catch block) to be added here later.
@@ -143,15 +143,26 @@ public class JMCharacterInventory : MonoBehaviour
 
 	public void DropItem (int id, int amount)
 	{
+		// Getting the index for the item to be dropped
 		int tempIndex = listOfItem.FindIndex (o => o.Item_Info.Item_ID == id);
 
-		if (listOfItem [tempIndex].itemQuantity - amount <= 0) 
+		// Checking to if the item already exists in the QuickBar
+		if (listOfItem [tempIndex].Is_In_Quickbar > -1) 
 		{
-			if (listOfItem [tempIndex].Is_In_Quickbar) 
-			{
-				quickBarRef.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (id);
-			}
+			// Update the QuickBar
+			quickBarRef.GetComponent<JMQuickBarManager> ().CheckAndClearOtherSlots (listOfItem [tempIndex].Is_In_Quickbar, -amount);
+		}
 
+		// Checking if the amount of the item is not completely removed
+		if (listOfItem [tempIndex].Item_Qty - amount <= 0) 
+		{
+			// Update the quantity
+			listOfItem [tempIndex].Item_Qty -= amount;
+		}
+		else 
+		{
+			// Completely remove the item at the index specified
+			listOfItem.RemoveAt(tempIndex);
 		}
 	}
 
@@ -162,9 +173,11 @@ public class JMCharacterInventory : MonoBehaviour
 	// The item is assigned to the Quickbar slot.
 	// When the user drags the item to the Quickbar slot,
 	// An event is called in conjunction with this function.
-	private void AssignItemToQuickBarSlot (JMItemInfo item)
+	private void AssignItemToQuickBarSlot (int index)
 	{
-		listOfItem [listOfItem.FindIndex (o => o.Item_Info.Item_ID == item.Item_Info.Item_ID)].Is_In_Quickbar = true;
+		listOfItem [listOfItem.FindIndex (o => o.Is_In_Quickbar == index)].Is_In_Quickbar = -1;
+
+		listOfItem [index].Is_In_Quickbar = index;
 	}
 
 

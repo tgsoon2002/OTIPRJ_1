@@ -58,7 +58,7 @@ public class JMInventoryDB : MonoBehaviour
 
 		foreach (var itemObj in inventoryDB) 
 		{
-			if (itemObj.item.Item_ID == charID) 
+			if (itemObj.Item_Info.Item_ID == charID) 
 			{
 				tempList.Add(itemObj);
 			}
@@ -77,9 +77,9 @@ public class JMInventoryDB : MonoBehaviour
 	/// <param name="quan">Quan.</param>
 	public void SaveInventory (int charID, int newItemID, int newItemType, int qty)
 	{
-		if (inventoryDB.Exists(o => o.charID == charID && (int) o.item.Base_Item_Type == newItemType)) 
+		if (inventoryDB.Exists(o => o.Item_Info.Item_ID == charID && (int) o.Item_Info.Base_Item_Type == newItemType)) 
 		{
-			inventoryDB.Find(o => o.charID == charID && (int) o.item.Base_Item_Type == newItemType).itemQuantity = qty;
+			inventoryDB.Find(o => o.Item_Info.Item_ID == charID && (int) o.Item_Info.Base_Item_Type == newItemType).Item_Qty = qty;
 		}
 		else
 		{
@@ -96,10 +96,10 @@ public class JMInventoryDB : MonoBehaviour
 
 		for (int i = 0; i < inventoryDB.Count; i++) 
 		{
-			temp.char_ID = inventoryDB[i].charID;
-			temp.item_ID = inventoryDB[i].item.Item_ID;
-			temp.item_Qty = inventoryDB[i].itemQuantity;
-			temp.item_Type = (int) (inventoryDB[i].item.Base_Item_Type);
+			temp.char_ID = inventoryDB[i].Char_ID;
+			temp.item_ID = inventoryDB[i].Item_Info.Item_ID;
+			temp.item_Qty = inventoryDB[i].Item_Qty;
+			temp.item_Type = (int) (inventoryDB[i].Item_Info.Base_Item_Type);
 
 			//Convert Itemslot Type to string by using JsonMapper.ToJson
 			string inputString = JsonMapper.ToJson(temp);
