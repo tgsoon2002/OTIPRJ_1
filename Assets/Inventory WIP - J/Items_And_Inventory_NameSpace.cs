@@ -91,6 +91,32 @@ namespace Items_And_Inventory
 		
 	#endregion
 
+	#region Item Slots Interface
+
+	/// <summary>
+	/// Used by the Item Slot Game Object
+	/// to decouple its component class.
+	/// </summary>
+	public interface ISlottable
+	{
+		int Item_Quantity
+		{
+			get;
+			set;
+		}
+
+		int Item_ID
+		{
+			get;
+			set;
+		}
+
+		void InitializeItemSlot(IStoreable item);
+		void UpdateQuantity(int qty);
+	}
+
+	#endregion
+
 	#region Loot Interfaces
 
 	/// <summary>

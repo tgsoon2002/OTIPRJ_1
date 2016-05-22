@@ -27,8 +27,10 @@ public class CharacterInventory : MonoBehaviour
 	 *  - state is mainly used for InventoryMenu
 	 *	  true  : Create a slot
 	 *	  false : Update the slot and possibly remove it
+	 *	- excludeQuickBar's value will tell if the QuickBar needs
+	 *	  to update its contents.
 	 */
-	public delegate void ItemAction(ItemInfo item, bool state);
+	public delegate void ItemAction(ItemInfo item, bool state, bool excludeQuickBar);
 	public event ItemAction ItemEvent;
 
 	#endregion
@@ -55,14 +57,14 @@ public class CharacterInventory : MonoBehaviour
 	/// Called when the Inventory Menu is
 	/// opened by the user.
 	/// </summary>
-	public void InitializeInventoryMenu()
+	public void InitializeMenu()
 	{
 		foreach(ItemInfo item in itemList)
 		{
-			TriggerItemEvent(item, true);
+			TriggerItemEvent(item, true, false);	
 		}
 	}
-
+		
 	/// <summary>
 	/// Called when adding an Item to the CharacterInventory
 	/// </summary>
@@ -84,13 +86,13 @@ public class CharacterInventory : MonoBehaviour
 					itemList[index].Item_Quantity += newItem.Item_Quantity;
 
 					if(playerReference.GetComponent<IControllable>().Character_Is_Selected)
-					{ 
+					{
 						//Trigger an event!
 						//Passing the item to be updated.
 						//The second argument is false because we
 						//are just updating existing information.
-						TriggerItemEvent(itemList[index], false);
-					}
+						TriggerItemEvent(itemList[index], false, true);
+					}		
 				}
 				//This case is when a new Stackable item is going to be added
 				//to the Inventory.
@@ -104,7 +106,7 @@ public class CharacterInventory : MonoBehaviour
 					{
 						//If true, trigger an event and pass true to create
 						//an item slot element on the Menu UI!
-						TriggerItemEvent(itemList[index], true);
+						TriggerItemEvent(itemList[index], true, false);
 					}
 				}
 			}
@@ -118,7 +120,7 @@ public class CharacterInventory : MonoBehaviour
 				{
 					//If true, trigger an event and pass true to create
 					//an item slot element on the Menu UI!
-					TriggerItemEvent(temp, true);
+					TriggerItemEvent(temp, true, false);
 				}
 			}
 		}
@@ -153,26 +155,37 @@ public class CharacterInventory : MonoBehaviour
 					//Simply update the item's quantity.
 					itemList[index].Item_Quantity -= qty;
 				}
+
+				//Create a temporary ItemInfo object to reverse the sign
+				//of the quantity, so the menu knows to subtract it.
+				ItemInfo tmp = itemList[index];
+				tmp.Item_Quantity *= -1;
+
+				//Trigger the event:
+				//Pass false, since we will be 
+				//updating the item slot. Or in
+				//this case, completely removing it.
+				TriggerItemEvent(itemList[index], false, true);
 			}
 			else
 			{
 				//This is for the case if the item to be removed is an
 				//Equipment item.
 				itemList.RemoveAt(index);
+
+				//Trigger the event:
+				//Pass false, since we will be 
+				//updating the item slot. Or in
+				//this case, completely removing it.
+				TriggerItemEvent(itemList[index], false, false);
 			}
-
-			//Trigger the event:
-			//Pass false, since we will be 
-			//updating the item slot. Or in
-			//this case, completely removing it.
-			ItemEvent(itemList[index], false);
-
+				
 			//Check if removing means dropping it to the Game World.
 			if(toDrop)
 			{
 				//Instantiate a new ItemInfo object to be used by the
 				//Loot GameObject.
-				ItemInfo itemToDrop = new ItemInfo(itemList[index], qty);
+				ItemInfo itemToDrop = new ItemInfo(itemList[index].Item_Info, qty);
 
 				//Call DropLoot
 				DropLoot(itemToDrop);
@@ -213,11 +226,21 @@ public class CharacterInventory : MonoBehaviour
 	/// Triggers the item event.
 	/// </summary>
 	/// <param name="newItem">New item.</param>
-	private void TriggerItemEvent(ItemInfo newItem, bool state)
+	private void TriggerItemEvent(ItemInfo newItem, bool state, bool excludeQB)
 	{
-		ItemEvent(newItem, state);
+		//First make sure there are any listeners
+		if(ItemEvent != null)
+		{
+			//Trigger the event if there are.
+			ItemEvent(newItem, state, excludeQB);
+		}
 	}
 
+	/// <summary>
+	/// Drops the loot game object onto the game world,
+	/// along with the associated ItemInfo
+	/// </summary>
+	/// <param name="droppedItem">Dropped item.</param>
 	private void DropLoot(ItemInfo droppedItem)
 	{
 		GameObject loot =Instantiate(lootPrefab);
@@ -229,7 +252,6 @@ public class CharacterInventory : MonoBehaviour
 		loot.transform.position = new Vector3(playerReference.transform.position.x + 1.0f,
 											  playerReference.transform.position.y + 1.5f,
 											  loot.transform.position.z);
-									
 	}
 
 	#endregion
