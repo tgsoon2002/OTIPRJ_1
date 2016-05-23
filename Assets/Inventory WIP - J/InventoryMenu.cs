@@ -53,7 +53,7 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 	/// <param name="eventData">Event data.</param>
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		//When user presses the Left Mouse click
+		//When user presses the Right Mouse click
 		if(Input.GetMouseButtonUp(1))
 		{
 			//Checks if the Left Mouse click pressed an Item Slot GameObject
@@ -106,9 +106,9 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 				}
 				else
 				{
-					//If not, whether or not the item is getting added/subtracted, simply 
-					//update the quantity of the Item Slot here instead of calling 
-					//the getter/setter, since we'll also update the Text.
+					//If not, and whether or not the item is getting added/subtracted, simply 
+					//update the quantity of the Item Slot here.
+					//Instead of call the getter/setter, since we'll also update the Text.
 					itemSlots[index].GetComponent<ISlottable>().UpdateQuantity(_item.Item_Quantity);
 				}
 			}
