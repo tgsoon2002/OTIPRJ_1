@@ -56,8 +56,8 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 		//When user presses the Right Mouse click
 		if(Input.GetMouseButtonUp(1))
 		{
-			//Checks if the Left Mouse click pressed an Item Slot GameObject
-			if(eventData.lastPress.gameObject.GetComponent<ISlottable>() != null)
+			//Checks if the Right Mouse click pressed an Item Slot GameObject
+			if(eventData.pointerCurrentRaycast.gameObject.GetComponent<ISlottable>() != null)
 			{
 				//If it is, then disable the Inventory, and all of its children
 				//so the user won't be clicking by accident all over the place.
