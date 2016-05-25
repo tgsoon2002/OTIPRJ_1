@@ -10,8 +10,14 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 
 	private int itemID;
 	private int itemQuantity;
+	private int itemIndexInInventory;
 	private string itemName;
+	private int isSlotted;
 
+	private Vector2 offsetFromMouseCursor;
+
+	public Transform rootTransform;
+	public Transform parentTransform;
 	public Text text;
 	public Image icon;
 
@@ -31,21 +37,19 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 		set { itemQuantity = value; }
 	}
 
+	public int Is_On_Slot
+	{
+		get { return isSlotted; }
+		set { isSlotted = value; }
+	}
+
+
 	#endregion
 
 	#region Built-in Unity Methods
 
-	// Use this for initialization
-	void Start () 
-	{
+	//n/a
 
-	}
-
-	// Update is called once per frame
-	void Update () 
-	{
-
-	}
 		
 	#endregion
 
@@ -56,6 +60,8 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 		itemID = item.Item_ID;
 		itemQuantity = item.Item_Quantity;
 		itemName = item.Item_Name;
+		isSlotted = item.Quickbar_Index;
+		itemIndexInInventory = item.Inventory_Index;
 
 		//Initialize the quantity text
 		text.text = itemQuantity.ToString();
@@ -79,17 +85,29 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		
+		offsetFromMouseCursor = eventData.position - new Vector2(transform.position.x, transform.position.y);
+		transform.SetParent(rootTransform);
+		transform.position = eventData.position;
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
-
+		transform.position = eventData.position - offsetFromMouseCursor;
+		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 	}
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
+		//When the item slot is dragged onto an empty area.
+		if(eventData.pointerEnter == null)
+		{
+			//TO DO:
+			//Put logic here that will make an item drop to the
+			//game world.
+		}
 
+		transform.SetParent(parentTransform);
+		gameObject.transform.GetComponent<CanvasGroup>().blocksRaycasts = true;
 	}
 
 	#endregion

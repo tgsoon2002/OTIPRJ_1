@@ -99,10 +99,11 @@ public class CharacterInventory : MonoBehaviour
 				else
 				{
 					ItemInfo temp = newItem;
+					temp.Inventory_Index = itemList.Count;
 					itemList.Add(temp);
 
 					//Checking if Inventory Menu UI is displayed
-					if(InventoryMenu.Instance.gameObject.activeInHierarchy)
+					if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
 					{
 						//If true, trigger an event and pass true to create
 						//an item slot element on the Menu UI!
@@ -113,10 +114,11 @@ public class CharacterInventory : MonoBehaviour
 			else
 			{
 				ItemInfo temp = newItem;
+				temp.Inventory_Index = itemList.Count;
 				itemList.Add(temp);
 
 				//Checking if Inventory Menu UI is displayed
-				if(InventoryMenu.Instance.gameObject.activeInHierarchy)
+				if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
 				{
 					//If true, trigger an event and pass true to create
 					//an item slot element on the Menu UI!
@@ -147,6 +149,10 @@ public class CharacterInventory : MonoBehaviour
 				//completely zero out the item.
 				if(qty >= itemList[index].Item_Quantity)
 				{
+					//Update all items' address in the list first
+					//before removing it.
+					UpdateItemIndeces(index);
+
 					//Completely remove the item
 					itemList.RemoveAt(index);
 				}
@@ -169,6 +175,10 @@ public class CharacterInventory : MonoBehaviour
 			}
 			else
 			{
+				//Update all items' address in the list first
+				//before removing it.
+				UpdateItemIndeces(index);
+
 				//This is for the case if the item to be removed is an
 				//Equipment item.
 				itemList.RemoveAt(index);
@@ -252,6 +262,18 @@ public class CharacterInventory : MonoBehaviour
 		loot.transform.position = new Vector3(playerReference.transform.position.x + 1.0f,
 											  playerReference.transform.position.y + 1.5f,
 											  loot.transform.position.z);
+	}
+
+	/// <summary>
+	/// Updates the item indeces.
+	/// </summary>
+	/// <param name="start">Start.</param>
+	private void UpdateItemIndeces(int start)
+	{
+		for(int i = start + 1; i < itemList.Count; i++)
+		{
+			itemList[i].Inventory_Index -= 1;
+		}
 	}
 
 	#endregion
