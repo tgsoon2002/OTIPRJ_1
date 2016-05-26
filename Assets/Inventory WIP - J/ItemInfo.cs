@@ -13,7 +13,7 @@ public class ItemInfo : IEquippable, IStoreable
 	private int quickbarIndex;	// Whether or not the item is on the Quickbar
 	private BaseItem item;		// The basic information on a specific item
 	private bool isEquipped;	// Whether or not the item is equipped
-	private int inventoryIndex;  // Index value when item is in inventory
+	private string inventoryID; 	// Index value when item is in inventory
 
 	#endregion
 
@@ -38,10 +38,10 @@ public class ItemInfo : IEquippable, IStoreable
 		get { return item.Item_ID; }
 	}
 
-	public int Inventory_Index
+	public string Inventory_Unique_ID
 	{
-		get { return inventoryIndex; }
-		set { inventoryIndex = value; }
+		get { return inventoryID; }
+		set { inventoryID = value; }
 	}
 		
 	// Gets and sets the item's description.
@@ -127,7 +127,7 @@ public class ItemInfo : IEquippable, IStoreable
 		itemQuantity = qty;
 		quickbarIndex = -1;
 		ownerID = -1;
-		inventoryIndex = -1;
+		inventoryID = "";
 		//Check the quantity of the item if it is nonstackable
 		if(!item.Is_Stackable && itemQuantity > 1)
 		{
@@ -141,18 +141,18 @@ public class ItemInfo : IEquippable, IStoreable
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JItemInfo"/> class.
-	/// Use this constructor when initializing a Character's Inventory.
+	/// Use this constructor when initializing an item straight in 
+	/// the CharacterInventory class.
 	/// </summary>
 	/// <param name="cID">C I.</param>
 	/// <param name="_item">Item.</param>
 	/// <param name="qty">Qty.</param>
-	public ItemInfo(int cID, BaseItem _item, int qty)
+	public ItemInfo(BaseItem _item, int qty, string _uniqueID)
 	{
-		ownerID = cID;
 		item = _item;
 		itemQuantity = qty;
 		quickbarIndex = -1;
-		inventoryIndex = -1;
+		ownerID = -1;
 
 		//Check the quantity of the item if it is nonstackable
 		if(!item.Is_Stackable && itemQuantity > 1)
@@ -163,8 +163,60 @@ public class ItemInfo : IEquippable, IStoreable
 			//Force it to only have 1 item.
 			itemQuantity = 1;
 		}
+
+
+		//Checks if the item type is an Equipment Type
+		if(!item.Is_Stackable)
+		{
+			inventoryID = _uniqueID;	
+		}
+		else
+		{
+			//If it's a Stackable type, then assign some
+			//temporary value.
+			inventoryID = "";
+		}
 	}
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="JItemInfo"/> class.
+	/// Use this constructor when initializing an item straight in 
+	/// the database TO the Character Inventory.
+	/// </summary>
+	/// <param name="cID">C I.</param>
+	/// <param name="_item">Item.</param>
+	/// <param name="qty">Qty.</param>
+	public ItemInfo(int cID, BaseItem _item, int qty, string _uniqueID)
+	{
+		ownerID = cID;
+		item = _item;
+		itemQuantity = qty;
+		quickbarIndex = -1;
+
+		//Check the quantity of the item if it is nonstackable
+		if(!item.Is_Stackable && itemQuantity > 1)
+		{
+			//Log an error on the console (for now)
+			Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+			//Force it to only have 1 item.
+			itemQuantity = 1;
+		}
+
+
+		//Checks if the item type is stackable or not
+		if(!item.Is_Stackable)
+		{
+			inventoryID = _uniqueID;	
+		}
+		else
+		{
+			//If it's a Stackable type, then assign some
+			//temporary value.
+			inventoryID = "";
+		}
+	}
+		
 	/// <summary>
 	/// Return the total weight of this
 	/// item.

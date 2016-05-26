@@ -61,7 +61,7 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 		itemQuantity = item.Item_Quantity;
 		itemName = item.Item_Name;
 		isSlotted = item.Quickbar_Index;
-		itemIndexInInventory = item.Inventory_Index;
+		//itemIndexInInventory = item.Inventory_Index;
 
 		//Initialize the quantity text
 		text.text = itemQuantity.ToString();

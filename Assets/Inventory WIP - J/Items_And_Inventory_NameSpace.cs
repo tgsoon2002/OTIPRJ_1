@@ -67,7 +67,7 @@ namespace Items_And_Inventory
 			set;
 		}
 
-		int Inventory_Index
+		string Inventory_Unique_ID
 		{
 			get;
 			set;
