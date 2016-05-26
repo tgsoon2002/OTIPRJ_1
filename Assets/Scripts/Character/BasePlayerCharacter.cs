@@ -7,7 +7,6 @@ public class BasePlayerCharacter : BaseCharacter {
 	{
 		public List<ItemInfo> listItem;
 		public List<ItemInfo> quickItem;
-
 	}
 
 	#region Member

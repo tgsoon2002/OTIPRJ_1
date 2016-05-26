@@ -13,7 +13,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Image spriteGUI;
 	private GameObject highlighter;
 	public Transform originalParent;
-
+	Camera renderCamera;
     private Vector2 offset;
 	private int quantity;
 	public int equipmentPart;
@@ -68,6 +68,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 		if (itemInfo._isEquiped) {
 			spriteGUI.color = new Color(1f,1f,1f,0.6f);
 		}
+		renderCamera = originalParent.gameObject.GetComponent<Inventory>().renderCamera;
 	}
 
     #endregion
@@ -124,12 +125,15 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         offset = eventData.position - new Vector2(this.transform.position.x, this.transform.position.y);
        // originalParent = this.transform.parent;
 		this.transform.SetParent(this.transform.parent.parent.parent.parent);
-        this.transform.position = eventData.position;
+		this.transform.position = new Vector3(eventData.position.x,eventData.position.y) ;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        this.transform.position = eventData.position - offset;
+		
+		Vector3 screenPoint = renderCamera.ScreenToWorldPoint  (new Vector3(Input.mousePosition.x+3.0f,
+			Input.mousePosition.y+3.0f,renderCamera.nearClipPlane));
+		this.transform.position = screenPoint ;
         gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
@@ -141,6 +145,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 			originalParent.GetComponent<Inventory>().ammountOptionPanel._CalledToDrop(true);
 		} 
 		this.transform.SetParent(originalParent);
+		//this.transform.position = Vector3.one;
 		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 

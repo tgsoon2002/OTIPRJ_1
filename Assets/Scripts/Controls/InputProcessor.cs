@@ -11,7 +11,7 @@ public class InputProcessor : MonoBehaviour
 	private GameObject charRef;
 
 	private static InputProcessor instance;
-
+	public MapController mapCamera;
 	#endregion
 
 	#region Setters & Getters
@@ -54,37 +54,52 @@ public class InputProcessor : MonoBehaviour
 
 			if (temp_Input_Value != 0) 
 			{
+				// Inventory
 				if(cmd == CharacterInputs.Open_Character_Inventory)
 				{
-					//Open Inventory here
 					if (temp_Input_Value == 2) {
-						MenuManager.Instance.MenuVisibility();
+						MenuManager.Instance.MenuVisibility(0);
 					}
-
 				}	
-
-				else if(cmd == CharacterInputs.Character_Switch_Left)
-				{
-					//Switch character here
-					if (temp_Input_Value == 2) {
-						SquadManager.Instance.SwitchFocusCharacter();
-					}
-				
-				}
-				else if(cmd == CharacterInputs.Character_Switch_Right)
-				{
-					//Switch
-				}
+				// Settings
 				else if(cmd == CharacterInputs.Open_Settings)
 				{
-					//Open settings here
+					if (temp_Input_Value == 2) {
+						MenuManager.Instance.MenuVisibility(1);
+					}
 				}
+				// Map
+				else if (cmd == CharacterInputs.Open_Map) {
+					if (temp_Input_Value == 1) {
+						mapCamera.ShowMap();
+					} else  if(temp_Input_Value == 2) {
+						mapCamera.HideMap();
+					}
+				}
+				// Skill Grid
+				else if (cmd == CharacterInputs.Open_Skill_Grid) {
+					if(temp_Input_Value == 2) {
+						MenuManager.Instance.MenuVisibility(2);
+					}
+				}
+				// Squad Manager
+				else if (cmd == CharacterInputs.Open_Squad_Manager) {
+					if(temp_Input_Value == 2) {
+						MenuManager.Instance.MenuVisibility(3);
+					}
+				}
+				// Journal
+				else if (cmd == CharacterInputs.Open_Journal) {
+					if(temp_Input_Value == 2) {
+						MenuManager.Instance.MenuVisibility(4);
+					}
+				}
+				// Others
 				else
 				{
 					Debug.Log(cmd);
-					
 					//Default case is Character movement or GUI Movement
-					Commands.Instance.ReceiveInput(cmd, (int)temp_Input_Value);
+					Commands.Instance.ReceiveInput(cmd, (int)temp_Input_Value);	
 				}
 			}
 		}	

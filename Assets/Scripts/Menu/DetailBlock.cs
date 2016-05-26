@@ -18,8 +18,8 @@ public class DetailBlock : MonoBehaviour {
 	/// <param name="itemIndex">Item index.</param>
 	/// <param name="Quantiy">Quantiy.</param>
 	/// <param name="itemtype">Itemtype.</param>
-	public void UpdateDetail (int itemIndex, int Quantiy, BaseItemType itemtype){
-		BaseItem tempItem =  ItemDatabase.Instance.GetItem(itemIndex,(int)itemtype);
+	public void UpdateDetail (BaseItem tempItem, int Quantiy){
+		//BaseItem tempItem =  ItemDatabase.Instance.GetItem(itemIndex,(int)itemtype);
 		itemIcon.sprite = tempItem.Item_Sprite;
 		descText.text = "Description : " + tempItem.Item_Description;
 		infoText.text = "Type : " + tempItem.Base_Item_Type + 

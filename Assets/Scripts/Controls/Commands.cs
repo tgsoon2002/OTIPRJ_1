@@ -27,7 +27,7 @@ public class Commands : MonoBehaviour
 	CommandInput delHandler;
 
 	Rigidbody physics;
-	public BasePlayerCharacter focusUnit;
+	public BasePlayerCharacter focusedUnit;
 
 	#endregion
 
@@ -57,7 +57,8 @@ public class Commands : MonoBehaviour
 		commands += Crouch;
 		commands += PrimaryWeapon;
 		commands += SecondaryWeapon;
-
+		commands += SwitchLeft;
+		commands += SwitchRight;
 	}
 
 	// Update is called once per frame
@@ -115,6 +116,7 @@ public class Commands : MonoBehaviour
 	{
 		commands(cmd, type);
 	}
+
 	/// <summary>
 	/// Move character to the left, base on the combo key, can walk or sprint
 	/// </summary>
@@ -135,16 +137,16 @@ public class Commands : MonoBehaviour
 
 
 				// check if character should sprint or walk
-				if( Time.time - tapTimer > 0.5f && tap <= -1)
+				if( Time.time - tapTimer > 0.2f && tap <= -1)
 				{
 					Debug.Log("Sprint...");
-					focusUnit.MoveThisUnit(-3.0f);
+					focusedUnit.MoveThisUnit(-5.0f);
 					prevInput.Push(CharacterInputs.Character_Move_Left);
 					tap = -2;
 				}
 				else
 				{
-					focusUnit.MoveThisUnit(-1.0f);
+					focusedUnit.MoveThisUnit(-1.0f);
 					prevInput.Push(CharacterInputs.Character_Move_Left);
 				
 				}
@@ -161,12 +163,12 @@ public class Commands : MonoBehaviour
 						tap = 0;
 					}
 					// If previous button is tap left then perform dash left
-					if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
+					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Left)
 					{
 						lastTapped = Time.time;
 						if(tap == -1)
 						{
-							focusUnit.DashThisUnit(-1.0f);
+						focusedUnit.DashThisUnit(-1.0f);
 							prevInput.Pop();
 							prevInput.Push(CharacterInputs.Character_Move_Left);
 							tap = 0;
@@ -183,6 +185,7 @@ public class Commands : MonoBehaviour
 			}
 		}
 	}
+
 	/// <summary>
 	/// Move character to the right, base on the combo key, can walk or sprint
 	/// </summary>
@@ -202,36 +205,33 @@ public class Commands : MonoBehaviour
 						startTimer = true;
 					}
 					// check if character should sprint or walk
-					if( Time.time - tapTimer > 0.6f && tap >= 1)
+					if( Time.time - tapTimer > 0.2f && tap >= 1)
 					{
-						focusUnit.MoveThisUnit(3.0f);
+						focusedUnit.MoveThisUnit(5.0f);
 						prevInput.Push(CharacterInputs.Character_Move_Right);
 						tap = 2;
 					}
 					else
 					{
-						focusUnit.MoveThisUnit(1.0f);
+						focusedUnit.MoveThisUnit(1.0f);
 						prevInput.Push(CharacterInputs.Character_Move_Right);
 					}
 				}
 			}
 			else if(type == 2)
 			{
-				
 					startTimer = false;
 					tapTimer = Time.time - tapTimer;
-
 					if(tap == 2 || tap == -2) 
 					{
 						tap = 0;
 					}
-
-					if(tapTimer < 0.3f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
+					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
 					{
 						lastTapped = Time.time;
 						if(tap == 1)
 						{
-							focusUnit.DashThisUnit(1.0f);
+						focusedUnit.DashThisUnit(1.0f);
 							prevInput.Pop();
 							prevInput.Push(CharacterInputs.Character_Move_Right);
 							tap = 0;
@@ -241,8 +241,101 @@ public class Commands : MonoBehaviour
 							tap = 1;
 						}
 					}
+				prevInput.Clear();
+			}
+		}
+	}
 
-					prevInput.Clear();
+	/// <summary>
+	/// Switchs focus to the the left Playercharacter.
+	/// </summary>
+	/// <param name="cmd">Cmd.</param>
+	/// <param name="type">Type.</param>
+	public void SwitchLeft (CharacterInputs cmd, int type)
+	{
+		if (cmd == CharacterInputs.Character_Switch_Left) 
+		{
+			if (type == 2) 
+			{
+				Vector3 curPlayPosition = SquadManager.Instance.FocusedUnit.gameObject.transform.position;
+				bool isLeft = false;
+				foreach (BasePlayerCharacter tmp in SquadManager.Instance.Player_Char_List) 
+				{
+					Vector3 tmpPos = tmp.gameObject.transform.position;
+					if (tmpPos.x < curPlayPosition.x && !isLeft) 
+					{
+						isLeft = true;
+						//SquadManager.Instance.focusedUnit.gameObject = tmp.gameObject;
+						SquadManager.Instance.SwitchCurrent(tmp);
+						//SquadManager.Instance.focusedUnit = tmp;
+					}	
+				}
+				if (!isLeft) 
+				{
+					//float mostRight = curPlayPosition.x;
+					BasePlayerCharacter theRight = SquadManager.Instance.FocusedUnit;
+					foreach (BasePlayerCharacter tmp in SquadManager.Instance.Player_Char_List) 
+					{
+						Vector3 tmpPos = tmp.gameObject.transform.position;
+						//float distance = 0.0f;
+
+						if(tmpPos.x > theRight.gameObject.transform.position.x) 
+
+						{
+							theRight = tmp;
+						}	
+					}
+
+					SquadManager.Instance.FocusedUnit = theRight;
+
+				}
+
+
+			}
+		}
+	}
+
+	/// <summary>
+	/// Switchs focus to the the right Playercharacter.
+	/// </summary>
+	/// <param name="cmd">Cmd.</param>
+	/// <param name="type">Type.</param>
+	public void SwitchRight (CharacterInputs cmd, int type)
+	{
+		if (cmd == CharacterInputs.Character_Switch_Right) 
+		{
+			if (type == 2) 
+			{
+				Vector3 curPlayPosition = SquadManager.Instance.FocusedUnit.gameObject.transform.position;
+				bool isRight = false;
+				foreach (BasePlayerCharacter tmp in SquadManager.Instance.Player_Char_List) 
+				{
+					
+					Vector3 tmpPos = tmp.gameObject.transform.position;
+					if (tmpPos.x > curPlayPosition.x && !isRight) 
+					{
+						isRight = true;
+						SquadManager.Instance.SwitchCurrent(tmp);
+					}	
+				}
+
+				if (!isRight) 
+				{
+					BasePlayerCharacter theLeft = SquadManager.Instance.FocusedUnit;
+
+					foreach (BasePlayerCharacter tmp in SquadManager.Instance.Player_Char_List) 
+					{
+						Vector3 tmpPos = tmp.gameObject.transform.position;
+						//float distance = 0.0f;
+
+						if(tmpPos.x < theLeft.gameObject.transform.position.x) 
+						{
+							theLeft = tmp;
+						}	
+					}
+
+					SquadManager.Instance.FocusedUnit = theLeft;
+				}
 
 			}
 		}
@@ -258,7 +351,7 @@ public class Commands : MonoBehaviour
 		{
 			if(type == 2)
 			{
-				focusUnit.Jump();
+				focusedUnit.Jump();
 			}
 		}
 	}
@@ -269,10 +362,10 @@ public class Commands : MonoBehaviour
 		{
 			if(type == 1)
 			{
-				focusUnit.Crounch(true);
+				focusedUnit.Crounch(true);
 			}
 			else if (type == 2) {
-				focusUnit.Crounch(false);
+				focusedUnit.Crounch(false);
 			}
 		}
 	}
@@ -283,7 +376,7 @@ public class Commands : MonoBehaviour
 		{
 			if(type == 2)
 			{
-				focusUnit.PrimaryAttack();
+				focusedUnit.PrimaryAttack();
 			}
 		}
 	}
@@ -294,13 +387,12 @@ public class Commands : MonoBehaviour
 		{
 			if(type == 2)
 			{
-				focusUnit.SecondaryAttack();
+				focusedUnit.SecondaryAttack();
 			}
 		}
 	}
 
 	#endregion
-
 	#endregion
 
 	#region Private Methods

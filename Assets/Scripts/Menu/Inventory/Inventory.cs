@@ -9,14 +9,14 @@ public class Inventory : MonoBehaviour
 
     public GameObject lootPrefab;
 	public GameObject invSlotPrefab;
-	public GameObject playerReference;
+	public GameObject dropLocation;
 	public ItemOption itemOptionPanel;
 	public AmmountDropOption ammountOptionPanel;
 	public QuickBar quickItemBarPanel;
     public DetailBlock detailBlockPanel;
 
 	public Text weightText;
-
+	public Camera renderCamera;
 	private InventorySlot currentItem;
 	public InventorySlot rightClickItem;
     public List<InventorySlot> itemSlots;
@@ -100,7 +100,7 @@ public class Inventory : MonoBehaviour
 				CreateSlot(item);	
 			}
 			characterCurrentWeight -= item.Item_Object.Item_Weight*item.Item_Qty;
-			SquadManager.Instance.focusedUnit.GetComponent<CharacterInventory>().AddItem(item);
+			SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().AddItem(item);
 			UpdateWeightText();
 
 
@@ -175,7 +175,7 @@ public class Inventory : MonoBehaviour
 	/// <param name="ammount">Ammount.</param>
 	public void DropSelectedItem(bool drop, int ammount){
 		Debug.Log(itemSlots.FindIndex(o => o == rightClickItem));
-		SquadManager.Instance.focusedUnit.GetComponent<CharacterInventory>().RemoveItem(itemSlots.Find(o => o == rightClickItem).Inventory_Item);
+		SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().RemoveItem(itemSlots.Find(o => o == rightClickItem).Inventory_Item);
 		DropItem(itemSlots.FindIndex(o => o == rightClickItem)   ,ammount,drop);
 	}
 
@@ -214,9 +214,9 @@ public class Inventory : MonoBehaviour
 			copy.gameObject.transform.localScale = new Vector3(10, 10, 10);
 			copy.gameObject.GetComponent<Rigidbody>().useGravity = true;
 			copy.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-			copy.gameObject.transform.position = new Vector3(playerReference.transform.position.x,
-				playerReference.transform.position.y + 10.0f,
-				playerReference.transform.position.z);
+			copy.gameObject.transform.position = new Vector3(dropLocation.transform.position.x,
+				dropLocation.transform.position.y + 10.0f,
+				dropLocation.transform.position.z);
 		}
 
 		//Check if still have item of same type in the inventory
@@ -240,7 +240,7 @@ public class Inventory : MonoBehaviour
 	// This need to work alot on.
 	public void EquipItem()
     {
-		if(SquadManager.Instance.focusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object))){
+		if(SquadManager.Instance.FocusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object))){
 			RetriveItem(rightClickItem.equipmentPart);
 		}
 
@@ -273,7 +273,7 @@ public class Inventory : MonoBehaviour
 		// put detail of the item to detail block
 		currentItem = selectedItem.GetComponent<InventorySlot>();
 		BaseItem tempItem = currentItem.Inventory_Item.Item_Object;
-		detailBlockPanel.UpdateDetail(tempItem.Item_ID,currentItem.Inventory_Item.Item_Qty,tempItem.Base_Item_Type);
+		detailBlockPanel.UpdateDetail(tempItem,currentItem.Inventory_Item.Item_Qty);
 	}
 
 	/// <summary>
@@ -336,8 +336,9 @@ public class Inventory : MonoBehaviour
         newItem.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 		// Set parent newslot to this inventory gameobject, reconfigure the sprite and info.
         tempSlot.transform.SetParent(transform);
+		tempSlot.transform.position = Vector3.one;
+		tempSlot.transform.localScale = Vector3.one;
 		tempSlot.GetComponent<InventorySlot>().Sprite_GUI.sprite = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Object.Item_Sprite;
-        tempSlot.GetComponent<InventorySlot>().Sprite_GUI.color = new Vector4(255, 255, 255, 255);
 		tempSlot.GetComponent<InventorySlot>().ItemQuantity = tempSlot.GetComponent<InventorySlot>().Inventory_Item.Item_Qty;
 		// add new slot to slot list to controll.
         itemSlots.Add(tempSlot.GetComponent<InventorySlot>());

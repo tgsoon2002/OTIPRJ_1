@@ -13,6 +13,13 @@
 	"stackable" : false
 },
 {
+	"charIndex": 0,
+	"itemIndex": 1,
+	"quantity": 2,
+	"itemType": 1,
+	"stackable" : false
+},
+{
 	"charIndex": 1,
 	"itemIndex": 0,
 	"quantity": 1,

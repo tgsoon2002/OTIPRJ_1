@@ -59,7 +59,7 @@ public class InventoryDatabase : MonoBehaviour {
 		}
 		return tempList;
 	}
-//	public List<ItemInventory> GetInventory (int charIndex){
+	//	public List<ItemInventory> GetInventory (int charIndex){
 //		List<ItemInventory> tempinventory = new List<ItemInventory>();
 //		List<ItemSlot> temp = inventoryDB.FindAll(x=>x.characterID == charIndex);
 //		for (int i = 0; i < temp.Count; i++) {

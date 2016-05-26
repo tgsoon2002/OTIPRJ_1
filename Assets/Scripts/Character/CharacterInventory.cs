@@ -29,7 +29,7 @@ public class CharacterInventory : MonoBehaviour {
 
 	#region Public Methods
 	public void RepopulateInventory (){
-		// Get list of item from database if the list is empty
+		// Clear list of item from database if the list is empty
 		if (listOfItem == null) {
 			listOfItem = InventoryDatabase.Instance.GetInventoryItemForCharacter(charID);
 		}
@@ -39,11 +39,9 @@ public class CharacterInventory : MonoBehaviour {
 			Inventory.Instance.PopulateInventoryFromCharacter(item.itemType,item.itemID,item.quantity);
 		}
 		//Update character Block
-
 	}
 
 	public void AddItem (ItemInfo item){
-
 		if (item.Item_Object.Is_Stackable) {
 			int temp = listOfItem.FindIndex(o => o.itemID == item.Item_Object.Item_ID && o.itemType == (int)item.Item_Object.Base_Item_Type);
 			if (temp > -1) {
@@ -55,11 +53,23 @@ public class CharacterInventory : MonoBehaviour {
 			listOfItem.Add(new ItemSlot(charID, item.Item_Object.Item_ID, item.Item_Qty, (int)item.Item_Object.Base_Item_Type));
 		}
 	}
-
+	/// <summary>
+	/// Removes the item from the list.
+	/// IF item is stackable then reduce quantity, if quantity is equal or less than 0, remove that item.
+	/// If item is not stackable, remove the item
+	/// </summary>
+	/// <param name="item">Item.</param>
 	public void RemoveItem(ItemInfo item){
 		int temp = listOfItem.FindIndex(o => o.itemID == item.Item_Object.Item_ID && o.itemType == (int)item.Item_Object.Base_Item_Type);
 		if (temp > -1) {
-			listOfItem.RemoveAt(temp);
+			if (item.Item_Object.Is_Stackable ) {
+				listOfItem[temp].quantity -= item.Item_Qty;
+				if (listOfItem[temp].quantity <= 0) {
+					listOfItem.RemoveAt(temp);
+				}
+			} else {
+				listOfItem.RemoveAt(temp);
+			}
 		}
 
 	}

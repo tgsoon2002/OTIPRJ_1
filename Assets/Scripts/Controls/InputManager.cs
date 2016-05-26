@@ -258,7 +258,8 @@ public class InputManager : MonoBehaviour
 	private void SetDefaultControls()
 	{
 		#region Keyboard & Mouse Mapping
-		#region Character Control
+
+		#region --Character Control--
 
 		#region Move Left
 
@@ -279,7 +280,6 @@ public class InputManager : MonoBehaviour
 
 		//Add the KeyBind to the Dictionary
 		gameCommandTable[CharacterInputs.Character_Move_Right].Add(moveRight);
-
 		#endregion
 
 		#region Crouch
@@ -326,9 +326,54 @@ public class InputManager : MonoBehaviour
 
 		#endregion
 
+		#region Interact
+
+		KeyBinds interact = new KeyBinds();
+		interact.bindType = BindType.Bind_Type_KeyBoardInput;
+		interact.keyBindName = KeyCode.F;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Context_Action].Add(interact);
+
 		#endregion
 
-		#region Squad Control
+
+		#region Skill1
+
+		KeyBinds skill1 = new KeyBinds();
+		skill1.bindType = BindType.Bind_Type_KeyBoardInput;
+		skill1.keyBindName = KeyCode.Alpha1;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Context_Action].Add(skill1);
+
+		#endregion
+
+		#endregion
+
+		#region --Squad Control--
+		#region Switch Left
+
+		KeyBinds switchLeft = new KeyBinds();
+		switchLeft.bindType = BindType.Bind_Type_KeyBoardInput;
+		switchLeft.keyBindName = KeyCode.Q;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchLeft);
+
+		#endregion
+
+		#region Switch Right
+
+		KeyBinds switchRight = new KeyBinds();
+		switchRight.bindType = BindType.Bind_Type_KeyBoardInput;
+		switchRight.keyBindName = KeyCode.E;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Character_Switch_Right].Add(switchRight);
+
+		#endregion
+	
 		#region Switch Character
 
 		KeyBinds switchFocusUnit = new KeyBinds();
@@ -336,13 +381,16 @@ public class InputManager : MonoBehaviour
 		switchFocusUnit.keyBindName = KeyCode.P;
 
 		//Add the KeyBind to the Dictionary
-		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);
+		gameCommandTable[CharacterInputs.Character_Switch_Left].Add(switchFocusUnit);    
 
 		#endregion
-		#endregion
-		#region Menu and Settings
 
-		#region Jump
+		#endregion
+
+		#region --Menu and Settings--
+
+
+		#region Inventory
 
 		KeyBinds inventory = new KeyBinds();
 		inventory.bindType = BindType.Bind_Type_KeyBoardInput;
@@ -353,10 +401,66 @@ public class InputManager : MonoBehaviour
 
 		#endregion
 
+		#region Setting
+
+		KeyBinds settings = new KeyBinds();
+		settings.bindType = BindType.Bind_Type_KeyBoardInput;
+		settings.keyBindName = KeyCode.Escape;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Settings].Add(settings);
+
+		#endregion
+
+		#region Map
+
+		KeyBinds map = new KeyBinds();
+		map.bindType = BindType.Bind_Type_KeyBoardInput;
+		map.keyBindName = KeyCode.M;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Map].Add(map);
+
+		#endregion
+
+		#region Skill Grid
+
+		KeyBinds skillGrid = new KeyBinds();
+		skillGrid.bindType = BindType.Bind_Type_KeyBoardInput;
+		skillGrid.keyBindName = KeyCode.C;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Skill_Grid].Add(skillGrid);
+
+		#endregion
+
+		#region Squad Control
+
+		KeyBinds squad = new KeyBinds();
+		squad.bindType = BindType.Bind_Type_KeyBoardInput;
+		squad.keyBindName = KeyCode.T;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Squad_Manager].Add(squad);
+
+		#endregion
+
+		#region Journal
+
+		KeyBinds journal = new KeyBinds();
+		journal.bindType = BindType.Bind_Type_KeyBoardInput;
+		journal.keyBindName = KeyCode.J;
+
+		//Add the KeyBind to the Dictionary
+		gameCommandTable[CharacterInputs.Open_Journal].Add(journal);
+
+		#endregion
+
 		#endregion
 
 		#endregion
 	}
 
-	#endregion
+
 }
+#endregion

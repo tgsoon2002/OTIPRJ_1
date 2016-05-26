@@ -13,6 +13,7 @@ public class QuickItem : MonoBehaviour, IDropHandler
     private Image slotIcon;
 	private Sprite oriSlotIcon;
     private Text qtyGUI;
+	private InventorySlot slotRef;
 
 	#endregion
 
@@ -37,7 +38,7 @@ public class QuickItem : MonoBehaviour, IDropHandler
         //Declaring local variables
         ItemInfo temp;
         bool itemExistsOnSlot;
-
+		slotRef = eventData.pointerDrag.GetComponent<InventorySlot>();
 		temp = eventData.pointerDrag.GetComponent<InventorySlot>().Inventory_Item;
 		itemExistsOnSlot = quickBarMngr.CheckIfItemOnBar(temp.Item_Object.Item_ID);
 
@@ -69,11 +70,17 @@ public class QuickItem : MonoBehaviour, IDropHandler
     public void RemoveReference()
     {
 		slotIcon.sprite = oriSlotIcon;
-		qtyGUI.text = "0";
+		qtyGUI.text = "";
 		itemRef = null;
 		itemID = null;
     }
 
+	public void UsingItem(int quantity){
+		Debug.Log("this part of the code will active to use item and update item in the inventory");
+		//slotRef.Inventory_Item.Item_Qty -= quantity;
+		// this will update in character inventory.
+
+	}
     #endregion
 
 }
