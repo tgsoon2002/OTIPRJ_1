@@ -1,4 +1,5 @@
 [{
+	"charID": 0,
 	"charName": "Angelog",
 	"charClass": "Guardian",
 	"charLevel": 1,
@@ -24,6 +25,7 @@
 	"currentStaminaPoint": 6.0
 },
 {
+	"charID": 1,
 	"charName": "Donte Alm",
 	"charClass": "Magician",
 	"charLevel": 1,

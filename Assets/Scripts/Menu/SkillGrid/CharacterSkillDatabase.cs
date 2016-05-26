@@ -12,7 +12,6 @@ public class CharacterSkillDatabase : MonoBehaviour {
 	private JsonData charSkillJson;
 	private List<TempSkillSet> skillSetDB;
 	int tempIndex = -1;
-	int numbOfSkill = 7;
 	#endregion
 
 	#region Setters & Getters (empty)
@@ -48,8 +47,9 @@ public class CharacterSkillDatabase : MonoBehaviour {
 			tempChar.skillPointLeft = newChar.SkillPointAvalible;
 			skillSetDB.Add(tempChar);
 		}
-		SaveToDB();
+
 	}
+
 
 	public bool LoadCharSkill(CharacterSkillSet newChar) 
 	{
@@ -67,7 +67,7 @@ public class CharacterSkillDatabase : MonoBehaviour {
 	#endregion
 
 	#region Private Methods
-	void SaveToDB (){
+	public void SaveToDB (){
 		StringBuilder sb = new StringBuilder();
 		JsonWriter writer = new JsonWriter(sb);
 		writer.WriteArrayStart();
@@ -75,7 +75,7 @@ public class CharacterSkillDatabase : MonoBehaviour {
 			writer.WriteObjectStart();
 			writer.WritePropertyName("skillMap");
 			writer.WriteArrayStart();
-			for (int j = 0; j < numbOfSkill; j++) 
+			for (int j = 0; j < GlobalVar.TOTALSKILL; j++) 
 			{
 				writer.Write(skillSetDB[i].skillMap[j]);
 			}
@@ -95,8 +95,8 @@ public class CharacterSkillDatabase : MonoBehaviour {
 		charSkillJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/SkillSetDB.json"));
 		Debug.Log(charSkillJson.Count);
 		for (int i = 0; i < charSkillJson.Count; i++) {
-			bool[] tempArray = new bool[numbOfSkill];
-			for (int j = 0; j < numbOfSkill ; j++) 
+			bool[] tempArray = new bool[GlobalVar.TOTALSKILL];
+			for (int j = 0; j < GlobalVar.TOTALSKILL ; j++) 
 			{
 				tempArray[j] = (bool)charSkillJson[i]["skillMap"][j];
 				//Debug.Log(charSkillData[i]["skillMap"]);
@@ -107,7 +107,6 @@ public class CharacterSkillDatabase : MonoBehaviour {
 				(int)charSkillJson[i]["charID"],
 				(int)charSkillJson[i]["skillPointLeft"]
 				));
-
 		}
 
 	}

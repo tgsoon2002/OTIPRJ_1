@@ -18,7 +18,10 @@ public class MenuManager : MonoBehaviour {
 		get{ return  _instance; }
 		set{ _instance = value; }
 	}
-
+	/// <summary>
+	/// Gets the current menu. 0:inventory, 1: setting, 2 skill grid, 3 : squad manager 4: journal
+	/// </summary>
+	/// <value>The current menu.</value>
 	public int CurrentMenu {
 		get{ return  currentMenu; }
 	}

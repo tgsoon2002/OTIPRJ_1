@@ -120,7 +120,8 @@ public class UnitDataBase : MonoBehaviour {
 			}
 			//Create temporary character to with tempChar and tempAttri to add to list.
 			CharacterType tempChar = 
-				new CharacterType(unitDatabase[i]["charName"].ToString(),
+				new CharacterType((int)unitDatabase[i]["charID"],
+					unitDatabase[i]["charName"].ToString(),
 								  unitDatabase[i]["charClass"].ToString(),
 								  (int)unitDatabase[i]["charLevel"] , 
 								  tempCharStat, 
@@ -157,6 +158,7 @@ public class UnitDataBase : MonoBehaviour {
 	/// <param name="currentUnit">Current unit.</param>
 	/// <param name="index">Index.</param>
 	public void SetUnitInfo(BasePlayerCharacter currentUnit,int index){
+		currentUnit.charID = charList[index].charID;
 		currentUnit.CharacterName = charList[index].charName;
 		currentUnit.charLevel = charList[index].charLevel;
 	}
@@ -169,10 +171,12 @@ public struct CharacterType
 	public string charName;
 	public string charClass;
 	public int charLevel;
+	public int charID;
 	public List<CharStat> unitStat;
 	public List<CharAttribute> unitAttri;
-	public CharacterType(string name, string cClass, int level,List<CharStat> stat,List<CharAttribute> attri)
+	public CharacterType(int newCharID, string name, string cClass, int level,List<CharStat> stat,List<CharAttribute> attri)
 	{
+		charID = newCharID;
 		charClass = cClass;
 		charName = name;
 		charLevel = level;

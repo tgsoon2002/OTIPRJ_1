@@ -10,7 +10,8 @@ public class SquadManager : MonoBehaviour {
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
 	public GameObject playerCharacter;
-
+	public CharacterSkillDatabase skillDB;
+	private static SquadManager _instance;
 	#endregion
 	#region Getters & Setters
 	public BasePlayerCharacter FocusedUnit {
@@ -18,19 +19,23 @@ public class SquadManager : MonoBehaviour {
 		set{ focusedUnit = value; 
 		FocusCharacterChanged();}
 	}
-	#endregion
-	#region Built-in Method
-
-	private static SquadManager _instance;
-	public static SquadManager Instance
-	{
-		get { return _instance; }
-	}
 
 	public List<BasePlayerCharacter> Player_Char_List 
 	{
 		get { return playerCharacterList; }
 	}
+
+
+	public static SquadManager Instance
+	{
+		get { return _instance; }
+	}
+
+	#endregion
+	#region Built-in Method
+
+
+
 
 	void Awake(){
 		_instance = this;
@@ -46,9 +51,7 @@ public class SquadManager : MonoBehaviour {
 	}
 
 	#endregion
-
-	#region Main Method
-
+	#region Public Method
 	public void SwitchFocusCharacter(){
 		int i = playerCharacterList.IndexOf (focusedUnit);
 		if (i == playerCharacterList.Count-1) {
@@ -65,16 +68,32 @@ public class SquadManager : MonoBehaviour {
 		FocusCharacterChanged();
 	}
 
+	public void _SaveSkillSet(){
+		foreach (var item in playerCharacterList) {
+			skillDB.SaveCharSkill(item.GetComponent<CharacterSkillSet>());
+		}
+	}
+
+	public void _LoadSkillSet(){
+		foreach (var item in playerCharacterList) {
+			skillDB.LoadCharSkill(item.GetComponent<CharacterSkillSet>());
+		}
+	}
+	#endregion
+
+	#region Private Methods
+
+
 
 
 	void FocusCharacterChanged(){
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		Commands.Instance.focusedUnit = focusedUnit;
-		if (Inventory.Instance.enabled) {
+		if (MenuManager.Instance.CurrentMenu == 0) {
 			focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();	
 			CharacterBlock.Instance.UpdateChar();
 		}
-		else if (SkillGridManager.Instance.enabled) {
+		else if (MenuManager.Instance.CurrentMenu == 2) {
 			SkillGridManager.Instance.LoadSkillMap();
 		}
 
@@ -82,13 +101,19 @@ public class SquadManager : MonoBehaviour {
 	}
 
 	void SpawnUnit(){
+		//check the number of unit in squad.
 		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) {
-			
 			return;
 		}
+		//create from prefab if allow.
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
+		// set value :BasePlayerCharacter,Inventory, (later: skill map)
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
-		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
+		tempchar.GetComponent<CharacterInventory>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
+		tempchar.GetComponent<CharacterSkillSet>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
+		skillDB.LoadCharSkill(tempchar.GetComponent<CharacterSkillSet>());
+		Debug.Log("First skill unlocked state is : "+ tempchar.GetComponent<CharacterSkillSet>().unlocked[0]);
+		// add character to the list
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
 
 		//FocusCharacterChanged();

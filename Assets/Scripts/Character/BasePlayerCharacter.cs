@@ -27,7 +27,7 @@ public class BasePlayerCharacter : BaseCharacter {
 	public void Init(int index){
 		
 		base.statTable = new UnitStats();
-
+	
 		UnitDataBase.Instance.SetUnitStat(base.statTable,index);
 		UnitDataBase.Instance.SetUnitInfo(this,index);
 		bottomCollider = GetComponentInChildren<FeetCollider>();

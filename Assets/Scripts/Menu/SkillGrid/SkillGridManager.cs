@@ -2,7 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+
 public class SkillGridManager : MonoBehaviour {
+
 
 	#region Data Members
 	private Ray ray;
@@ -12,7 +14,7 @@ public class SkillGridManager : MonoBehaviour {
 	public GameObject skillGridObject;
 	int skillPointLeft = 10;
 	public Indicator[] indicatorArray;
-	public SkillNode[] skillNodeArray;
+	public SkillNode[] skillNodeArray = new SkillNode[GlobalVar.TOTALSKILL];
 
 	public static SkillGridManager _instance;
 	#endregion
@@ -27,7 +29,7 @@ public class SkillGridManager : MonoBehaviour {
 	public bool GridObject {
 		get{ return  skillGridObject.activeSelf; }
 		set{ skillGridObject.SetActive (value) ;
-			//LoadSkillMap();
+			LoadSkillMap();
 		}
 	}
 	#endregion
