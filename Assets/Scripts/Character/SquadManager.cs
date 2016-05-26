@@ -46,8 +46,7 @@ public class SquadManager : MonoBehaviour {
 	{
 		
 		mainCam = FindObjectOfType<GamePlayCamera>();
-		SpawnUnit();
-		SpawnUnit();
+
 	}
 
 	#endregion
@@ -78,6 +77,11 @@ public class SquadManager : MonoBehaviour {
 		foreach (var item in playerCharacterList) {
 			skillDB.LoadCharSkill(item.GetComponent<CharacterSkillSet>());
 		}
+	}
+
+	public void _SpawnUnit() 
+	{
+		SpawnUnit();	
 	}
 	#endregion
 
