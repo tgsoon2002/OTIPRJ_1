@@ -250,7 +250,7 @@ public class Inventory : MonoBehaviour
 	// This need to work alot on.
 	public void EquipItem()
     {
-		if(SquadManager.Instance.focusedUnit.GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object))){
+		if(GetComponent<EquipmentSet>().EquipArmor(((EquipmentItem)rightClickItem.Inventory_Item.Item_Object))){
 			RetriveItem(rightClickItem.equipmentPart);
 		}
 
