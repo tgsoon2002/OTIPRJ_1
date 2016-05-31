@@ -8,10 +8,17 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 {
 	#region Data Members
 
+	public GameObject menuPrefab;
+	public GameObject quickBarPrefab;
+
 	public GameObject itemSlotPrefab;
 	public GameObject itemSlotOptionPrefab;
 
 	private List<GameObject> itemSlots;
+
+	[SerializeField]
+	private List<GameObject> quickBarSlots;
+
 	private static InventoryMenu _instance;
 
 	#endregion
@@ -30,6 +37,7 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 	void OnEnable()
 	{
 		//Make it listen
+
 	}
 
 	void Awake()
@@ -53,11 +61,11 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 	/// <param name="eventData">Event data.</param>
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		//When user presses the Left Mouse click
+		//When user presses the Right Mouse click
 		if(Input.GetMouseButtonUp(1))
 		{
-			//Checks if the Left Mouse click pressed an Item Slot GameObject
-			if(eventData.lastPress.gameObject.GetComponent<ISlottable>() != null)
+			//Checks if the Right Mouse click pressed an Item Slot GameObject
+			if(eventData.pointerCurrentRaycast.gameObject.GetComponent<ISlottable>() != null)
 			{
 				//If it is, then disable the Inventory, and all of its children
 				//so the user won't be clicking by accident all over the place.
@@ -87,7 +95,7 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 		//If the state is 'true', call AddSlot
 		if(state)
 		{
-			AddSlot(_item);
+			CreateSlot(_item);
 		}
 		else
 		{
@@ -106,9 +114,9 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 				}
 				else
 				{
-					//If not, whether or not the item is getting added/subtracted, simply 
-					//update the quantity of the Item Slot here instead of calling 
-					//the getter/setter, since we'll also update the Text.
+					//If not, and whether or not the item is getting added/subtracted, simply 
+					//update the quantity of the Item Slot here.
+					//Instead of call the getter/setter, since we'll also update the Text.
 					itemSlots[index].GetComponent<ISlottable>().UpdateQuantity(_item.Item_Quantity);
 				}
 			}
@@ -124,11 +132,22 @@ public class InventoryMenu : MonoBehaviour, IPointerClickHandler
 	/// Adds the slot.
 	/// </summary>
 	/// <param name="item">Item.</param>
-	private void AddSlot(IStoreable item)
+	private void CreateSlot(IStoreable item)
 	{
 		GameObject temp = Instantiate(itemSlotPrefab);
 		temp.GetComponent<ISlottable>().InitializeItemSlot(item);
-		temp.transform.SetParent(gameObject.transform);
+
+		//Set the Item Slot on the Menu
+		if(item.Quickbar_Index > -1)
+		{
+			temp.transform.SetParent(menuPrefab.transform);	
+		}
+		//Set it on the Quick Bar otherwise
+		else
+		{
+			temp.transform.SetParent(quickBarPrefab.GetComponent<IContainable>().
+								     Item_Containers[item.Quickbar_Index].transform);
+		}
 	}
 		
 	/// <summary>

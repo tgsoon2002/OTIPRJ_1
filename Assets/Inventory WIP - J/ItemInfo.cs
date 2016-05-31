@@ -5,7 +5,7 @@ using Items_And_Inventory;
 /// <summary>
 /// This class contains all the information related to the item.
 /// </summary>
-public class ItemInfo : IEquippable, IUseable
+public class ItemInfo : IEquippable, IStoreable
 {
 	#region Data Members
 	private int itemQuantity;	// The amount of a specific item
@@ -13,6 +13,7 @@ public class ItemInfo : IEquippable, IUseable
 	private int quickbarIndex;	// Whether or not the item is on the Quickbar
 	private BaseItem item;		// The basic information on a specific item
 	private bool isEquipped;	// Whether or not the item is equipped
+	private string inventoryID; 	// Index value when item is in inventory
 
 	#endregion
 
@@ -37,6 +38,12 @@ public class ItemInfo : IEquippable, IUseable
 		get { return item.Item_ID; }
 	}
 
+	public string Inventory_Unique_ID
+	{
+		get { return inventoryID; }
+		set { inventoryID = value; }
+	}
+		
 	// Gets and sets the item's description.
 	public string Item_Description
 	{
@@ -56,12 +63,26 @@ public class ItemInfo : IEquippable, IUseable
 	{
 		get { return item.Item_Sprite; }
 	}
-
+		
 	// Gets and sets the quantity of the item.
 	public int Item_Quantity
 	{
 		get { return itemQuantity; }
-		set { itemQuantity = value; }
+
+		set
+		{ 
+			itemQuantity = value;
+
+			//Check the quantity of the item if it is nonstackable
+			if(!item.Is_Stackable && itemQuantity > 1)
+			{
+				//Log an error on the console (for now)
+				Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+				//Force it to only have 1 item.
+				itemQuantity = 1;
+			}
+		}
 	}
 
 	// Gets and sets the item owner's ID.
@@ -106,23 +127,96 @@ public class ItemInfo : IEquippable, IUseable
 		itemQuantity = qty;
 		quickbarIndex = -1;
 		ownerID = -1;
+		inventoryID = "";
+		//Check the quantity of the item if it is nonstackable
+		if(!item.Is_Stackable && itemQuantity > 1)
+		{
+			//Log an error on the console (for now)
+			Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+			//Force it to only have 1 item.
+			itemQuantity = 1;
+		}
 	}
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JItemInfo"/> class.
-	/// Use this constructor when initializing a Character's Inventory.
+	/// Use this constructor when initializing an item straight in 
+	/// the CharacterInventory class.
 	/// </summary>
 	/// <param name="cID">C I.</param>
 	/// <param name="_item">Item.</param>
 	/// <param name="qty">Qty.</param>
-	public ItemInfo(int cID, BaseItem _item, int qty)
+	public ItemInfo(BaseItem _item, int qty, string _uniqueID)
+	{
+		item = _item;
+		itemQuantity = qty;
+		quickbarIndex = -1;
+		ownerID = -1;
+
+		//Check the quantity of the item if it is nonstackable
+		if(!item.Is_Stackable && itemQuantity > 1)
+		{
+			//Log an error on the console (for now)
+			Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+			//Force it to only have 1 item.
+			itemQuantity = 1;
+		}
+
+
+		//Checks if the item type is an Equipment Type
+		if(!item.Is_Stackable)
+		{
+			inventoryID = _uniqueID;	
+		}
+		else
+		{
+			//If it's a Stackable type, then assign some
+			//temporary value.
+			inventoryID = "";
+		}
+	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="JItemInfo"/> class.
+	/// Use this constructor when initializing an item straight in 
+	/// the database TO the Character Inventory.
+	/// </summary>
+	/// <param name="cID">C I.</param>
+	/// <param name="_item">Item.</param>
+	/// <param name="qty">Qty.</param>
+	public ItemInfo(int cID, BaseItem _item, int qty, string _uniqueID)
 	{
 		ownerID = cID;
 		item = _item;
 		itemQuantity = qty;
 		quickbarIndex = -1;
-	}
 
+		//Check the quantity of the item if it is nonstackable
+		if(!item.Is_Stackable && itemQuantity > 1)
+		{
+			//Log an error on the console (for now)
+			Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+			//Force it to only have 1 item.
+			itemQuantity = 1;
+		}
+
+
+		//Checks if the item type is stackable or not
+		if(!item.Is_Stackable)
+		{
+			inventoryID = _uniqueID;	
+		}
+		else
+		{
+			//If it's a Stackable type, then assign some
+			//temporary value.
+			inventoryID = "";
+		}
+	}
+		
 	/// <summary>
 	/// Return the total weight of this
 	/// item.

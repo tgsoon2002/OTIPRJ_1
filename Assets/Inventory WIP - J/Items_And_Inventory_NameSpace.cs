@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Items_And_Inventory
@@ -54,11 +55,22 @@ namespace Items_And_Inventory
 			get;
 			set;
 		}
-
-
+			
 		Sprite Item_Sprite
 		{
 			get;
+		}
+
+		int Quickbar_Index
+		{
+			get;
+			set;
+		}
+
+		string Inventory_Unique_ID
+		{
+			get;
+			set;
 		}
 	}
 
@@ -66,14 +78,14 @@ namespace Items_And_Inventory
 	/// This interface is mostly used by the Item
 	/// Quick Bar to read ItemInfo objects.
 	/// </summary>
-	public interface IUseable : IStoreable
-	{
-		int Quickbar_Index
-		{
-			get;
-			set;
-		}
-	}
+//	public interface IUseable : IStoreable
+//	{
+//		int Quickbar_Index
+//		{
+//			get;
+//			set;
+//		}
+//	}
 
 	/// <summary>
 	/// Used by the Inventory Menu when
@@ -111,8 +123,22 @@ namespace Items_And_Inventory
 			set;
 		}
 
+		int Is_On_Slot
+		{
+			get;
+			set;
+		}
+
 		void InitializeItemSlot(IStoreable item);
 		void UpdateQuantity(int qty);
+	}
+
+	public interface IContainable
+	{
+		List<GameObject> Item_Containers
+		{
+			get;
+		}
 	}
 
 	#endregion

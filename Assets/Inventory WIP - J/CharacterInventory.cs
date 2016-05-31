@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Items_And_Inventory;
 using Player_Info;
 
@@ -99,10 +100,11 @@ public class CharacterInventory : MonoBehaviour
 				else
 				{
 					ItemInfo temp = newItem;
+					temp.Inventory_Unique_ID = GenerateUniqueIDForItem(newItem);
 					itemList.Add(temp);
 
 					//Checking if Inventory Menu UI is displayed
-					if(InventoryMenu.Instance.gameObject.activeInHierarchy)
+					if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
 					{
 						//If true, trigger an event and pass true to create
 						//an item slot element on the Menu UI!
@@ -113,10 +115,11 @@ public class CharacterInventory : MonoBehaviour
 			else
 			{
 				ItemInfo temp = newItem;
+				temp.Inventory_Unique_ID = GenerateUniqueIDForItem(newItem);
 				itemList.Add(temp);
 
 				//Checking if Inventory Menu UI is displayed
-				if(InventoryMenu.Instance.gameObject.activeInHierarchy)
+				if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
 				{
 					//If true, trigger an event and pass true to create
 					//an item slot element on the Menu UI!
@@ -147,6 +150,8 @@ public class CharacterInventory : MonoBehaviour
 				//completely zero out the item.
 				if(qty >= itemList[index].Item_Quantity)
 				{
+
+
 					//Completely remove the item
 					itemList.RemoveAt(index);
 				}
@@ -169,6 +174,10 @@ public class CharacterInventory : MonoBehaviour
 			}
 			else
 			{
+				//Update all items' address in the list first
+				//before removing it.
+
+
 				//This is for the case if the item to be removed is an
 				//Equipment item.
 				itemList.RemoveAt(index);
@@ -252,6 +261,31 @@ public class CharacterInventory : MonoBehaviour
 		loot.transform.position = new Vector3(playerReference.transform.position.x + 1.0f,
 											  playerReference.transform.position.y + 1.5f,
 											  loot.transform.position.z);
+	}
+
+	/// <summary>
+	/// Updates the item indeces.
+	/// </summary>
+	/// <param name="start">Start.</param>
+	private string GenerateUniqueIDForItem(ItemInfo _item)
+	{
+		//Declaring local variables
+		string id = "";
+
+		if(_item.Item_Info.Is_Stackable)
+		{
+			//If the item is a Stackable type,
+			//simply use the item ID
+			id = _item.Item_Info.Item_ID.ToString();
+
+		}
+		else
+		{
+			Guid g = Guid.NewGuid();
+			id = g.ToString();
+		}
+
+		return id;
 	}
 
 	#endregion

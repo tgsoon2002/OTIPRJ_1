@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Player_Info
 {
@@ -20,6 +21,11 @@ namespace Player_Info
 	/// </summary>
 	public interface IControllable
 	{
+		GameObject Current_Character
+		{
+			get;
+		}
+
 		bool Character_Is_Selected
 		{
 			get;
