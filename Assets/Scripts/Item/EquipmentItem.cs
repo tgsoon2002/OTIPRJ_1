@@ -12,12 +12,8 @@ public enum EquipmentPart
 	TORSO,
 	LEGS,
 	FEET,
-	MACE,
-	SHIELD,
-	SWORD,
-	BOW,
-	STAFF,
-	DAGGER
+	LEFTHAND,
+	RIGHTHAND
 };
 
 public class EquipmentItem : UseableItem

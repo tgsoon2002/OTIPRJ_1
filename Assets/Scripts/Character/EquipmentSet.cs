@@ -46,17 +46,14 @@ public class EquipmentSet :MonoBehaviour {
 		bool result = false;
 		int equipmentType = (int)newItem.Equipment_Type;
 	
-		Debug.Log(listEquipment[equipmentType]);
+		//Debug.Log(listEquipment[equipmentType]);
 		// remove stats in player base on old item, And retrive the equipment if already equip.
 		if (listEquipment[equipmentType] != null) {
 			result = true;
 			playerCharacter.GearOff(listEquipment[equipmentType].Equipment_Stats);	
-
 		}
-
 		//Update mesh of the model, need to add more later to update the material also.
 		listMesh[3].GetComponent<SkinnedMeshRenderer>().sharedMesh = newItem.Get_Item_Geo;
-
 		// replace the equipment in the list with new one.
 		listEquipment[equipmentType] = newItem;
 		playerCharacter.GearOn(newItem.Equipment_Stats);

@@ -27,28 +27,35 @@ public class SkillGridManager : MonoBehaviour {
 	}
 
 	public bool GridObject {
-		get{ return  skillGridObject.activeSelf; }
-		set{ skillGridObject.SetActive (value) ;
-			LoadSkillMap();
+		get{ return  skillGridCamera.enabled; }
+		set{ skillGridCamera.enabled = value ;
+			if (value) {
+				LoadSkillMap();	
+			}
 		}
 	}
 	#endregion
 
 	#region Built-in Unity Methods
 	void Awake(){
-		skillGridObject.SetActive(false);
+		skillGridCamera.enabled = false;
+		ResetGridMap();
 	}
 
 	void Start () {
 		_instance = this;
 		UpdateSkillPointText ();
+
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown(0)) {
-			SelectNode();	
+		if (isActiveAndEnabled) {
+			if (Input.GetMouseButtonDown(0)) {
+				SelectNode();	
+			}	
 		}
+
 	}
 	#endregion
 
@@ -66,10 +73,13 @@ public class SkillGridManager : MonoBehaviour {
 	}
 
 	public void LoadSkillMap(){
-		bool[] tempmap = SquadManager.Instance.FocusedUnit.GetComponent<CharacterSkillSet>().GetCharSkillMap();
-		for (int i = 0; i < skillNodeArray.Length; i++) {
-			skillNodeArray[i].UnlockedState =	tempmap[i];
+		if (SquadManager.Instance.FocusedUnit != null) {
+			bool[] tempmap = SquadManager.Instance.FocusedUnit.GetComponent<CharacterSkillSet>().GetCharSkillMap();
+			for (int i = 0; i < skillNodeArray.Length; i++) {
+				skillNodeArray[i].UnlockedState =	tempmap[i];
+			}	
 		}
+
 	}
 
 	#endregion
@@ -98,18 +108,20 @@ public class SkillGridManager : MonoBehaviour {
 
 	private bool CheckSkillPoint (SkillNode skill)
 	{
-		bool canUnlock = true;
-		foreach (var node in skill.requirementSkill) {
-			if(!node.UnlockedState)
-				canUnlock = false;
+		if (!skill.UnlockedState) {
+			bool canUnlock = true;
+			foreach (var node in skill.requirementSkill) {
+				if(!node.UnlockedState)
+					canUnlock = false;
+			}
+			if (skillPointLeft >= skill.SkillCostToUnlock && canUnlock) {
+				skillPointLeft -= skill.SkillCostToUnlock;
+				UpdateSkillPointText();
+				return true;
+			} 
 		}
-		if (skillPointLeft >= skill.SkillCostToUnlock && canUnlock) {
-			skillPointLeft -= skill.SkillCostToUnlock;
-			UpdateSkillPointText();
-			return true;
-		} else {
-			return false;
-		}
+		return false;
+
 	}
 
 	private void UpdateSkillPointText ()

@@ -53,9 +53,9 @@ public class CharacterSkillDatabase : MonoBehaviour {
 
 	public bool LoadCharSkill(CharacterSkillSet newChar) 
 	{
-		for (int i = 0; i < skillSetDB.Count; i++) {
-			Debug.Log("ID in the list : " + skillSetDB[i].charID);
-		}
+//		for (int i = 0; i < skillSetDB.Count; i++) {
+//			Debug.Log("ID in the list : " + skillSetDB[i].charID);
+//		}
 		tempIndex = skillSetDB.FindIndex(o => o.charID == newChar.CharacterID) ;
 		if (tempIndex > -1){
 			newChar.unlocked = skillSetDB[tempIndex].skillMap ;
@@ -93,7 +93,6 @@ public class CharacterSkillDatabase : MonoBehaviour {
 
 	void LoadFromDB(){
 		charSkillJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/SkillSetDB.json"));
-		Debug.Log(charSkillJson.Count);
 		for (int i = 0; i < charSkillJson.Count; i++) {
 			bool[] tempArray = new bool[GlobalVar.TOTALSKILL];
 			for (int j = 0; j < GlobalVar.TOTALSKILL ; j++) 

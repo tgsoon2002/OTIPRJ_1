@@ -94,7 +94,6 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	/// Call inventory to call fucntion itemOptionWindow with slot is this gameObject
 	/// </summary>
 	public void ItemOption(){
-		
 		transform.parent.GetComponent<Inventory>().ItemOptionWindow(gameObject);
 	}
 
@@ -117,8 +116,9 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 				ItemOption();
 			}
 		}
-
 	}
+
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {

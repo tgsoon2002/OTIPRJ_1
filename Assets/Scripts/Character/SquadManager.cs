@@ -116,7 +116,7 @@ public class SquadManager : MonoBehaviour {
 		tempchar.GetComponent<CharacterInventory>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
 		tempchar.GetComponent<CharacterSkillSet>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
 		skillDB.LoadCharSkill(tempchar.GetComponent<CharacterSkillSet>());
-		Debug.Log("First skill unlocked state is : "+ tempchar.GetComponent<CharacterSkillSet>().unlocked[0]);
+//		Debug.Log("First skill unlocked state is : "+ tempchar.GetComponent<CharacterSkillSet>().unlocked[0]);
 		// add character to the list
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
 

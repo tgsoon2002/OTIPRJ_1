@@ -9,6 +9,7 @@ public class SkillNode : MonoBehaviour {
 	public string skillName;
 	public List<SkillNode> requirementSkill;
 	public List<PathDefinition> pathList;
+	[SerializeField]
 	private bool unlocked ;
 	//Component halo;
 	[SerializeField]
@@ -21,8 +22,7 @@ public class SkillNode : MonoBehaviour {
 	}
 	public bool UnlockedState {
 		get{ return  unlocked; }
-		set{ unlocked = value; 
-			if (!value) 
+		set{ if (!value) 
 				ResetSkill();
 			else
 				Unlocked();
@@ -67,6 +67,7 @@ public class SkillNode : MonoBehaviour {
 	/// -Turn on the path.
 	/// </summary>
 	void Unlocked (){
+		Debug.Log("Unlock : " + skillName);
 		unlocked = true;
 		(GetComponent("Halo") as Behaviour).enabled = true;
 		foreach (var path in pathList) {
@@ -82,7 +83,7 @@ public class SkillNode : MonoBehaviour {
 	/// </summary>
 	void ResetSkill() 
 	{
-		Debug.Log("set back to lock state");
+		Debug.Log("set back to lock state : " + skillName);
 		unlocked = false;
 		(GetComponent("Halo") as Behaviour).enabled = false;
 		foreach (var path in pathList) {

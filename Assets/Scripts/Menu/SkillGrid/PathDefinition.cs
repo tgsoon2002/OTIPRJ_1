@@ -36,8 +36,8 @@ public class PathDefinition : MonoBehaviour {
 			return;
 
 		for (int i = 0; i < Points.Length; i++) {
-			Debug.Log("Draw");
-			Gizmos.DrawLine(Points[i].position,Points[i].position);
+			//Debug.Log("Draw");
+			//Gizmos.DrawLine(Points[i].position,Points[i].position);
 		}
 	}
 

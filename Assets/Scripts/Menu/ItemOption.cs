@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 public class ItemOption : MonoBehaviour {
 	#region Data Members
-//	public Transform equipBtn;
-//	public Transform dropBtn;
-//	public Transform removeBtn;
-//	public Transform assignBtn;
 	public GameObject ammontPanel;
 	public List<Transform> button;
 	#endregion
@@ -21,7 +17,6 @@ public class ItemOption : MonoBehaviour {
 		for (int i = 0; i < 4; i++) {
 			button.Add(transform.GetChild(i));	
 		}
-
 	}
 
 	// Use this for initialization
