@@ -3,26 +3,34 @@
 	"itemIndex": 1,
 	"quantity": 2,
 	"itemType": 1,
-	"stackable" : false
+	"stackable" : false,
+	"gridIndex" :0,
+	"uID":""
 },
 {
 	"charIndex": 0,
 	"itemIndex": 0,
 	"quantity": 1,
 	"itemType": 1,
-	"stackable" : false
+	"stackable" : false,
+	"gridIndex" :1,
+"uID":""
 },
 {
 	"charIndex": 0,
 	"itemIndex": 1,
 	"quantity": 2,
 	"itemType": 1,
-	"stackable" : false
+	"stackable" : false,
+"gridIndex" :2,
+"uID":""
 },
 {
 	"charIndex": 1,
 	"itemIndex": 0,
 	"quantity": 1,
 	"itemType": 1,
-	"stackable" : false
+	"stackable" : false,
+"gridIndex" :0,
+"uID":""
 }]

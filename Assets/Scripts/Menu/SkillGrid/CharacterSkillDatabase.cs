@@ -32,11 +32,11 @@ public class CharacterSkillDatabase : MonoBehaviour {
 	#endregion
 
 	#region Public Methods
-	public void SaveCharSkill(CharacterSkillSet newChar) 
+    public void SaveCharSkill(CharacterSkillSet newChar,int cID) 
 	{
 		Debug.Log(newChar.CharacterID);
 		// Check if character already in the buffer.
-		 tempIndex = skillSetDB.FindIndex(o => o.charID == newChar.CharacterID) ;
+        tempIndex = skillSetDB.FindIndex(o => o.charID == cID) ;
 		if (tempIndex > -1){
 			skillSetDB[tempIndex].skillMap = newChar.unlocked;
 			skillSetDB[tempIndex].skillPointLeft = newChar.SkillPointAvalible;
@@ -51,12 +51,12 @@ public class CharacterSkillDatabase : MonoBehaviour {
 	}
 
 
-	public bool LoadCharSkill(CharacterSkillSet newChar) 
+    public bool LoadCharSkill(CharacterSkillSet newChar, int cID) 
 	{
 		for (int i = 0; i < skillSetDB.Count; i++) {
 			Debug.Log("ID in the list : " + skillSetDB[i].charID);
 		}
-		tempIndex = skillSetDB.FindIndex(o => o.charID == newChar.CharacterID) ;
+        tempIndex = skillSetDB.FindIndex(o => o.charID == cID);
 		if (tempIndex > -1){
 			newChar.unlocked = skillSetDB[tempIndex].skillMap ;
 			newChar.SkillPointAvalible = skillSetDB[tempIndex].skillPointLeft;

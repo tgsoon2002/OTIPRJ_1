@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Player_Info;
 public class SquadManager : MonoBehaviour {
 
 	#region Member
@@ -69,13 +70,13 @@ public class SquadManager : MonoBehaviour {
 
 	public void _SaveSkillSet(){
 		foreach (var item in playerCharacterList) {
-			skillDB.SaveCharSkill(item.GetComponent<CharacterSkillSet>());
+            skillDB.SaveCharSkill(item.GetComponent<CharacterSkillSet>(),item.charID);
 		}
 	}
 
 	public void _LoadSkillSet(){
 		foreach (var item in playerCharacterList) {
-			skillDB.LoadCharSkill(item.GetComponent<CharacterSkillSet>());
+            skillDB.LoadCharSkill(item.GetComponent<CharacterSkillSet>(),item.charID);
 		}
 	}
 
@@ -94,7 +95,7 @@ public class SquadManager : MonoBehaviour {
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		Commands.Instance.focusedUnit = focusedUnit;
 		if (MenuManager.Instance.CurrentMenu == 0) {
-			focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();	
+            focusedUnit.GetComponent<CharacterInventory>().UpdateInventory();	
 			CharacterBlock.Instance.UpdateChar();
 		}
 		else if (MenuManager.Instance.CurrentMenu == 2) {
@@ -113,9 +114,9 @@ public class SquadManager : MonoBehaviour {
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
 		// set value :BasePlayerCharacter,Inventory, (later: skill map)
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
-		tempchar.GetComponent<CharacterInventory>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
-		tempchar.GetComponent<CharacterSkillSet>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
-		skillDB.LoadCharSkill(tempchar.GetComponent<CharacterSkillSet>());
+		//tempchar.GetComponent<CharacterInventory>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
+		//tempchar.GetComponent<CharacterSkillSet>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
+        skillDB.LoadCharSkill(tempchar.GetComponent<CharacterSkillSet>(),tempchar.GetComponent<BasePlayerCharacter>().charID);
 		Debug.Log("First skill unlocked state is : "+ tempchar.GetComponent<CharacterSkillSet>().unlocked[0]);
 		// add character to the list
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
