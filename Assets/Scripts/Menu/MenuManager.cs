@@ -93,7 +93,7 @@ public class MenuManager : MonoBehaviour {
 		inventoryCanvas.SetActive (true) ;
 		characterModel.gameObject.SetActive (true) ;
 		charModelManager.UpdateChar();
-		SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
+		SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().LoadInventoy();
 	}
 
 	void OpenSettings(){}

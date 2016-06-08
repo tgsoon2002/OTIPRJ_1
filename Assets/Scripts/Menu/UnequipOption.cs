@@ -24,7 +24,7 @@ public class UnequipOption : MonoBehaviour {
 		
 		Debug.Log((int)currentPart);
 
-		Inventory.Instance.RetriveItem((int)currentPart);
+		//InventoryMenu.Instance.RetriveItem((int)currentPart);
 		gameObject.SetActive(false) ;
 	}
 

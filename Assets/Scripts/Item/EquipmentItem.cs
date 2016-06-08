@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Items_And_Inventory;
 
 // This enumeration describes all the body parts that any
 // appropriate items can be used on.
