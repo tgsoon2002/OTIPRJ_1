@@ -44,24 +44,34 @@ public class CharacterBlock : MonoBehaviour {
 	/// </summary>
 	public void UpdateChar (){
 		//update the mesh model first
-		Transform tempChar =  SquadManager.Instance.focusedUnit.transform;
+		Transform tempChar =  SquadManager.Instance.FocusedUnit.transform;
 		for (int i = 1; i < 6; i++) 
 		{
 			characterModel.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh = tempChar.GetChild(i).GetComponent<SkinnedMeshRenderer>().sharedMesh;
 		}
 		//update the Equipment icon 
-		//equipmentPartList[0].sprite = tempChar.GetComponent<EquipmentSet>()
+		for (int i = 0; i < 8; i++) {
+			if (tempChar.GetComponent<EquipmentSet>().listEquipment != null) {
+				EquipmentItem[] tempList = tempChar.GetComponent<EquipmentSet>().listEquipment;
+				if (tempList[i] != null) {
+					equipmentPartList[i].sprite = tempList[i].Item_Sprite;
+				}
+			}
+
+			//equipmentPartList[i].sprite = tempChar.GetComponent<EquipmentSet>()
+		}
+
 
 		//Update stat text
 		characterStatsText.text= "";
 		for (int i = 0; i <5; i++) {
-			characterStatsText.text += SquadManager.Instance.focusedUnit.CharacterStats.StatsName(i).ToString() +" :"+ SquadManager.Instance.focusedUnit.CharacterStats.StatValue(i).ToString() + "\n";
+			characterStatsText.text += SquadManager.Instance.FocusedUnit.CharacterStats.StatsName(i).ToString() +" :"+ SquadManager.Instance.FocusedUnit.CharacterStats.StatValue(i).ToString() + "\n";
 		}
 		
 		//Update attribute text
 		characterAttributeText.text= "";
 		for (int i = 0; i <12; i++) {
-			characterAttributeText.text += SquadManager.Instance.focusedUnit.CharacterStats.AttributeName(i).ToString() +" :"+ SquadManager.Instance.focusedUnit.CharacterStats.AttributeValue(i).ToString() + "\n";
+			characterAttributeText.text += SquadManager.Instance.FocusedUnit.CharacterStats.AttributeName(i).ToString() +" :"+ SquadManager.Instance.FocusedUnit.CharacterStats.AttributeValue(i).ToString() + "\n";
 		}
 
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Items_And_Inventory;
 
 public enum ItemType
 {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Items_And_Inventory;
 
 public class UseableItem : BaseItem {
 

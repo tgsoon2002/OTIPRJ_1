@@ -1,30 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Player_Info;
 public class SquadManager : MonoBehaviour {
 
 	#region Member
 	[SerializeField]
 	List<BasePlayerCharacter> playerCharacterList;
-	public BasePlayerCharacter focusedUnit;
+	BasePlayerCharacter focusedUnit;
 	GamePlayCamera mainCam;
 	public Transform spawnPoint;
 	public GameObject playerCharacter;
-
-	#endregion
-
-	#region Built-in Method
-
+	public CharacterSkillDatabase skillDB;
 	private static SquadManager _instance;
-	public static SquadManager Instance
-	{
-		get { return _instance; }
+	#endregion
+	#region Getters & Setters
+	public BasePlayerCharacter FocusedUnit {
+		get{ return  focusedUnit; }
+		set{ focusedUnit = value; 
+		FocusCharacterChanged();}
 	}
 
 	public List<BasePlayerCharacter> Player_Char_List 
 	{
 		get { return playerCharacterList; }
 	}
+
+
+	public static SquadManager Instance
+	{
+		get { return _instance; }
+	}
+
+	#endregion
+	#region Built-in Method
+
+
 
 
 	void Awake(){
@@ -36,16 +47,12 @@ public class SquadManager : MonoBehaviour {
 	{
 		
 		mainCam = FindObjectOfType<GamePlayCamera>();
-		SpawnUnit();
-		SpawnUnit();
+
 	}
 
 	#endregion
-
-	#region Main Method
-
+	#region Public Method
 	public void SwitchFocusCharacter(){
-		
 		int i = playerCharacterList.IndexOf (focusedUnit);
 		if (i == playerCharacterList.Count-1) {
 			focusedUnit = playerCharacterList[0];
@@ -53,44 +60,85 @@ public class SquadManager : MonoBehaviour {
 		else {
 			focusedUnit = playerCharacterList[++i];
 		}
-		//FocusCharacterChanged();
-
-//		if (playerCharacterList.Count > 1) {
-//			Debug.Log("repopulate inventory for charID :" + playerCharacterList.IndexOf (focusedUnit).ToString());
-//
-//		}
+		FocusCharacterChanged();
 	}
-
 	public void SwitchCurrent(BasePlayerCharacter newFocused)
 	{
 		focusedUnit = newFocused;
-		mainCam.ChangeFocusUnit (focusedUnit.gameObject.transform);
+		FocusCharacterChanged();
 	}
-	/*
+
+	public void _SaveSkillSet(){
+		foreach (var item in playerCharacterList) {
+            skillDB.SaveCharSkill(item.GetComponent<CharacterSkillSet>(),item.charID);
+		}
+	}
+
+	public void _LoadSkillSet(){
+		foreach (var item in playerCharacterList) {
+            skillDB.LoadCharSkill(item.GetComponent<CharacterSkillSet>(),item.charID);
+		}
+	}
+
+	public void _SpawnUnit() 
+	{
+		SpawnUnit();	
+	}
+	#endregion
+
+	#region Private Methods
+
+
+	/// <summary>
+	/// This will run to save information of current character before change focus to new character.
+	/// Will save Inventory, SkillSet, or any other setting
+	/// </summary>
+	void BeforeFocusChange(){
+		focusedUnit.GetComponent<CharacterInventory>().UpdateInventory();	
+
+	}
+
+	/// <summary>
+	/// This will update the information of menu base on new focus characer.
+	/// Will get invetory, skill set.
+	/// </summary>
 	void FocusCharacterChanged(){
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
-		Commands.Instance.SquadManager.Instance.focusedUnit = focusedUnit;
-		focusedUnit.GetComponent<CharacterInventory>().RepopulateInventory();
-		CharacterBlock.Instance.UpdateChar();
-	}*/
+		Commands.Instance.focusedUnit = focusedUnit;
+		if (MenuManager.Instance.CurrentMenu == 0) {
+			focusedUnit.GetComponent<CharacterInventory>().LoadInventoy();
+			CharacterBlock.Instance.UpdateChar();
+		}
+		else if (MenuManager.Instance.CurrentMenu == 2) {
+			SkillGridManager.Instance.LoadSkillMap();
+		}
+
+
+	}
 
 	void SpawnUnit(){
+		//check the number of unit in squad.
 		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) {
-			
 			return;
 		}
+		//create from prefab if allow.
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
+		// set value :BasePlayerCharacter,Inventory, (later: skill map)
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
-		tempchar.GetComponent<CharacterInventory>().charID = playerCharacterList.Count;
+
+		//tempchar.GetComponent<CharacterInventory>().GetItemFromDB(tempchar.GetComponent<BasePlayerCharacter>().charID);
+		//tempchar.GetComponent<CharacterSkillSet>().charID = tempchar.GetComponent<BasePlayerCharacter>().charID;
+        skillDB.LoadCharSkill(tempchar.GetComponent<CharacterSkillSet>(),tempchar.GetComponent<BasePlayerCharacter>().charID);
+
+		// add character to the list
 		playerCharacterList.Add(tempchar.GetComponent<BasePlayerCharacter>());
 
 		//FocusCharacterChanged();
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
 		SwitchFocusCharacter();
-		if (focusedUnit == null) {
-			focusedUnit = tempchar.GetComponent<BasePlayerCharacter>();
+		if (Commands.Instance.focusedUnit == null) {
+			Commands.Instance.focusedUnit = tempchar.GetComponent<BasePlayerCharacter>();
 		}
-		mainCam.ChangeFocusUnit (focusedUnit.gameObject.transform);
 	}
 	#endregion
 }

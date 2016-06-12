@@ -27,7 +27,7 @@ public class GamePlayCamera : MonoBehaviour {
 	}
 
 	void FollowFocusUnit(){
-		this.transform.position = Vector3.Lerp (transform.position, new Vector3(focusUnit.position.x,focusUnit.position.y+ 7.0f,transform.position.z),Time.deltaTime);
+		this.transform.position = Vector3.Lerp (transform.position, new Vector3(focusUnit.position.x,focusUnit.position.y+ 15.0f,transform.position.z),Time.deltaTime);
 	}
 	#endregion
 

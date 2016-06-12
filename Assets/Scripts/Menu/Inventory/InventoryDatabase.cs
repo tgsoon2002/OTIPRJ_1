@@ -4,20 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using Items_And_Inventory;
 
 public class InventoryDatabase : MonoBehaviour {
 
 	#region Data Members
 	private JsonData inventoryJson;
 
-	private List<ItemSlot> inventoryDB;
-
-	public Inventory in_Ref;
+    private List<ItemInfo> inventoryDB;
 
 	public static InventoryDatabase _instance;
 	#endregion
 
 	#region Getters/Setters
+
+
 
 	#endregion
 
@@ -33,7 +34,7 @@ public class InventoryDatabase : MonoBehaviour {
 	void Awake(){
 		
 		_instance = this;
-		inventoryDB = new List<ItemSlot>();
+        inventoryDB = new List<ItemInfo>();
 		ConstructDatabase();
 	
 	
@@ -48,16 +49,27 @@ public class InventoryDatabase : MonoBehaviour {
 
 	#region Public Methods
 
-	public List<ItemSlot> GetInventoryItemForCharacter (int charID){
-		List<ItemSlot> tempList = new List<ItemSlot>();
+	public void GetInventoryItemForCharacter (List<ItemInfo> newChar, int charID){
+		newChar.Clear();
 		foreach (var item in inventoryDB) {
-			if (item.characterID == charID) {
+			if (item.Owner_ID == charID) {
+				newChar.Add(item);
+			}
+		}
+
+	}
+
+    public List<ItemInfo> GetInventoryItemForCharacter (int charID){
+		
+        List<ItemInfo> tempList = new List<ItemInfo>();
+		foreach (var item in inventoryDB) {
+            if (item.Owner_ID == charID) {
 				tempList.Add(item);
 			}
 		}
 		return tempList;
 	}
-//	public List<ItemInventory> GetInventory (int charIndex){
+	//	public List<ItemInventory> GetInventory (int charIndex){
 //		List<ItemInventory> tempinventory = new List<ItemInventory>();
 //		List<ItemSlot> temp = inventoryDB.FindAll(x=>x.characterID == charIndex);
 //		for (int i = 0; i < temp.Count; i++) {
@@ -74,35 +86,37 @@ public class InventoryDatabase : MonoBehaviour {
 	/// <param name="newItemID">New item I.</param>
 	/// <param name="newItemType">New item type.</param>
 	/// <param name="quan">Quan.</param>
-	public void SaveInventory (int charID, int newItemID, int newItemType, int quan)
-	{
-		if (inventoryDB.Exists(o => o.characterID == charID && o.itemID == newItemID && o.itemType == newItemType)) 
-		{
-			inventoryDB.Find(o => o.characterID == charID && o.itemID == newItemID && o.itemType == newItemType).quantity = quan;
-		}
-		else
-		{
-			inventoryDB.Add (new ItemSlot(charID,newItemID,quan,newItemType));	
-		}
+    public void SaveInventory (ItemInfo newItem)
+    {
+//        int charID, int newItemID, int newItemType, int quan,string uID){
+//        if (newItem.Item_Info.IsStackable)
+//        {
+//            
+//        }
+//        int tempPos = inventoryDB.FindIndex(o => o.Owner_ID == charID && o.Item_ID == newItemID && o.Item_Type == newItemType);
+//        if (tempPos != -1) {
+//            inventoryDB[tempPos].Item_Quantity = quan;
+//		}
+//		else {
+//            BaseItem tempItem = ItemDatabase.Instance.GetItem(newItemID, newItemType);
+//            inventoryDB.Add (new ItemInfo(charID,tempItem,quan,uID));
+//               // charID,newItemID,quan,newItemType));	
+//		}
 	}
 
 	/// <summary>
 	/// Saves the data from ItemSlot List to Json database file.
-	/// 
-	/// Ask Kien WTF this does later.
 	/// </summary>
 	public void SaveDatabase (){
-		for (int i = 0; i < inventoryDB.Count; i++) {
-			ItemSlot tempJsonData = new ItemSlot();
-			tempJsonData.characterID = inventoryDB[i].characterID;
-			tempJsonData.itemID = inventoryDB[i].itemID;
-			tempJsonData.quantity = inventoryDB[i].quantity;
-			tempJsonData.itemType = inventoryDB[i].itemType;
-			//Convert Itemslot Type to string by using JsonMapper.ToJson
-			string inputString = JsonMapper.ToJson(tempJsonData);
-			//Write string to Json File.
-			File.WriteAllText(Application.dataPath + "/StreamingAssets/InventoryDB.json",inputString);
-		}
+//		for (int i = 0; i < inventoryDB.Count; i++) {
+//            ItemInfo tempJsonData = new ItemInfo();
+//			tempJsonData = inventoryDB[i];
+//            Debug.Log("Need to redo this");
+//			//Convert Itemslot Type to string by using JsonMapper.ToJson
+//			string inputString = JsonMapper.ToJson(tempJsonData);
+//			//Write string to Json File.
+//			File.WriteAllText(Application.dataPath + "/StreamingAssets/InventoryDB.json",inputString);
+//		}
 	}
 
 
@@ -114,15 +128,23 @@ public class InventoryDatabase : MonoBehaviour {
 		//Construct data for equipment item
 		inventoryJson = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/InventoryDB.json"));
 		// loop through each item in equipmentData and generate info and add to list
-		for (int i = 0; i < inventoryJson.Count; i++) {
+		for (int i = 0; i < inventoryJson.Count; i++) 
+        {
+            BaseItem temp = ItemDatabase.Instance.GetItem((int)inventoryJson[i]["itemIndex"], (int)inventoryJson[i]["itemType"]);
+
 			inventoryDB.Add(
-				new ItemSlot(
+                new ItemInfo(
 					(int)inventoryJson[i]["charIndex"],
-							(int)inventoryJson[i]["itemIndex"],
-							(int)inventoryJson[i]["quantity"],
-							(int)inventoryJson[i]["itemType"]
+                    temp,					
+					(int)inventoryJson[i]["quantity"],
+                    inventoryJson[i]["uID"].ToString(),
+                    (int) inventoryJson[i]["gridIndex"],
+					(int) inventoryJson[i]["quickBarIndex"],
+					(bool) inventoryJson[i]["equiped"]
 				)
+
 			);
+
 		}
 	}
 
@@ -132,6 +154,7 @@ public class InventoryDatabase : MonoBehaviour {
 
 }
 
+/*
 public class ItemSlot
 {
 	public int characterID;
@@ -153,6 +176,7 @@ public class ItemSlot
 	}
 	public ItemSlot(){}
 }
+*/
 
 public class EquipmentStat{
 	public int equipmentID;

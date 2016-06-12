@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
+using Items_And_Inventory;
 
-public class ItemDatabase : MonoBehaviour
-{
+public class ItemDatabase : MonoBehaviour {
 
 	#region Data Members
 	//private List<Item> database = new List<Item>();
@@ -68,9 +68,7 @@ public class ItemDatabase : MonoBehaviour
 		}
 		return temp;
 	}
-
-	public EquipmentStat GetEquipStat (int index)
-	{
+	public EquipmentStat GetEquipStat (int index){
 		return equipStatDB.Find(o=>o.equipmentID == index);
 	}
 
@@ -88,7 +86,6 @@ public class ItemDatabase : MonoBehaviour
 	#endregion
 
 	#region Private Methods
-
 	void  ConstructItemDatabase(){
 		//Construct data for equipment item
 		equipmentData = JsonMapper.ToObject(File.ReadAllText(Application.dataPath + "/StreamingAssets/EquipmentItem.json"));
