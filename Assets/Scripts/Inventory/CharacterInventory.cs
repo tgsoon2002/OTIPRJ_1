@@ -70,6 +70,12 @@ public class CharacterInventory : MonoBehaviour
         LoadInventoy();
 	}
 
+	//HACK delete later
+	void Update()
+	{
+		Debug.Log("Item Size: " + itemList.Count);
+	}
+
 	#endregion
 
 	#region Public Methods
@@ -88,7 +94,8 @@ public class CharacterInventory : MonoBehaviour
 			Debug.Log("Init: " + item.Grid_Index);
 			TriggerItemEvent(item, true, false);		
 		}
-        InventoryMenu.Instance.StopListeningToEvent(gameObject);
+        
+		InventoryMenu.Instance.StopListeningToEvent(gameObject);
 	}
 
 	/// <summary>
@@ -107,12 +114,14 @@ public class CharacterInventory : MonoBehaviour
 				
 				Debug.Log("Grid: " + itm.GetComponent<ISlottable>().Grid_Position);
 
-				string tmpID = itm.GetComponent<ISlottable>().Item_ID;
-				int tmpGridPos = itm.GetComponent<ISlottable>().Grid_Position;
+				//string tmpID = itm.GetComponent<ISlottable>().Item_ID;
+				//int tmpGridPos = itm.GetComponent<ISlottable>().Grid_Position;
 
 				//TO DO for next revision:
 				//Refactor List to a Dictionary to increase performance.
 				int index = itemList.FindIndex(o => o.Inventory_Unique_ID == itm.GetComponent<ISlottable>().Item_ID);
+
+				Debug.Log("Item's index: " + index);
 
 				//Make a check
 				if(index <= -1)
@@ -163,8 +172,8 @@ public class CharacterInventory : MonoBehaviour
 	public void AddItem(ItemInfo newItem)
 	{
 		//Checks if the character's weight can carry the new item.
-		if(newItem.TotalWeight() + currentWeight <= GetComponent<ICarryable>().Player_Max_Weight)
-		{
+		//if(newItem.TotalWeight() + currentWeight <= GetComponent<ICarryable>().Player_Max_Weight)
+		//{
 			//Checking if the new item is stackable
 			if(newItem.Item_Info.Is_Stackable)
 			{
@@ -216,7 +225,7 @@ public class CharacterInventory : MonoBehaviour
 					TriggerItemEvent(temp, true, false);
 				}
 			}
-		}
+		//}
 	}
 
 	/// <summary>
@@ -336,7 +345,12 @@ public class CharacterInventory : MonoBehaviour
         Debug.Log(InventoryDatabase.Instance);
 		foreach (var item in InventoryDatabase.Instance.GetInventoryItemForCharacter(charID)) 
 		{
-			itemList.Add(item);
+			if(item.Inventory_Unique_ID == "")
+			{
+				item.Inventory_Unique_ID = GenerateUniqueIDForItem(item);
+			}
+
+			AddItem(item);
 		}
 	}
 

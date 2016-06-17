@@ -123,7 +123,7 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	/// <param name="eventData">Event data.</param>
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-        Debug.Log("check");
+        Debug.Log("Name: " + itemName);
         offsetFromMouseCursor = eventData.position - new Vector2(transform.position.x, transform.position.y);
 //        offsetFromMouseCursor = Vector3.zero;
 		transform.SetParent(rootTransform);

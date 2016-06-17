@@ -105,6 +105,7 @@ public class SquadManager : MonoBehaviour {
 	void FocusCharacterChanged(){
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		Commands.Instance.focusedUnit = focusedUnit;
+		focusedUnit.Character_Is_Selected = true;
 		if (MenuManager.Instance.CurrentMenu == 0) {
             focusedUnit.GetComponent<CharacterInventory>().InitializeMenu();
 			CharacterBlock.Instance.UpdateChar();

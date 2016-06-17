@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class BasePlayerCharacter : BaseCharacter {
+using Player_Info;
+
+public class BasePlayerCharacter : BaseCharacter, IControllable {
 
 	public struct CharacterInventory
 	{
@@ -21,6 +23,8 @@ public class BasePlayerCharacter : BaseCharacter {
 	//protected JobClass classType;
 	protected int index;
 	FeetCollider bottomCollider;
+
+	bool isSelected = false;
 
 	#endregion
 
@@ -48,6 +52,13 @@ public class BasePlayerCharacter : BaseCharacter {
 	public virtual float PercentageStamina(){
 		return 0.0f;//(statTable.staminaPoint/statTable.maxStaminaPoint);
 	}
+
+	public bool Character_Is_Selected
+	{
+		get {return isSelected;}
+		set {isSelected = value;}
+	}
+
 	#endregion
 	#region Perform Action
 

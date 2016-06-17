@@ -110,14 +110,17 @@ public class MenuManager : MonoBehaviour {
 	void CloseAllMenu()
 	{
 
-        Debug.Log("Closing menu. . .");
-
         switch (CurrentMenu) {
             case 0:
                 // Close Inventory
-                InventoryMenu.Instance.FlushData();
-                inventoryCanvas.SetActive (false) ;
-                characterModel.gameObject.SetActive (false) ;
+				if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
+				{
+					Debug.Log("Closing menu. . .");
+					InventoryMenu.Instance.FlushData();
+					inventoryCanvas.SetActive (false);
+					characterModel.gameObject.SetActive (false);
+				}
+				
                 break;
             case 1:
               

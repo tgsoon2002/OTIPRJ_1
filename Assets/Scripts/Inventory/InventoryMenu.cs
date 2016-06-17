@@ -92,12 +92,17 @@ public class InventoryMenu : MonoBehaviour
 
     public void FlushData()
     {
+		Debug.Log("Item Count: " + itemSlots.Count);
+
         SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
 
+	
         foreach (var item in itemSlots)
         {
             Destroy(item);
         }
+
+		itemSlots.Clear();
     }
 	#endregion
 
@@ -157,7 +162,7 @@ public class InventoryMenu : MonoBehaviour
 	/// <param name="item">Item.</param>
 	private void CreateSlot(IStoreable item)
 	{
-		Debug.Log("Create slot");
+		Debug.Log("Item's Grid Val: " + item.Grid_Index);
 		GameObject temp = Instantiate(itemSlotPrefab);
 	
 		temp.GetComponent<ISlottable>().InitializeItemSlot(item);
@@ -192,6 +197,7 @@ public class InventoryMenu : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("New item to Grid");
 			menuPrefab.GetComponent<InventoryGridHandler>().AddNewItemSlotToGrid(temp);	
 		}
 	}
