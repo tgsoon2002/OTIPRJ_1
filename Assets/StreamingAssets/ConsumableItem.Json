@@ -1,0 +1,36 @@
+[{
+	"consumType" : 2,
+	"range" : 0,
+	"craftable" : true,
+	"index": 0,
+	"name": "potion",
+	"desc": "your damn saliva ",
+	"price": 0,
+	"type": 1,
+	"stackable" : true,
+	"weight" : 1
+},
+{
+	"consumType" : 0,
+	"range" : 0,
+	"craftable" : true,
+	"index": 1,
+	"name": "health potion",
+	"desc": "some energy drink here ",
+	"price": 10,
+	"type": 1,
+	"stackable" : true,
+	"weight" : 2
+},
+{
+	"consumType" : 0,
+	"range" : 0,
+	"craftable" : true,
+	"index": 2,
+	"name": "stamina potion",
+	"desc": "Water give you some stamina ",
+	"price": 10,
+	"type": 1,
+	"stackable" : true,
+	"weight" : 5
+}]

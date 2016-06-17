@@ -1,0 +1,36 @@
+[{
+	"charIndex": 0,
+	"itemIndex": 1,
+	"quantity": 2,
+	"itemType": 1,
+	"isEquiped" : false,
+	"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
+	"uID":""
+},
+{
+	"charIndex": 0,
+	"itemIndex": 0,
+	"quantity": 1,
+	"itemType": 1,
+	"isEquiped" : false,
+	"gridIndex" :-1, "quickBarIndex" : -1  ,  "equiped" : false,
+"uID":""
+},
+{
+	"charIndex": 0,
+	"itemIndex": 1,
+	"quantity": 2,
+	"itemType": 1,
+	"isEquiped" : false,
+"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
+"uID":""
+},
+{
+	"charIndex": 1,
+	"itemIndex": 0,
+	"quantity": 1,
+	"itemType": 1,
+	"isEquiped" : false,
+"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
+"uID":""
+}]
