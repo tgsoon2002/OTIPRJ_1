@@ -25,6 +25,7 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	public Transform parentTransform;
 	public Text text;
 	public Image icon;
+    public RectTransform canvasSize;
 
 	#endregion
 
@@ -83,6 +84,9 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	/// <param name="item">Item.</param>
 	public void InitializeItemSlot(IStoreable item)
 	{
+        canvasSize = MenuManager.Instance.GetComponent<RectTransform>();
+		Debug.Log("This called to setup the basic info");
+
 		itemID = item.Inventory_Unique_ID;
 		itemQuantity = item.Item_Quantity;
 		itemName = item.Item_Name;
@@ -105,6 +109,11 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	/// <param name="qty">Qty.</param>
 	public void UpdateQuantity(int qty)
 	{
+		if(qty < 0)
+		{
+			qty *= -1;
+		}
+
 		itemQuantity = qty;
 		text.text = qty.ToString();
 	}
@@ -115,7 +124,9 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	/// <param name="eventData">Event data.</param>
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		offsetFromMouseCursor = eventData.position - new Vector2(transform.position.x, transform.position.y);
+        Debug.Log("check");
+        offsetFromMouseCursor = eventData.position - new Vector2(transform.position.x, transform.position.y);
+//        offsetFromMouseCursor = Vector3.zero;
 		transform.SetParent(rootTransform);
 		transform.position = eventData.position;
 	}
@@ -124,9 +135,20 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 	/// Raises the drag event.
 	/// </summary>
 	/// <param name="eventData">Event data.</param>
-	public void OnDrag(PointerEventData eventData)
-	{
-		transform.position = eventData.position - offsetFromMouseCursor;
+    public void OnDrag(PointerEventData eventData)
+    {
+        offsetFromMouseCursor = eventData.position - new Vector2(transform.position.x, transform.position.y);
+
+        Vector2 viewportPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        viewportPosition = new Vector2(viewportPosition.x - 0.61f, viewportPosition.y - 0.61f);
+        Vector3 newPosition = new Vector3(viewportPosition.x * canvasSize.sizeDelta.x, viewportPosition.y * canvasSize.sizeDelta.y, 0.0f);
+        
+        transform.localPosition = new Vector3(newPosition.x, newPosition.y, 0.0f);
+
+//		transform.position = eventData.position - offsetFromMouseCursor;
+//
+//        transform.position = Camera.main.ScreenToViewportPoint(eventData.position);
+
 		gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
 	}
 
@@ -140,6 +162,13 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 
 		//When the item slot is dragged onto an empty area.
 		if(eventData.pointerEnter == null)
+		{
+			gameObject.transform.SetParent(parentTransform);
+			gameObject.transform.position = parentTransform.position;
+			gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		}
+
+		else if(eventData.pointerEnter.GetComponent<IContainable>() == null)
 		{
 			gameObject.transform.SetParent(parentTransform);
 			gameObject.transform.position = parentTransform.position;

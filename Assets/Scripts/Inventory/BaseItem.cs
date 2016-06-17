@@ -60,7 +60,8 @@ public class BaseItem
 	}
 
 	/// <summary>
-	/// Return type of item (equipment,consumeable,non Usable)
+    /// Return type of item (equipment,consumeable,non Usable)
+    /// 0:equipment, 1:consummable,2:non_consumable
 	/// </summary>
 	/// <value>The type of the base item.</value>
 	public BaseItemType Base_Item_Type

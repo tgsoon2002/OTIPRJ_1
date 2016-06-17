@@ -46,6 +46,8 @@ public class InventoryGridHandler : MonoBehaviour, IPointerClickHandler, IContai
 			tmp.GetComponent<ItemContainer>().Grid_Value = i;
 			containers.Add(tmp);
 			tmp.transform.SetParent(transform);
+
+			tmp.transform.localScale = Vector3.one;
 		}
 	}
 
@@ -60,20 +62,36 @@ public class InventoryGridHandler : MonoBehaviour, IPointerClickHandler, IContai
 	/// <param name="eventData">Event data.</param>
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		//When user presses the Right Mouse click
+        //When user presses the Right Mouse click
 		if(Input.GetMouseButtonUp(1))
 		{
+            //gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        
 			//Checks if the Right Mouse click pressed an Item Container GameObject
 			if(eventData.pointerCurrentRaycast.gameObject.transform.GetComponentInChildren<ISlottable>() != null)
-			{
-				//If it is, then disable the Inventory, and all of its children
-				//so the user won't be clicking by accident all over the place.
-				gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
-
+			{                
+        
 				//Makes the sub-menu appear on the menu.
 				//When any button is pressed on this prefab,
 				//blocksRayCasts should be set to true again.
 				itemSlotOptionPrefab.SetActive(true);
+
+             	//itemSlotOptionPrefab.transform.SetParent(transform);
+
+				Vector3 temp = eventData.pointerPressRaycast.gameObject.transform.position;
+
+				//itemSlotOptionPrefab.transform.position = new Vector3(temp.x + 30.0f, temp.y + 15.0f, temp.z);
+                itemSlotOptionPrefab.transform.position = new Vector3(temp.x, temp.y, temp.z);
+        
+				itemSlotOptionPrefab.GetComponent<ItemOption>().Item_Slot_Reference = eventData.pointerPressRaycast.gameObject;
+                //itemSlotOptionPrefab.GetComponent<ItemSlotOption>().Item_Slot_Reference = eventData.pointerPressRaycast.gameObject;
+                Debug.Log(eventData.pointerCurrentRaycast.gameObject);
+
+				//If it is, then disable the Inventory, and all of its children
+				//so the user won't be clicking by accident all over the place.
+				//gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+				Debug.Log("Uh...");
 			}
 		}
 	}
@@ -94,6 +112,8 @@ public class InventoryGridHandler : MonoBehaviour, IPointerClickHandler, IContai
 				itm.transform.position = container.transform.position;
 				itm.GetComponent<ISlottable>().Grid_Position = container.GetComponent<ItemContainer>().Grid_Value;
 				itm.GetComponent<ISlottable>().Slot_Parent = container.transform;
+
+				itm.transform.localScale = Vector3.one;
 				isPlaced = true;
 			}
 		}

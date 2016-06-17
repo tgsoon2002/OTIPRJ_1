@@ -8,10 +8,15 @@ public class TestGameManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		InventoryMenu.Instance.StopListeningToEvent(SquadManager.Instance.Current_Character);
-		InventoryMenu.Instance.ListenToEvent(SquadManager.Instance.Current_Character);
+        InventoryMenu.Instance.StopListeningToEvent(SquadManager.Instance.FocusedUnit.gameObject);
+        InventoryMenu.Instance.ListenToEvent(SquadManager.Instance.FocusedUnit.gameObject);
 	}
-	
+
+	public void ExitGame()
+	{
+		Application.Quit();
+	}
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -21,15 +26,14 @@ public class TestGameManager : MonoBehaviour
 			{
 				isActive = true;
 				InventoryMenu.Instance.menuPrefab.SetActive(isActive);
-				SquadManager.Instance.Current_Character.GetComponent<CharacterInventory>().InitializeMenu();
+                SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().InitializeMenu();
 			}
 			else
 			{
 				isActive = false;
-				SquadManager.Instance.Current_Character.GetComponent<CharacterInventory>().UpdateInventory();
+            
 				InventoryMenu.Instance.menuPrefab.SetActive(isActive);	
 			}
-
 		}
 	}
 }

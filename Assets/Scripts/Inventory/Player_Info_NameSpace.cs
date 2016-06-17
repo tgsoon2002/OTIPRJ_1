@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Player_Info
@@ -28,4 +28,3 @@ namespace Player_Info
 		}
 	}
 }
-

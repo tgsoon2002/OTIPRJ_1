@@ -1,4 +1,25 @@
-﻿using System;
+﻿/* CharacterInventory - version 1.0
+ * 
+ * 
+ * Created by			    : Jay Chan Jr.
+ * Date					    : 17 MAY 2016
+ * Email					: jaychan027@gmail.com
+ * 
+ * Contributors			    
+ * Kien Ngoc Nguyen - https://github.com/tgsoon2002
+ * 					- tgsoon2002@gmail.com
+ * 
+ * Matthew Bower    - https://github.com/bowerm386
+ *                  - bowerm386@gmail.com
+ * ---------------------------------------------------
+ * 
+ * This class will be the Character object's Inventory.
+ * Uses ItemInfo to keep track of item information,
+ * and can be used to manipulate items inside it via
+ * the defined public methods.
+ */
+
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,11 +35,9 @@ public class CharacterInventory : MonoBehaviour
 	private List<ItemInfo> itemList;
 	private int currentWeight;
 	private int tempMaxWeight;			//Delete sthis shit later.
-
-	public GameObject playerReference;	//Player Reference.
 	public GameObject lootPrefab;    	//Prefab for a Loot this class
 								    	//shall instantiate.
-
+	bool initialized = false;
 	#region Events
 
 	/*
@@ -48,6 +67,7 @@ public class CharacterInventory : MonoBehaviour
 	void Start()
 	{
 		itemList = new List<ItemInfo>();
+        LoadInventoy();
 	}
 
 	#endregion
@@ -61,13 +81,16 @@ public class CharacterInventory : MonoBehaviour
 	/// </summary>
 	public void InitializeMenu()
 	{
-		Debug.Log("InitializeMenu" + " " + "called");
+        Debug.Log("InitializeMenu called : " + itemList.Count);
+        InventoryMenu.Instance.ListenToEvent(gameObject);
 
 		foreach(ItemInfo item in itemList)
 		{
 			Debug.Log("Init: " + item.Grid_Index);
 			TriggerItemEvent(item, true, false);		
 		}
+
+        InventoryMenu.Instance.StopListeningToEvent(gameObject);
 	}
 
 	/// <summary>
@@ -77,7 +100,7 @@ public class CharacterInventory : MonoBehaviour
 	/// </summary>
 	public void UpdateInventory()
 	{
-		Debug.Log("UpdateInventory is called");
+		Debug.Log("UpdateInventory and remove item from inventorymenu is called");
 
 		if(InventoryMenu.Instance.Item_Slots.Count > 0)
 		{
@@ -114,8 +137,24 @@ public class CharacterInventory : MonoBehaviour
 //					itemList[index].Grid_Index = -1;
 //					itemList[index].Quickbar_Index = itm.GetComponent<ISlottable>().Is_On_Slot;
 //				}
+				//TriggerItemEvent(itm.GetComponent<ItemInfo>(), false, true);
 			}	
+          
 		}
+	}
+		
+	public void LoadInventoy() 
+	{
+//		InventoryMenu.Instance.ListenToEvent(SquadManager.Instance.FocusedUnit.gameObject);
+		if (!initialized) {
+			GetItemFromDB(GetComponent<BasePlayerCharacter>().charID);
+			initialized = true;
+		}
+
+//		foreach (var item in itemList) {
+//			TriggerItemEvent(item, true, (item.Quickbar_Index==-1));	
+//		}
+//		InventoryMenu.Instance.StopListeningToEvent(SquadManager.Instance.FocusedUnit.gameObject);
 	}
 		
 	/// <summary>
@@ -125,7 +164,7 @@ public class CharacterInventory : MonoBehaviour
 	public void AddItem(ItemInfo newItem)
 	{
 		//Checks if the character's weight can carry the new item.
-		if(newItem.TotalWeight() + currentWeight <= playerReference.GetComponent<ICarryable>().Player_Max_Weight)
+		if(newItem.TotalWeight() + currentWeight <= GetComponent<ICarryable>().Player_Max_Weight)
 		{
 			//Checking if the new item is stackable
 			if(newItem.Item_Info.Is_Stackable)
@@ -133,14 +172,12 @@ public class CharacterInventory : MonoBehaviour
 				//Check if newItem already exists in the list.
 				int index = itemList.FindIndex(item => item.Item_Info.Item_ID == newItem.Item_ID);
 
-                Debug.Log("Index for new item: " + index);
-
 				//IList.FindIndex returns -1, if the list does not contain the new item
 				if(index > -1)
 				{
 					itemList[index].Item_Quantity += newItem.Item_Quantity;
 
-					if(playerReference.GetComponent<IControllable>().Character_Is_Selected)
+					if(GetComponent<IControllable>().Character_Is_Selected)
 					{
 						//Trigger an event!
 						//Passing the item to be updated.
@@ -155,11 +192,6 @@ public class CharacterInventory : MonoBehaviour
 				{
 					ItemInfo temp = newItem;
 					temp.Inventory_Unique_ID = GenerateUniqueIDForItem(newItem);
-
-					Debug.Log(newItem.Grid_Index);
-					Debug.Log(newItem.Item_Name);
-					Debug.Log(temp.Grid_Index);
-
 					itemList.Add(temp);
 
 					//Checking if Inventory Menu UI is displayed
@@ -167,8 +199,7 @@ public class CharacterInventory : MonoBehaviour
 					{
 						//If true, trigger an event and pass true to create
 						//an item slot element on the Menu UI!
-                        Debug.Log("itemList index: " + index);
-                        TriggerItemEvent(temp, true, false);
+						TriggerItemEvent(temp, true, false);
 					}
 				}
 			}
@@ -195,10 +226,14 @@ public class CharacterInventory : MonoBehaviour
 	/// <param name="itemID">Item I.</param>
 	/// <param name="qty">Qty.</param>
 	/// <param name="toDrop">If set to <c>true</c> to drop.</param>
-	public void RemoveItem(int itemID, int qty, bool toDrop)
+	public void RemoveItem(string itemID, int qty, bool toDrop)
 	{
+		//Declaring local variables
+		ItemInfo toRemove;
+		int index;
+
 		//Find the index if the item exists
-		int index = itemList.FindIndex(item => item.Item_ID == itemID);
+		index = itemList.FindIndex(item => item.Inventory_Unique_ID == itemID);
 
 		//If the index returns -1, the catch state shall be executed.
 		try
@@ -210,8 +245,9 @@ public class CharacterInventory : MonoBehaviour
 				//completely zero out the item.
 				if(qty >= itemList[index].Item_Quantity)
 				{
-
-
+					toRemove = itemList[index];
+					toRemove.Item_Quantity = 0;
+			
 					//Completely remove the item
 					itemList.RemoveAt(index);
 				}
@@ -219,18 +255,28 @@ public class CharacterInventory : MonoBehaviour
 				{
 					//Simply update the item's quantity.
 					itemList[index].Item_Quantity -= qty;
+					toRemove = itemList[index];
 				}
 
-				//Create a temporary ItemInfo object to reverse the sign
-				//of the quantity, so the menu knows to subtract it.
-				ItemInfo tmp = itemList[index];
-				tmp.Item_Quantity *= -1;
+				//Reverse the sign of the quantity, so the menu knows to subtract it.
+				//toRemove.Item_Quantity *= -1;
 
 				//Trigger the event:
 				//Pass false, since we will be 
 				//updating the item slot. Or in
 				//this case, completely removing it.
-				TriggerItemEvent(itemList[index], false, true);
+				TriggerItemEvent(toRemove, false, true);
+
+				//Check if removing means dropping it to the Game World.
+				if(toDrop)
+				{
+					//Instantiate a new ItemInfo object to be used by the
+					//Loot GameObject.
+					ItemInfo itemToDrop = new ItemInfo(toRemove.Item_Info, qty);
+
+					//Call DropLoot
+					DropLoot(itemToDrop);
+				}
 			}
 			else
 			{
@@ -240,24 +286,15 @@ public class CharacterInventory : MonoBehaviour
 
 				//This is for the case if the item to be removed is an
 				//Equipment item.
+				toRemove = itemList[index];
 				itemList.RemoveAt(index);
+				toRemove.Item_Quantity = 0;
 
 				//Trigger the event:
 				//Pass false, since we will be 
 				//updating the item slot. Or in
 				//this case, completely removing it.
-				TriggerItemEvent(itemList[index], false, false);
-			}
-				
-			//Check if removing means dropping it to the Game World.
-			if(toDrop)
-			{
-				//Instantiate a new ItemInfo object to be used by the
-				//Loot GameObject.
-				ItemInfo itemToDrop = new ItemInfo(itemList[index].Item_Info, qty);
-
-				//Call DropLoot
-				DropLoot(itemToDrop);
+				TriggerItemEvent(toRemove, false, false);
 			}
 		}
 		catch
@@ -286,7 +323,22 @@ public class CharacterInventory : MonoBehaviour
 	{
 		
 	}
-
+	
+	/// <summary>
+	/// Gets the item from Database. Pass in the charID will pull all the itemlist belong to that char
+	/// Copy every item over to current list.
+	/// </summary>
+	/// <param name="charID">Char I.</param>
+	void GetItemFromDB(int charID) 
+	{
+		itemList.Clear();
+        Debug.Log(InventoryDatabase.Instance);
+		foreach (var item in InventoryDatabase.Instance.GetInventoryItemForCharacter(charID)) 
+		{
+			itemList.Add(item);
+		}
+	}
+	
 	#endregion
 
 	#region Private Methods
@@ -312,15 +364,16 @@ public class CharacterInventory : MonoBehaviour
 	/// <param name="droppedItem">Dropped item.</param>
 	private void DropLoot(ItemInfo droppedItem)
 	{
-		GameObject loot =Instantiate(lootPrefab);
+		GameObject loot = Instantiate(lootPrefab);
 
 		//Initialize loot components.
-		loot.GetComponent<ILootable>().Item_Info = droppedItem;
+		loot.GetComponent<ILootable>().SetLootContents(droppedItem);
 
 		//Initialize loot position with character's position plus offset.
-		loot.transform.position = new Vector3(playerReference.transform.position.x + 1.0f,
-											  playerReference.transform.position.y + 1.5f,
-											  loot.transform.position.z);
+		//The offset will be temporary.
+		loot.transform.position = new Vector3(transform.position.x + 3.0f,
+											  transform.position.y + 1.5f,
+											  transform.position.z);
 	}
 
 	/// <summary>

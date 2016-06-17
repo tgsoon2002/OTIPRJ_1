@@ -46,11 +46,8 @@ public class TestSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 	public void Clicked(int i)
 	{
 		image.sprite = stuff;
-
-		Debug.Log("Bloop!");
 	}
-
-
+		
 	public void OnBeginDrag(PointerEventData eventData)
 	{
 		transform.SetParent(rootTransform);

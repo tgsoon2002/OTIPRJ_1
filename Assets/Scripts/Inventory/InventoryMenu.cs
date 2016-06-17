@@ -1,4 +1,28 @@
-﻿using UnityEngine;
+/* InventoryMenu - version 1.0
+ * 
+ *
+ * Created by			    : Jay Chan Jr.
+ * Date					    : 24 MAY 2016
+ * Email					: jaychan027@gmail.com
+ * 
+ * Contributors
+ * Kien Ngoc Nguyen - https://github.com/tgsoon2002
+ * 					- tgsoon2002@gmail.com
+ * 
+ * Matthew Bower    - https://github.com/bowerm386
+ *                  - bowerm386@gmail.com
+ * ---------------------------------------------------
+ * 
+ * This class will be the user's window inside the 
+ * Character's inventory. Controls two main
+ * GameObjects, the Inventory Grid and the Quick Bar
+ * Grid. The former will display all items in a 
+ * Character's inventory onto a grid, and the latter
+ * is used when dragging Items from the grid onto
+ * the Quick Bar for easy access.
+ */
+
+using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +35,8 @@ public class InventoryMenu : MonoBehaviour
 	public GameObject menuPrefab;
 	public GameObject quickBarPrefab;
 	public GameObject itemSlotPrefab;
+
+	[SerializeField]
 	private List<GameObject> itemSlots;
 
 	[SerializeField]
@@ -64,6 +90,16 @@ public class InventoryMenu : MonoBehaviour
 		newCharacter.GetComponent<CharacterInventory>().ItemEvent += UpdateSlot;
 	}
 		
+    public void FlushData()
+    {
+        SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
+
+        foreach (var item in itemSlots)
+        {
+            Destroy(item);
+        }
+    }
+
 	#endregion
 
 	#region Private Methods
@@ -87,17 +123,18 @@ public class InventoryMenu : MonoBehaviour
 			//Will if the index is not -1
 			try
 			{
-				Debug.Log("Derp");
-
 				//Retrieve the index of the given item
 				int index = itemSlots.FindIndex(o => o.GetComponentInChildren<ISlottable>().Item_ID == _item.Inventory_Unique_ID);	
 
 				//Checks if the quantity to be updated is will NOT equal to zero or less
-				if(itemSlots[index].GetComponent<ISlottable>().Item_Quantity + _item.Item_Quantity <= 0)
+				if(/*itemSlots[index].GetComponent<ISlottable>().Item_Quantity +*/ _item.Item_Quantity <= 0)
 				{
 					//If it does, then it means that the slot has to
 					//be destroyed.
-					RemoveSlot(itemSlots[index]);
+					GameObject temp = itemSlots[index];
+					itemSlots.RemoveAt(index);
+
+					RemoveSlot(temp);
 				}
 				else
 				{
@@ -121,7 +158,9 @@ public class InventoryMenu : MonoBehaviour
 	/// <param name="item">Item.</param>
 	private void CreateSlot(IStoreable item)
 	{
+		Debug.Log("Create slot");
 		GameObject temp = Instantiate(itemSlotPrefab);
+
 		temp.GetComponent<ISlottable>().InitializeItemSlot(item);
 		temp.GetComponent<ISlottable>().Root_Transform = transform;
 		itemSlots.Add(temp);
@@ -154,7 +193,6 @@ public class InventoryMenu : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("CUCKED");
 			menuPrefab.GetComponent<InventoryGridHandler>().AddNewItemSlotToGrid(temp);	
 		}
 	}

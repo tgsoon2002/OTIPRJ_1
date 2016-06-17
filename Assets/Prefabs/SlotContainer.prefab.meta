@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefabs/SlotContainer.prefab.meta
 guid: 742aa10a5dcd043479fab9c787273b16
 timeCreated: 1464583995
+=======
+guid: 0c14fa8fd7f1347ab86426a359028b4a
+timeCreated: 1464325846
+>>>>>>> 94a94a8766596ba1633251a79004086908b37686:Assets/Model/Materials/Material.mat.meta
 licenseType: Free
 NativeFormatImporter:
   userData: 

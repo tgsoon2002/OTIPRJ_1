@@ -24,11 +24,11 @@ public class ItemContainer : MonoBehaviour, IDropHandler
 	#region Built-in Unity Methods
 
 	// Use this for initialization
-	void Start ()
-	{
+//	void Start ()
+//	{
+//
+//	}
 
-	}
-		
 	#endregion
 
 	#region Public Methods

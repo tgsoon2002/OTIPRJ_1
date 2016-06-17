@@ -51,8 +51,12 @@ public class ItemInfo : IEquippable, IStoreable
 		get { return item.Item_Description; }
 		set { item.Item_Description = value; }
 	}
-
-	// Gets and sets the item's type.
+		  
+    /// <summary>
+    /// Gets or sets the type of the item.
+    /// 0:equipment, 1:consummable,2:non_consumable
+    /// </summary>
+    /// <value>The type of the item.</value>
 	public int Item_Type
 	{
 		get { return (int)item.Base_Item_Type; }
@@ -228,6 +232,46 @@ public class ItemInfo : IEquippable, IStoreable
 		}
 	}
 		
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JItemInfo"/> class.
+    /// Use this constructor when initializing an item straight in 
+    /// the database TO the Character Inventory.
+    /// </summary>
+    /// <param name="cID">C I.</param>
+    /// <param name="_item">Item.</param>
+    /// <param name="qty">Qty.</param>
+	public ItemInfo(int cID, BaseItem _item, int qty, string _uniqueID, int _gridIndex, int _quickbarIndex, bool equip)
+    {
+        ownerID = cID;
+        item = _item;
+        itemQuantity = qty;
+        quickbarIndex = _quickbarIndex;
+        gridIndex = _gridIndex;
+
+        //Check the quantity of the item if it is nonstackable
+        if(!item.Is_Stackable && itemQuantity > 1)
+        {
+            //Log an error on the console (for now)
+            Debug.LogError("WARNING: Non-Stackable items can't have an item quantity > 1.");
+
+            //Force it to only have 1 item.
+            itemQuantity = 1;
+        }
+
+
+        //Checks if the item type is stackable or not
+        if(!item.Is_Stackable)
+        {
+            inventoryID = _uniqueID;    
+        }
+        else
+        {
+            //If it's a Stackable type, then assign some
+            //temporary value.
+            inventoryID = "";
+        }
+    }
+				
 	/// <summary>
 	/// Return the total weight of this
 	/// item.

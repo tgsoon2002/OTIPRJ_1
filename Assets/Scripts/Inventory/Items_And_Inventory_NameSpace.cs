@@ -9,6 +9,7 @@ namespace Items_And_Inventory
 	/// <summary>
 	/// Enumerates different types of
 	/// 'base' items in the game.
+    /// 0:equipment, 1:consummable,2:non_consumable
 	/// </summary>
 	public enum BaseItemType 
 	{
@@ -178,8 +179,9 @@ namespace Items_And_Inventory
 		ItemInfo Item_Info
 		{
 			get;
-			set;
 		}
+
+		void SetLootContents(ItemInfo itm);
 	}
 
 	#endregion
