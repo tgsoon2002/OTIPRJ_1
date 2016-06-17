@@ -94,7 +94,7 @@ public class SquadManager : MonoBehaviour {
 	/// Will save Inventory, SkillSet, or any other setting
 	/// </summary>
 	void BeforeFocusChange(){
-		focusedUnit.GetComponent<CharacterInventory>().UpdateInventory();	
+		//focusedUnit.GetComponent<CharacterInventory>().UpdateInventory();	
 
 	}
 
@@ -106,7 +106,7 @@ public class SquadManager : MonoBehaviour {
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		Commands.Instance.focusedUnit = focusedUnit;
 		if (MenuManager.Instance.CurrentMenu == 0) {
-			focusedUnit.GetComponent<CharacterInventory>().LoadInventoy();
+            focusedUnit.GetComponent<CharacterInventory>().InitializeMenu();
 			CharacterBlock.Instance.UpdateChar();
 		}
 		else if (MenuManager.Instance.CurrentMenu == 2) {
@@ -135,7 +135,8 @@ public class SquadManager : MonoBehaviour {
 
 		//FocusCharacterChanged();
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
-		SwitchFocusCharacter();
+     
+        SwitchFocusCharacter();
 		if (Commands.Instance.focusedUnit == null) {
 			Commands.Instance.focusedUnit = tempchar.GetComponent<BasePlayerCharacter>();
 		}

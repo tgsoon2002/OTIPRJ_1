@@ -93,7 +93,7 @@ public class MenuManager : MonoBehaviour {
 		inventoryCanvas.SetActive (true) ;
 		characterModel.gameObject.SetActive (true) ;
 		charModelManager.UpdateChar();
-		SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().LoadInventoy();
+        SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().InitializeMenu();
 	}
 
 	void OpenSettings(){}
@@ -109,17 +109,41 @@ public class MenuManager : MonoBehaviour {
 
 	void CloseAllMenu()
 	{
-		// Close Inventory
-		inventoryCanvas.SetActive (false) ;
-		characterModel.gameObject.SetActive (false) ;
-		// Close SkillGrid
-		skillGridCanvas.SetActive (false) ;
-		skillGridCanvas.gameObject.GetComponent<SkillGridManager>().GridObject = false;
 
-		// Close Settings
-		// Close Squad
-		// Close Journal
+        Debug.Log("Closing menu. . .");
+
+        switch (CurrentMenu) {
+            case 0:
+                // Close Inventory
+                InventoryMenu.Instance.FlushData();
+                inventoryCanvas.SetActive (false) ;
+                characterModel.gameObject.SetActive (false) ;
+                break;
+            case 1:
+              
+                break;
+            case 2:
+                // Close SkillGrid
+                skillGridCanvas.SetActive (false) ;
+                skillGridCanvas.gameObject.GetComponent<SkillGridManager>().GridObject = false;
+                break;
+            case 3:
+     
+                break;
+            case 4:
+       
+                break;
+            default:
+                break;
+        }
+
+		
+       
+		
+
+
 	}
+
 	#endregion
 
 

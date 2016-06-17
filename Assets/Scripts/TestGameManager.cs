@@ -31,7 +31,7 @@ public class TestGameManager : MonoBehaviour
 			else
 			{
 				isActive = false;
-                SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
+            
 				InventoryMenu.Instance.menuPrefab.SetActive(isActive);	
 			}
 		}

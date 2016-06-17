@@ -67,16 +67,15 @@ public class InventoryDatabase : MonoBehaviour {
 				tempList.Add(item);
 			}
 		}
-		return tempList;
-	}
-	//	public List<ItemInventory> GetInventory (int charIndex){
+		return tempList;	
+//	    public List<ItemInventory> GetInventory (int charIndex){
 //		List<ItemInventory> tempinventory = new List<ItemInventory>();
 //		List<ItemSlot> temp = inventoryDB.FindAll(x=>x.characterID == charIndex);
 //		for (int i = 0; i < temp.Count; i++) {
 //			tempinventory.Add(new ItemInventory(ItemDatabase.Instance.GetItem(temp[i].itemID,temp[i].itemType),temp[i].quantity ));
 //		}
 //		return tempinventory;
-//	}
+	}
 
 	/// <summary>
 	/// Saves the item in inventory to item list in itemDatabase GameObject.

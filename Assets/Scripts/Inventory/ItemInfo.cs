@@ -240,12 +240,12 @@ public class ItemInfo : IEquippable, IStoreable
     /// <param name="cID">C I.</param>
     /// <param name="_item">Item.</param>
     /// <param name="qty">Qty.</param>
-	public ItemInfo(int cID, BaseItem _item, int qty, string _uniqueID, int _gridIndex, int quickbarIndex, bool equip)
+	public ItemInfo(int cID, BaseItem _item, int qty, string _uniqueID, int _gridIndex, int _quickbarIndex, bool equip)
     {
         ownerID = cID;
         item = _item;
         itemQuantity = qty;
-        quickbarIndex = -1;
+        quickbarIndex = _quickbarIndex;
         gridIndex = _gridIndex;
 
         //Check the quantity of the item if it is nonstackable

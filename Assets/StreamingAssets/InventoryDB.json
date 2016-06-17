@@ -4,7 +4,7 @@
 	"quantity": 2,
 	"itemType": 1,
 	"isEquiped" : false,
-	"gridIndex" :0, "quickBarIndex" : 0 ,  "equiped" : false,
+	"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
 	"uID":""
 },
 {
@@ -13,7 +13,7 @@
 	"quantity": 1,
 	"itemType": 1,
 	"isEquiped" : false,
-	"gridIndex" :1, "quickBarIndex" : 1 ,  "equiped" : false,
+	"gridIndex" :-1, "quickBarIndex" : -1  ,  "equiped" : false,
 "uID":""
 },
 {
@@ -22,7 +22,7 @@
 	"quantity": 2,
 	"itemType": 1,
 	"isEquiped" : false,
-"gridIndex" :2, "quickBarIndex" : 2 ,  "equiped" : false,
+"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
 "uID":""
 },
 {
@@ -31,6 +31,6 @@
 	"quantity": 1,
 	"itemType": 1,
 	"isEquiped" : false,
-"gridIndex" :0, "quickBarIndex" : 0 ,  "equiped" : false,
+"gridIndex" :-1, "quickBarIndex" : -1 ,  "equiped" : false,
 "uID":""
 }]

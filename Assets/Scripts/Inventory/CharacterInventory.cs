@@ -67,6 +67,7 @@ public class CharacterInventory : MonoBehaviour
 	void Start()
 	{
 		itemList = new List<ItemInfo>();
+        LoadInventoy();
 	}
 
 	#endregion
@@ -80,13 +81,14 @@ public class CharacterInventory : MonoBehaviour
 	/// </summary>
 	public void InitializeMenu()
 	{
-		Debug.Log("InitializeMenu" + " " + "called");
-
+        Debug.Log("InitializeMenu called : " + itemList.Count);
+        InventoryMenu.Instance.ListenToEvent(gameObject);
 		foreach(ItemInfo item in itemList)
 		{
 			Debug.Log("Init: " + item.Grid_Index);
 			TriggerItemEvent(item, true, false);		
 		}
+        InventoryMenu.Instance.StopListeningToEvent(gameObject);
 	}
 
 	/// <summary>
@@ -134,23 +136,24 @@ public class CharacterInventory : MonoBehaviour
 //					itemList[index].Grid_Index = -1;
 //					itemList[index].Quickbar_Index = itm.GetComponent<ISlottable>().Is_On_Slot;
 //				}
-				TriggerItemEvent(itm.GetComponent<ItemInfo>(), false, true);
+				//TriggerItemEvent(itm.GetComponent<ItemInfo>(), false, true);
 			}	
+          
 		}
 	}
 		
 	public void LoadInventoy() 
 	{
-		InventoryMenu.Instance.ListenToEvent(SquadManager.Instance.FocusedUnit.gameObject);
+//		InventoryMenu.Instance.ListenToEvent(SquadManager.Instance.FocusedUnit.gameObject);
 		if (!initialized) {
 			GetItemFromDB(GetComponent<BasePlayerCharacter>().charID);
 			initialized = true;
 		}
 
-		foreach (var item in itemList) {
-			TriggerItemEvent(item, true, (item.Quickbar_Index==-1));	
-		}
-		InventoryMenu.Instance.StopListeningToEvent(SquadManager.Instance.FocusedUnit.gameObject);
+//		foreach (var item in itemList) {
+//			TriggerItemEvent(item, true, (item.Quickbar_Index==-1));	
+//		}
+//		InventoryMenu.Instance.StopListeningToEvent(SquadManager.Instance.FocusedUnit.gameObject);
 	}
 
 	/// <summary>
@@ -299,6 +302,7 @@ public class CharacterInventory : MonoBehaviour
 			//Log an error to the console (for now).
 			Debug.LogError("WARNING - Removing Item in Inventory that does not exist.");
 		}
+
 	}
 
 	/// <summary>
@@ -329,6 +333,7 @@ public class CharacterInventory : MonoBehaviour
 	void GetItemFromDB(int charID) 
 	{
 		itemList.Clear();
+        Debug.Log(InventoryDatabase.Instance);
 		foreach (var item in InventoryDatabase.Instance.GetInventoryItemForCharacter(charID)) 
 		{
 			itemList.Add(item);

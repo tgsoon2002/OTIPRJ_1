@@ -89,6 +89,16 @@ public class InventoryMenu : MonoBehaviour
 		newCharacter.GetComponent<CharacterInventory>().ItemEvent += UpdateSlot;
 	}
 		
+
+    public void FlushData()
+    {
+        SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
+
+        foreach (var item in itemSlots)
+        {
+            Destroy(item);
+        }
+    }
 	#endregion
 
 	#region Private Methods
