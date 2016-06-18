@@ -99,6 +99,8 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 		icon.sprite = item.Item_Sprite;	//Set the quick slot icon with the item sprite
 		icon.color = new Vector4(255f, 255f, 255f, 255f); //Make sure the alpha value is turned 
 														  //all the way up
+
+		Debug.Log(icon.sprite);
 	}
 
 	/// <summary>

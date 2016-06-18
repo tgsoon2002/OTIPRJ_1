@@ -176,7 +176,18 @@ public class InventoryMenu : MonoBehaviour
 		{
 			if(menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].GetComponentInChildren<ISlottable>() == null)
 			{
-				temp.transform.SetParent(menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform);	
+				temp.transform.SetParent(menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform);
+				//temp.GetComponent<RectTransform>().localPosition = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform.position;
+
+
+				//For some dumb fucking reason, the RectTransform of the ItemSlot changes after you turn off/on the menu.
+				//These next three lines solves the fucking problem of the ItemSlots not being displayed on the grid.
+				temp.transform.localPosition = Vector3.zero;
+				temp.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+				temp.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+				//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+
+				temp.transform.localScale = Vector3.one;
 			}
 			else
 			{
