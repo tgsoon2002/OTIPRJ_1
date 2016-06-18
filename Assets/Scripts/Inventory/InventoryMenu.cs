@@ -185,7 +185,7 @@ public class InventoryMenu : MonoBehaviour
 				temp.transform.localPosition = Vector3.zero;
 				temp.GetComponent<RectTransform>().offsetMax = Vector2.zero;
 				temp.GetComponent<RectTransform>().offsetMin = Vector2.zero;
-				//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+				temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
 
 				temp.transform.localScale = Vector3.one;
 			}

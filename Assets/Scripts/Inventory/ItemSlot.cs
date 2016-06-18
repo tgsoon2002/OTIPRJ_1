@@ -71,7 +71,10 @@ public class ItemSlot : MonoBehaviour, ISlottable, IBeginDragHandler, IDragHandl
 
 	#region Built-in Unity Methods
 
-	//n/a
+	void Start()
+	{
+		
+	}
 
 		
 	#endregion
