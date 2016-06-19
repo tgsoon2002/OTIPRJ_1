@@ -116,7 +116,8 @@ public class MenuManager : MonoBehaviour {
 				if(InventoryMenu.Instance.menuPrefab.activeInHierarchy)
 				{
 					Debug.Log("Closing menu. . .");
-					InventoryMenu.Instance.FlushData();
+					//InventoryMenu.Instance.FlushData();
+					SquadManager.Instance.FocusedUnit.gameObject.GetComponent<CharacterInventory>().UpdateInventory();
 					inventoryCanvas.SetActive (false);
 					characterModel.gameObject.SetActive (false);
 				}

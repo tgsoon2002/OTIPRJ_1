@@ -52,19 +52,30 @@ public class SquadManager : MonoBehaviour {
 
 	#endregion
 	#region Public Method
-	public void SwitchFocusCharacter(){
+
+	public void SwitchFocusCharacter()
+	{
 		int i = playerCharacterList.IndexOf (focusedUnit);
-		if (i == playerCharacterList.Count-1) {
+
+		if (i == playerCharacterList.Count-1)
+		{
 			focusedUnit = playerCharacterList[0];
 		}
-		else {
+		else
+		{
+			InventoryMenu.Instance.FlushData();
 			focusedUnit = playerCharacterList[++i];
 		}
+
 		FocusCharacterChanged();
 	}
+
 	public void SwitchCurrent(BasePlayerCharacter newFocused)
 	{
+		Debug.Log("This is pressed");
+		InventoryMenu.Instance.FlushData();
 		focusedUnit = newFocused;
+		focusedUnit.gameObject.GetComponent<CharacterInventory>().InitializeQuickBarOnly();
 		FocusCharacterChanged();
 	}
 
@@ -103,10 +114,13 @@ public class SquadManager : MonoBehaviour {
 	/// Will get invetory, skill set.
 	/// </summary>
 	void FocusCharacterChanged(){
+		
 		mainCam.ChangeFocusUnit(focusedUnit.transform);
 		Commands.Instance.focusedUnit = focusedUnit;
 		focusedUnit.Character_Is_Selected = true;
+
 		if (MenuManager.Instance.CurrentMenu == 0) {
+			
             focusedUnit.GetComponent<CharacterInventory>().InitializeMenu();
 			CharacterBlock.Instance.UpdateChar();
 		}
@@ -117,13 +131,17 @@ public class SquadManager : MonoBehaviour {
 
 	}
 
-	void SpawnUnit(){
+	void SpawnUnit()
+	{
 		//check the number of unit in squad.
-		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count) {
+		if (UnitDataBase.Instance.NumberOfUnit() == playerCharacterList.Count)
+		{
 			return;
 		}
+
 		//create from prefab if allow.
 		GameObject tempchar =  Instantiate(playerCharacter,spawnPoint.position,spawnPoint.rotation) as GameObject;
+
 		// set value :BasePlayerCharacter,Inventory, (later: skill map)
 		tempchar.GetComponent<BasePlayerCharacter>().Init(playerCharacterList.Count);
 
@@ -138,9 +156,12 @@ public class SquadManager : MonoBehaviour {
 		tempchar.GetComponent<BasePlayerCharacter>().GearOn(((EquipmentItem)ItemDatabase.Instance.GetItem(0,0)).Equipment_Stats);
      
         SwitchFocusCharacter();
-		if (Commands.Instance.focusedUnit == null) {
+
+		if (Commands.Instance.focusedUnit == null) 
+		{
 			Commands.Instance.focusedUnit = tempchar.GetComponent<BasePlayerCharacter>();
 		}
 	}
+
 	#endregion
 }

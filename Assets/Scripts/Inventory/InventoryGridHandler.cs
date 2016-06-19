@@ -112,6 +112,13 @@ public class InventoryGridHandler : MonoBehaviour, IPointerClickHandler, IContai
 				itm.GetComponent<ISlottable>().Grid_Position = container.GetComponent<ItemContainer>().Grid_Value;
 				itm.GetComponent<ISlottable>().Slot_Parent = container.transform;
 				itm.transform.localScale = Vector3.one;
+
+				itm.transform.localPosition = Vector3.zero;
+				itm.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+			 	itm.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+				//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+				itm.transform.localScale = Vector3.one;
+
 				isPlaced = true;
 			}
 		}

@@ -57,47 +57,59 @@ public class InputProcessor : MonoBehaviour
 				// Inventory
 				if(cmd == CharacterInputs.Open_Character_Inventory)
 				{
-					if (temp_Input_Value == 2) {
+					if (temp_Input_Value == 2) 
+					{
 						MenuManager.Instance.MenuVisibility(0);
 					}
 				}	
 				// Settings
 				else if(cmd == CharacterInputs.Open_Settings)
 				{
-					if (temp_Input_Value == 2) {
+					if (temp_Input_Value == 2)
+					{
 						MenuManager.Instance.MenuVisibility(1);
 					}
 				}
 				// Map
-				else if (cmd == CharacterInputs.Open_Map) {
-					if (temp_Input_Value == 1) {
+				else if (cmd == CharacterInputs.Open_Map)
+				{
+					if (temp_Input_Value == 1)
+					{
 						mapCamera.ShowMap();
-					} else  if(temp_Input_Value == 2) {
+					} 
+					else  if(temp_Input_Value == 2)
+					{
 						mapCamera.HideMap();
 					}
 				}
 				// Skill Grid
-				else if (cmd == CharacterInputs.Open_Skill_Grid) {
-					if(temp_Input_Value == 2) {
+				else if (cmd == CharacterInputs.Open_Skill_Grid)
+				{
+					if(temp_Input_Value == 2)
+					{
 						MenuManager.Instance.MenuVisibility(2);
 					}
 				}
 				// Squad Manager
-				else if (cmd == CharacterInputs.Open_Squad_Manager) {
-					if(temp_Input_Value == 2) {
+				else if (cmd == CharacterInputs.Open_Squad_Manager)
+				{
+					if(temp_Input_Value == 2)
+					{
 						MenuManager.Instance.MenuVisibility(3);
 					}
 				}
 				// Journal
-				else if (cmd == CharacterInputs.Open_Journal) {
-					if(temp_Input_Value == 2) {
+				else if (cmd == CharacterInputs.Open_Journal)
+				{
+					if(temp_Input_Value == 2)
+					{
 						MenuManager.Instance.MenuVisibility(4);
 					}
 				}
 				// Others
 				else
 				{
-					Debug.Log(cmd);
+					//Debug.Log(cmd);
 					//Default case is Character movement or GUI Movement
 					Commands.Instance.ReceiveInput(cmd, (int)temp_Input_Value);	
 				}

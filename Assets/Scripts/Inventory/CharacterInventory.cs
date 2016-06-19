@@ -87,14 +87,24 @@ public class CharacterInventory : MonoBehaviour
 	/// </summary>
 	public void InitializeMenu()
 	{
-        Debug.Log("InitializeMenu called : " + itemList.Count);
         InventoryMenu.Instance.ListenToEvent(gameObject);
+
 		foreach(ItemInfo item in itemList)
 		{
-			Debug.Log("Init: " + item.Grid_Index);
 			TriggerItemEvent(item, true, false);		
 		}
         
+		InventoryMenu.Instance.StopListeningToEvent(gameObject);
+	}
+
+
+	public void InitializeQuickBarOnly()
+	{
+		InventoryMenu.Instance.ListenToEvent(gameObject);
+		foreach(ItemInfo item in itemList)
+		{
+			TriggerItemEvent(item, true, true);
+		}
 		InventoryMenu.Instance.StopListeningToEvent(gameObject);
 	}
 
@@ -105,15 +115,11 @@ public class CharacterInventory : MonoBehaviour
 	/// </summary>
 	public void UpdateInventory()
 	{
-		Debug.Log("UpdateInventory and remove item from inventorymenu is called");
-
 		if(InventoryMenu.Instance.Item_Slots.Count > 0)
 		{
 			foreach(GameObject itm in InventoryMenu.Instance.Item_Slots)
 			{
 				
-				Debug.Log("Grid: " + itm.GetComponent<ISlottable>().Grid_Position);
-
 				//string tmpID = itm.GetComponent<ISlottable>().Item_ID;
 				//int tmpGridPos = itm.GetComponent<ISlottable>().Grid_Position;
 
@@ -121,17 +127,18 @@ public class CharacterInventory : MonoBehaviour
 				//Refactor List to a Dictionary to increase performance.
 				int index = itemList.FindIndex(o => o.Inventory_Unique_ID == itm.GetComponent<ISlottable>().Item_ID);
 
-				Debug.Log("Item's index: " + index);
-
+			
 				//Make a check
 				if(index <= -1)
 				{
 					Debug.LogError("WARNING -- Item from Menu does not exist in CharacterInventory");
 				}
-
-
+					
 				itemList[index].Grid_Index = itm.GetComponent<ISlottable>().Grid_Position;
 				itemList[index].Quickbar_Index = itm.GetComponent<ISlottable>().Is_On_Slot;
+
+				Debug.Log("Updated Grid: " + itemList[index].Grid_Index);
+				Debug.Log("Uodated QB: " + itemList[index].Quickbar_Index);
 
 				//Check whether the item slot resides in the main grid
 				//or the quick bar

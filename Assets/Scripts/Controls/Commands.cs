@@ -139,7 +139,6 @@ public class Commands : MonoBehaviour
 				// check if character should sprint or walk
 				if( Time.time - tapTimer > 0.2f && tap <= -1)
 				{
-					Debug.Log("Sprint...");
 					focusedUnit.MoveThisUnit(-5.0f);
 					prevInput.Push(CharacterInputs.Character_Move_Left);
 					tap = -2;
@@ -204,6 +203,7 @@ public class Commands : MonoBehaviour
 						tapTimer = Time.time;
 						startTimer = true;
 					}
+
 					// check if character should sprint or walk
 					if( Time.time - tapTimer > 0.2f && tap >= 1)
 					{
@@ -220,27 +220,31 @@ public class Commands : MonoBehaviour
 			}
 			else if(type == 2)
 			{
-					startTimer = false;
-					tapTimer = Time.time - tapTimer;
-					if(tap == 2 || tap == -2) 
+				startTimer = false;
+				tapTimer = Time.time - tapTimer;
+
+				if(tap == 2 || tap == -2) 
+				{
+					tap = 0;
+				}
+
+				if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
+				{
+					lastTapped = Time.time;
+
+					if(tap == 1)
 					{
+						focusedUnit.DashThisUnit(1.0f);
+						prevInput.Pop();
+						prevInput.Push(CharacterInputs.Character_Move_Right);
 						tap = 0;
 					}
-					if(tapTimer < 0.2f && prevInput.Peek() == CharacterInputs.Character_Move_Right)
+					else
 					{
-						lastTapped = Time.time;
-						if(tap == 1)
-						{
-						focusedUnit.DashThisUnit(1.0f);
-							prevInput.Pop();
-							prevInput.Push(CharacterInputs.Character_Move_Right);
-							tap = 0;
-						}
-						else
-						{
-							tap = 1;
-						}
+						tap = 1;
 					}
+				}
+
 				prevInput.Clear();
 			}
 		}
@@ -286,11 +290,8 @@ public class Commands : MonoBehaviour
 						}	
 					}
 
-					SquadManager.Instance.FocusedUnit = theRight;
-
+					SquadManager.Instance.SwitchCurrent(theRight);
 				}
-
-
 			}
 		}
 	}
@@ -334,12 +335,13 @@ public class Commands : MonoBehaviour
 						}	
 					}
 
-					SquadManager.Instance.FocusedUnit = theLeft;
+					SquadManager.Instance.SwitchCurrent(theLeft);
 				}
 
 			}
 		}
 	}
+
 	/// <summary>
 	/// Call fucntion jump
 	/// </summary>
@@ -393,6 +395,7 @@ public class Commands : MonoBehaviour
 	}
 
 	#endregion
+
 	#endregion
 
 	#region Private Methods

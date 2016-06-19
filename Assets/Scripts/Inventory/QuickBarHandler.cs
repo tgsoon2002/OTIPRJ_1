@@ -42,6 +42,7 @@ public class QuickBarHandler : MonoBehaviour, IContainable
 			tmp.GetComponent<ItemContainer>().Grid_Value = i;
 			quickSlotList.Add(tmp);
 			tmp.transform.SetParent(transform);
+			tmp.transform.localScale = Vector3.one;
 		}
 	}
 		

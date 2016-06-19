@@ -52,6 +52,12 @@ public class ItemContainer : MonoBehaviour, IDropHandler
 		{
 			eventData.pointerDrag.GetComponent<ISlottable>().ReInitializeTransform(transform, gridValue);
 		}
+			
+		eventData.pointerDrag.gameObject.transform.localPosition = Vector3.zero;
+		eventData.pointerDrag.gameObject.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+		eventData.pointerDrag.gameObject.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+		//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+		eventData.pointerDrag.gameObject.transform.localScale = Vector3.one;
 	}
 
 	#endregion

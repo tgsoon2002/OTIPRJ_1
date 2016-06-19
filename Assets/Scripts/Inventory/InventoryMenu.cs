@@ -96,14 +96,18 @@ public class InventoryMenu : MonoBehaviour
     {
 		Debug.Log("Item Count: " + itemSlots.Count);
 
-        SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
+		if(itemSlots.Count > 0)
+		{
+			SquadManager.Instance.FocusedUnit.GetComponent<CharacterInventory>().UpdateInventory();
 
-	
-        foreach (var item in itemSlots)
-        {
-            Destroy(item);
-        }
+			foreach (var item in itemSlots)
+			{
 
+				Destroy(item);	
+
+			}
+		}
+			
 		itemSlots.Clear();
     }
 	#endregion
@@ -122,7 +126,14 @@ public class InventoryMenu : MonoBehaviour
 		//If the state is 'true', call AddSlot
 		if(state)
 		{
-			CreateSlot(_item);
+			if(!isQB)
+			{
+				CreateSlot(_item);	
+			}
+			else
+			{
+				CreateOnlyQBSlots(_item);
+			}
 		}
 		else if(itemSlots.Count > 0)
 		{
@@ -159,14 +170,48 @@ public class InventoryMenu : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Creates only QB slots.
+	/// </summary>
+	/// <param name="item">Item.</param>
+	private void CreateOnlyQBSlots(IStoreable item)
+	{
+		GameObject temp = Instantiate(itemSlotPrefab);
+		temp.GetComponent<ISlottable>().InitializeItemSlot(item);
+		temp.GetComponent<ISlottable>().Root_Transform = transform;
+		itemSlots.Add(temp);
+
+		if(item.Grid_Index <= -1 && item.Quickbar_Index > -1)
+		{
+			Debug.Log("QB created...");
+
+			if(quickBarPrefab.GetComponent<IContainable>().Item_Containers[item.Quickbar_Index].GetComponentInChildren<ISlottable>() == null)
+			{
+				temp.transform.SetParent(quickBarPrefab.GetComponent<IContainable>().
+					Item_Containers[item.Quickbar_Index].transform);
+
+				temp.transform.localPosition = Vector3.zero;
+				temp.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+				temp.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+				//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+				temp.transform.localScale = Vector3.one;
+
+
+			}
+			else
+			{
+				itemSlots.Remove(temp);
+				Destroy(temp);
+			}
+		}
+	}
+
+	/// <summary>
 	/// Adds the slot.
 	/// </summary>
 	/// <param name="item">Item.</param>
 	private void CreateSlot(IStoreable item)
 	{
-		Debug.Log("Item's Grid Val: " + item.Grid_Index);
 		GameObject temp = Instantiate(itemSlotPrefab);
-	
 		temp.GetComponent<ISlottable>().InitializeItemSlot(item);
 		temp.GetComponent<ISlottable>().Root_Transform = transform;
 		itemSlots.Add(temp);
@@ -197,10 +242,20 @@ public class InventoryMenu : MonoBehaviour
 		}
 		else if(item.Grid_Index <= -1 && item.Quickbar_Index > -1)
 		{
+			Debug.Log("QB created...");
+
 			if(quickBarPrefab.GetComponent<IContainable>().Item_Containers[item.Quickbar_Index].GetComponentInChildren<ISlottable>() == null)
 			{
 				temp.transform.SetParent(quickBarPrefab.GetComponent<IContainable>().
 					Item_Containers[item.Quickbar_Index].transform);
+
+				temp.transform.localPosition = Vector3.zero;
+				temp.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+				temp.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+				//temp.GetComponent<ISlottable>().Slot_Parent = menuPrefab.GetComponent<IContainable>().Item_Containers[item.Grid_Index].transform;
+				temp.transform.localScale = Vector3.one;
+
+
 			}
 			else
 			{
